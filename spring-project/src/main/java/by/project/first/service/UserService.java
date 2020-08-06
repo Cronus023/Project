@@ -1,14 +1,10 @@
 package by.project.first.service;
 
-
-import by.project.first.models.RoleModel;
 import by.project.first.models.UserModel;
 import by.project.first.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 public class UserService {

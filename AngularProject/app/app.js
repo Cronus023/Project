@@ -8,24 +8,35 @@ angular.module('myApp', [
     'myApp.toolbar',
     'auth',
     'myApp.main',
-    'AuthInterceptor'
+    'AuthInterceptor',
+    'myApp.office'
 ]).
-config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider) {
+config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
   $httpProvider.interceptors.push('AuthInterceptor');
-
   $routeProvider.when('/login', {
     templateUrl: 'components/loginPage/login.html',
-    controller: 'LoginCtrl'
+    controller: 'LoginCtrl',
   })
   $routeProvider.when('/main', {
     templateUrl: 'components/mainPage/main.html',
-    controller: 'MainCtrl'
+    controller: 'MainCtrl',
+    resolve:{
+      check:function($window){
+        if(localStorage.getItem('JwtToken') == null){
+          $window.location.href = '#!/login'
+        }
+      }
+    }
+
   })
   $routeProvider.when('/register', {
     templateUrl: 'components/registerPage/register.html',
     controller: 'RegisterCtrl'
   })
-
+  $routeProvider.when('/office', {
+    templateUrl: 'components/officePage/office.html',
+    controller: 'OfficeCtrl'
+  })
   $routeProvider.otherwise({
     redirectTo: '/login'}
     );
