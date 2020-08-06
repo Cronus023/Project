@@ -7,9 +7,7 @@ authInterceptor.service('AuthInterceptor', function($q, $window) {
             if (token != null) {
                 config.headers['Authorization'] = 'Bearer ' + token;
             }
-            else if(config.url != 'components/registerPage/register.html'){
-                $window.location.href = '#!/login'
-            }
+
             return config || $q.when(config);
         },
 

@@ -19,7 +19,7 @@ auth.factory('authService',['$http','$q','$window', function($http,  $q, $window
         registration:function(registerBody){
             const deferred = $q.defer();
             $http.post('http://localhost:8080/register',registerBody).
-            then(function success(response) {
+            then(function (response) {
                 deferred.resolve(response.data.title);
             })
             return deferred.promise;

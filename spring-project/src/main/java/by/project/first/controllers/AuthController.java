@@ -43,10 +43,10 @@ public class AuthController {
         UserModel newUser = userRepo.findByLogin(user.getLogin());
         if(newUser == null){
             userService.saveUser(user);
-            return ResponseEntity.status(400).body(new Message(""));
+            return ResponseEntity.ok(new Message(""));
         }
         else{
-            return ResponseEntity.ok(new Message("Such login already exist!"));
+            return ResponseEntity.status(400).body(new Message("Such user already exist!"));
         }
     }
 

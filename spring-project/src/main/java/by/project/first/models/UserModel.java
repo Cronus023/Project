@@ -11,6 +11,13 @@ public class UserModel {
     private Long id;
     private String login;
     private String password;
+    private String adress;
+    private String email;
+    private String education;
+    private String phone;
+    private String name;
+    private String surname;
+
     private boolean active;
 
     @ElementCollection(targetClass = RoleModel.class, fetch = FetchType.EAGER)
@@ -21,9 +28,17 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(String login, String password) {
+    public UserModel(String login, String password, String adress, String email, String education, String phone, String name, String surname, boolean active, Set<RoleModel> roles) {
         this.login = login;
         this.password = password;
+        this.adress = adress;
+        this.email = email;
+        this.education = education;
+        this.phone = phone;
+        this.name = name;
+        this.surname = surname;
+        this.active = active;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -48,6 +63,54 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public boolean isActive() {
