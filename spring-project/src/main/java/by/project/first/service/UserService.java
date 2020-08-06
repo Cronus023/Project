@@ -22,7 +22,7 @@ public class UserService {
     public UserModel saveUser(UserModel userModel) {
         userModel.setActive(true);
 
-        userModel.setRoles(Collections.singleton(RoleModel.USER));
+        userModel.setRoles(userModel.getRoles());
 
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
         return userRepo.save(userModel);

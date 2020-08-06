@@ -29,6 +29,12 @@
             <label for="inputEducation" class="sr-only">Education</label>
             <input type="text" ng-model="education" id="inputEducation" class="form-control" placeholder="Education" required>
 
+            <br>
+            <label>Choose your role:</label>
+            <select class="custom-select" ng-model="role">
+                <option ng-repeat="item in typesOfRoles">{{item.value}}</option>
+            </select>
+
             <br><br>
             <label ng-if="message!=''"><p class = "sign_in_up-error">{{message}}</p></label>
 

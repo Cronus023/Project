@@ -1,5 +1,5 @@
 package by.project.first.models;
 
 public enum RoleModel {
-    USER;
+    PROVIDER, CURRICULUM_REVIEWER, REGULAR_REVIEWER, SUPERVISION, TRAINING_OPERATOR
 }
