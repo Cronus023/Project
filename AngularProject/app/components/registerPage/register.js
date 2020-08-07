@@ -1,5 +1,3 @@
-'use strict'
-
 angular.module('myApp.register', ['ngRoute'])
     .controller('RegisterCtrl', function($scope, authService) {
         $scope.typesOfRoles = [

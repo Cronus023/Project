@@ -9,6 +9,8 @@ angular.module('myApp.toolbar', [])
     })
     .controller('toolbarCtrl', function($scope, authService){
         $scope.token = localStorage.getItem('JwtToken')
+        $scope.role = localStorage.getItem('UserRole')
+
         $scope.logout = function(){
             authService.logout()
         }

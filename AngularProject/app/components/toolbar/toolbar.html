@@ -1,13 +1,31 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
     <h5 class="my-0 mr-md-auto font-weight-normal">Itransition</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#!/login">Support</a>
-    </nav>
+
     <nav ng-if = "token == null">
         <a class="btn btn-outline-primary" href="#!/login">Sign in</a>
         <a class="btn btn-outline-primary ml-1" href="#!/register">Sign up</a>
     </nav>
-    <nav ng-if = "token != null">
-        <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
-    </nav>
+
+    <div ng-if = "token != null">
+        <nav ng-if="role == 'PROVIDER'">
+            <a class="btn btn-outline-primary ml-1" href="#!/office">My offices</a>
+            <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
+        </nav>
+        <nav ng-if="role == 'CURRICULUM_REVIEWER'">
+            <a class="btn btn-outline-primary ml-1" href="#!/office">Application sections</a>
+            <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
+        </nav>
+        <nav ng-if="role == 'REGULAR_REVIEWER'">
+            <a class="btn btn-outline-primary ml-1" href="#!/office">Application sections</a>
+            <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
+        </nav>
+        <nav ng-if="role == 'SUPERVISION'">
+            <a class="btn btn-outline-primary ml-1" href="#!/office">Application sections</a>
+            <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
+        </nav>
+        <nav ng-if="role == 'TRAINING_OPERATOR'">
+            <a class="btn btn-outline-primary ml-1" href="#!/office">My trainings</a>
+            <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
+        </nav>
+    </div>
 </div>

@@ -3,11 +3,10 @@ angular.module('myApp.office', ['ngRoute'])
         $scope.message = ''
         $scope.create = function(officeForm){
             if(officeForm.$valid){
-
                 const officeBody = {
                     name: $scope.name,
                     location: $scope.location,
-                    contact_details: $scope.contact,
+                    contact_details: $scope.contact
                 }
                 $http.post('http://localhost:8080/create',officeBody).
                 then(function (response) {

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('myApp.login', ['ngRoute'])
     .controller('LoginCtrl', function($scope, authService, $window) {
         $scope.login = ""
@@ -14,12 +12,11 @@ angular.module('myApp.login', ['ngRoute'])
                 }
                 const response = authService.login(authBody)
                 response.then(function(value){
-                    if(value != ''){
+                    if(value == 'ok'){
                         $window.location.href = "/#!/main"
                         $window.location.reload();
                     }
-                    $scope.message = value
-                    console.log(value)
+                    else $scope.message = value
                 })
             }
         }

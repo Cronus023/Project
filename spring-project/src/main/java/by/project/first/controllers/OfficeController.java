@@ -56,7 +56,8 @@ public class OfficeController {
         UserModel user = userRepo.findByLogin(login);
 
         OfficeModel office = request.getOffice();
-        office.setLeaderID(user);
+
+        office.getLeaderID().add(user);
         officeRepo.save(office);
         return ResponseEntity.ok(new Message("Now you are provider of the office"));
     }

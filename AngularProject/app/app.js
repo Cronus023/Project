@@ -5,11 +5,11 @@ angular.module('myApp', [
   'ngRoute',
   'myApp.login',
   'myApp.register',
-    'myApp.toolbar',
-    'auth',
-    'myApp.main',
-    'AuthInterceptor',
-    'myApp.office'
+  'myApp.toolbar',
+  'auth',
+  'myApp.main',
+  'AuthInterceptor',
+  'myApp.office'
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
   $httpProvider.interceptors.push('AuthInterceptor');
@@ -39,5 +39,5 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   })
   $routeProvider.otherwise({
     redirectTo: '/login'}
-    );
-}]);
+    )
+}])

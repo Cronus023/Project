@@ -1,6 +1,7 @@
 package by.project.first.controllers;
 
 import by.project.first.config.jwt.JwtProvider;
+import by.project.first.controllers.ReqAndRes.LoginResponse;
 import by.project.first.models.Message;
 import by.project.first.models.Token;
 import by.project.first.models.UserModel;
@@ -30,10 +31,10 @@ public class AuthController {
         UserModel authUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if(authUser != null){
             String token = jwtProvider.generateToken(authUser.getLogin());
-            return ResponseEntity.ok(new Token(token));
+            return ResponseEntity.ok(new LoginResponse(token, authUser.getRoles()));
         }
         else{
-            return ResponseEntity.status(400).body(new Message(""));
+            return ResponseEntity.status(400).body(new Message("Please, check your date"));
         }
     }
 

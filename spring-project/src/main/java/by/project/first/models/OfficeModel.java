@@ -1,6 +1,7 @@
 package by.project.first.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -13,20 +14,24 @@ public class OfficeModel {
 
     private String contact_details;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "provider_id")
-    private UserModel leaderID;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "office_providers",
+            joinColumns = @JoinColumn(name = "office_id")
+    )
+    private Set<UserModel> leaderID;
     private String photo;
 
-    public OfficeModel(String location, String name, String contact_details, UserModel leaderID, String photo) {
+
+    public OfficeModel() {
+    }
+
+    public OfficeModel(String location, String name, String contact_details, Set<UserModel> leaderID, String photo) {
         this.location = location;
         this.name = name;
         this.contact_details = contact_details;
         this.leaderID = leaderID;
         this.photo = photo;
-    }
-
-    public OfficeModel() {
     }
 
     public Long getId() {
@@ -61,11 +66,11 @@ public class OfficeModel {
         this.contact_details = contact_details;
     }
 
-    public UserModel getLeaderID() {
+    public Set<UserModel> getLeaderID() {
         return leaderID;
     }
 
-    public void setLeaderID(UserModel leaderID) {
+    public void setLeaderID(Set<UserModel> leaderID) {
         this.leaderID = leaderID;
     }
 

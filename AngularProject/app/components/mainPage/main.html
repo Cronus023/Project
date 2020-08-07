@@ -1,5 +1,4 @@
 <h1>All offices:</h1>
-
 <div class="row">
     <div class="col-sm-3" ng-repeat="office in offices">
         <div class="card" style="width: 20rem;" >
@@ -8,11 +7,11 @@
                 <h5 class="card-title">{{office.name}}</h5>
                 <p class="card-text">{{office.location}}</p>
                 <p class="card-text">{{office.contact_details}}</p>
-                <div ng-if="office.leaderID == null">
+                <div ng-if="!check(office)">
                     <button class="btn btn-primary" ng-click="become(office)">Become a provider</button>
                 </div>
-                <div ng-if="office.leaderID != null">
-                    <p class = "main_check_message"><label>{{office.leaderID.name}} provider of this office</label><p>
+                <div ng-if="check(office)">
+                    <p class = "main_check_message"><label> You are provider of this office</label><p>
                 </div>
             </div>
         </div>

@@ -13,7 +13,6 @@
   font-size: 16px;
 }
 
-
 .signin {
   display: -ms-flexbox;
   display: flex;
@@ -33,4 +32,6 @@
   color: #113ecd;
   border: 1px solid;
   width: 230px;
+  border-radius: 10px
+
 }
