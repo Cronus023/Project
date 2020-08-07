@@ -29,3 +29,8 @@
   padding: 1rem;
   border-radius: 10px
 }
+.main_check_message{
+  color: #113ecd;
+  border: 1px solid;
+  width: 230px;
+}

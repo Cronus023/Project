@@ -15,6 +15,7 @@ auth.factory('authService',['$http','$q','$window', function($http,  $q, $window
                     deferred.resolve(response.data.title);
                     if(response.data.title!="") {
                         localStorage.setItem('JwtToken', response.data.title)
+                        localStorage.setItem('UserLogin', authBody.login)
                     }
                 })
             return deferred.promise;

@@ -1,6 +1,7 @@
 package by.project.first.models;
 
 
+
 //test model
 public class Message {
     private String title;

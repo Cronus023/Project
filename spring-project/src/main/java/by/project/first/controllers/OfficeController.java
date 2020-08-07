@@ -1,11 +1,16 @@
 package by.project.first.controllers;
 
+import by.project.first.config.jwt.JwtProvider;
+import by.project.first.controllers.ReqAndRes.BecomeRequest;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
+import by.project.first.models.Token;
 import by.project.first.models.UserModel;
 import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -13,9 +18,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins="http://localhost:8000")
 public class OfficeController {
 
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @Autowired
     private OfficeRepo officeRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody OfficeModel office){
@@ -35,5 +45,19 @@ public class OfficeController {
         offices = officeRepo.findAll();
 
         return ResponseEntity.ok(offices);
+    }
+    @PostMapping("/become")
+    public ResponseEntity become(@RequestBody BecomeRequest request){
+
+        String login = jwtProvider.getLoginFromToken(request.getToken());
+        if (login == ""){
+            return ResponseEntity.ok(new Message("bad!"));
+        }
+        UserModel user = userRepo.findByLogin(login);
+
+        OfficeModel office = request.getOffice();
+        office.setLeaderID(user);
+        officeRepo.save(office);
+        return ResponseEntity.ok(new Message("Now you are provider of the office"));
     }
 }

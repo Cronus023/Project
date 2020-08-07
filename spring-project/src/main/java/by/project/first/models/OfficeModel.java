@@ -12,19 +12,21 @@ public class OfficeModel {
     private String name;
 
     private String contact_details;
-    private String leaderID;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "provider_id")
+    private UserModel leaderID;
     private String photo;
 
-
-    public OfficeModel() {
-    }
-
-    public OfficeModel(String location, String name, String contact_details, String leaderID, String photo) {
+    public OfficeModel(String location, String name, String contact_details, UserModel leaderID, String photo) {
         this.location = location;
         this.name = name;
         this.contact_details = contact_details;
         this.leaderID = leaderID;
         this.photo = photo;
+    }
+
+    public OfficeModel() {
     }
 
     public Long getId() {
@@ -59,11 +61,11 @@ public class OfficeModel {
         this.contact_details = contact_details;
     }
 
-    public String getLeaderID() {
+    public UserModel getLeaderID() {
         return leaderID;
     }
 
-    public void setLeaderID(String leaderID) {
+    public void setLeaderID(UserModel leaderID) {
         this.leaderID = leaderID;
     }
 
@@ -74,5 +76,4 @@ public class OfficeModel {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
-
 }
