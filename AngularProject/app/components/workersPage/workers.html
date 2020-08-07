@@ -1,1 +1,23 @@
-<h1>Workers</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col"><input type = "checkbox" ng-model = "checkAll" ng-click="selectAll()"> Select/Deselect all</th>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Surname</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
+        <th scope="row">{{data.indexOf(item)+1}}</th>
+        <td>{{item.name}}</td>
+        <td>{{item.surname}}</td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    <button type="button" class="btn btn-success">Add worker</button>
+    <button type="button" class="btn btn-danger">Delete</button>
+    <button type="button" class="btn btn-primary">Edit</button>
+</p>
