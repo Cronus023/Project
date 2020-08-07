@@ -50,7 +50,7 @@ public class OfficeController {
     public ResponseEntity become(@RequestBody BecomeRequest request){
 
         String login = jwtProvider.getLoginFromToken(request.getToken());
-        if (login == ""){
+        if (login == null){
             return ResponseEntity.status(400).body(new Message("bad!"));
         }
         UserModel user = userRepo.findByLogin(login);
