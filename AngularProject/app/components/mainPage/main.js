@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('myApp.main', ['ngRoute'])
-    .controller('MainCtrl', function($scope, $http) {
+    .controller('MainCtrl', function($scope, $http, $window) {
+
         $http.get('http://localhost:8080/get_office').
         then(function (response) {
-            console.log(response.data)
             $scope.offices = response.data
         })
 
@@ -15,13 +15,13 @@ angular.module('myApp.main', ['ngRoute'])
              }
              $http.post('http://localhost:8080/become',becomeRequest).
              then(function (response) {
-                 console.log(response)
+                 if(response.status == 400){
+                     alert("something wrong!")
+                 }
+                 else{
+                     $window.location.reload()
+                 }
              })
         }
-        $scope.check = function(office){
-            if(office.leaderID.login == localStorage.getItem('UserLogin')){
-                return true
-            }
-            else return false
-        }
+
     });

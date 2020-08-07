@@ -12,8 +12,11 @@ angular.module('myApp.office', ['ngRoute'])
                 $http.post('http://localhost:8080/create',officeBody).
                 then(function (response) {
                     if(response.status == 400){
-                        console.log(response)
                         $scope.message = response.data.title
+                    }
+                    else{
+                        $window.location.href = '#!/main'
+                        $window.location.reload()
                     }
                 })
             }

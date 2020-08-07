@@ -8,12 +8,12 @@
                 <h5 class="card-title">{{office.name}}</h5>
                 <p class="card-text">{{office.location}}</p>
                 <p class="card-text">{{office.contact_details}}</p>
-                <p ng-if="check(office)">
-                    <p class = "main_check_message"><label>You are provider of this office</label><p>
-                </p>
-                <p ng-if="!check(office)">
+                <div ng-if="office.leaderID == null">
                     <button class="btn btn-primary" ng-click="become(office)">Become a provider</button>
-                </p>
+                </div>
+                <div ng-if="office.leaderID != null">
+                    <p class = "main_check_message"><label>{{office.leaderID.name}} provider of this office</label><p>
+                </div>
             </div>
         </div>
     </div>
