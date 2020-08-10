@@ -1,5 +1,5 @@
 angular.module('myApp.register', ['ngRoute'])
-    .controller('RegisterCtrl', function($scope, authService) {
+    .controller('RegisterCtrl', function($scope, authService, $window) {
         $scope.typesOfRoles = [
             { key: 1, value: "PROVIDER"},
             { key: 2, value: "CURRICULUM_REVIEWER" },
@@ -11,7 +11,6 @@ angular.module('myApp.register', ['ngRoute'])
         $scope.registration = function(registerForm)
         {
             if(registerForm.$valid){
-                console.log([$scope.role])
                 if(!$scope.role){
                     $scope.message = "Choose your role!"
                 }
@@ -30,6 +29,11 @@ angular.module('myApp.register', ['ngRoute'])
                     const response = authService.registration(registerBody)
                     response.then(function(value){
                         $scope.message = value
+                        if(value == null){
+                            console.log(value)
+                            $window.location.href = '#!/login'
+                            $window.location.reload()
+                        }
                     })
                 }
             }
