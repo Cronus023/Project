@@ -12,7 +12,7 @@ authInterceptor.service('AuthInterceptor', function($q, $window) {
         responseError: function (response) {
             if (response.status === 403)
             {
-                console.log(response)
+                //console.log(response)
                 $location.path ('/login')
             }
             return response

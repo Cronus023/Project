@@ -24,6 +24,7 @@ public class UserService {
         return userRepo.save(userModel);
     }
 
+
     public UserModel findByLogin(String login) {
         return userRepo.findByLogin(login);
     }

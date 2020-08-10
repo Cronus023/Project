@@ -33,6 +33,13 @@ auth.factory('authService',['$http','$q','$window', function($http,  $q, $window
             return deferred.promise
         },
         logout:function(){
+            const login = localStorage.getItem('UserLogin')
+            $http.get(`http://localhost:8080/authLogout?login=${login}`).
+            then(function (response) {
+                if(response.status == 400){
+                    alert("error")
+                }
+            })
             localStorage.removeItem('JwtToken')
             localStorage.removeItem('UserLogin')
             localStorage.removeItem('UserRole')

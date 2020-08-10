@@ -9,10 +9,7 @@ import by.project.first.repositories.UserRepo;
 import by.project.first.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins="http://localhost:8000")
@@ -48,6 +45,21 @@ public class AuthController {
         }
         else{
             return ResponseEntity.status(400).body(new Message("Such user already exist!"));
+        }
+    }
+
+
+    @GetMapping("/authLogout")
+    public ResponseEntity authLogout(@RequestParam String login){
+
+        UserModel user = userRepo.findByLogin(login);
+        if(user == null){
+            return ResponseEntity.status(400).body(new Message("error"));
+        }
+        else{
+            user.setActive(false);
+            userRepo.save(user);
+            return ResponseEntity.ok(new Message("ok"));
         }
     }
 
