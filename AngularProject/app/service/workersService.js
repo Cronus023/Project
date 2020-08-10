@@ -12,8 +12,13 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
             })
             return deferred.promise
         },
-        delete: function(){
-            $http.post('http://localhost:8080/workers/delete').
+        delete: function(newWorkers, officeName, deletedWorkers){
+            const requestBody = {
+                newWorkers: newWorkers,
+                officeName:officeName,
+                deletedWorkers: deletedWorkers,
+            }
+            $http.post('http://localhost:8080/workers/delete',requestBody).
             then(function (response) {
                 console.log(response)
             })
@@ -23,7 +28,6 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
                 worker: worker,
                 officeName:officeId
             }
-            console.log(requestBody)
             $http.post('http://localhost:8080/workers/add', requestBody).
             then(function (response) {
                 console.log(response)

@@ -1,13 +1,18 @@
 package by.project.first.controllers;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
+import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
+import by.project.first.models.UserModel;
+import by.project.first.models.WorkerModel;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 
 @RestController
@@ -29,9 +34,9 @@ public class WorkersController {
     }
 
     @PostMapping("/workers/delete")
-    public ResponseEntity delete(){
-
-        return ResponseEntity.ok(new Message("delete"));
+    public ResponseEntity delete(@RequestBody DeleteWorkerRequest request){
+        OfficeModel newOffice = workerService.deleteWorker(request);
+        return ResponseEntity.ok(newOffice);
     }
     @PostMapping("/workers/add")
     public ResponseEntity add(@RequestBody AddWorkerRequest request){
