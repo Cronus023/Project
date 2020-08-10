@@ -5,7 +5,6 @@ angular.module('myApp.workers', [])
         $scope.id = $routeParams["id"]
         workersService.get_workers($scope.id).then(function(value){
             $scope.data = value
-            console.log(value)
         })
 
         $scope.selected = []
