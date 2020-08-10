@@ -4,11 +4,11 @@ import by.project.first.models.WorkerModel;
 
 public class AddWorkerRequest {
     private WorkerModel worker;
-    private Long officeId;
+    private String officeName;
 
-    public AddWorkerRequest(WorkerModel worker, Long officeId) {
+    public AddWorkerRequest(WorkerModel worker, String officeName) {
         this.worker = worker;
-        this.officeId = officeId;
+        this.officeName = officeName;
     }
 
     public WorkerModel getWorker() {
@@ -19,11 +19,11 @@ public class AddWorkerRequest {
         this.worker = worker;
     }
 
-    public Long getOfficeId() {
-        return officeId;
+    public String getOfficeName() {
+        return officeName;
     }
 
-    public void setOfficeId(Long officeId) {
-        this.officeId = officeId;
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
     }
 }

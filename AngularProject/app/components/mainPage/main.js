@@ -26,8 +26,8 @@ angular.module('myApp.main', ['ngRoute'])
             return flag
         }
         $scope.view = function(office){
-            const id = office.id
-            $window.location.href = `/#!/workers/${id}`
+            const name = office.name
+            $window.location.href = `/#!/workers/${name}`
         }
 
     })

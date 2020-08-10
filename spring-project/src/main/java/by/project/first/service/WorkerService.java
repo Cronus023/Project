@@ -25,9 +25,14 @@ public class WorkerService {
 
     public WorkerModel saveWorker(AddWorkerRequest request) {
         WorkerModel worker = request.getWorker();
-        Optional<OfficeModel> office = findById(request.getOfficeId());
+        WorkerModel newWorker = workerRepo.save(worker);
 
-        return workerRepo.save(worker);
+        OfficeModel office = officeRepo.findByName(request.getOfficeName());
+        office.getWorkerId().add(newWorker);
+
+        officeRepo.save(office);
+
+        return newWorker;
     }
 
 }

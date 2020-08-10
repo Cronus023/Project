@@ -7,6 +7,7 @@ import by.project.first.models.OfficeModel;
 import by.project.first.models.WorkerModel;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.UserRepo;
+import by.project.first.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,21 +25,22 @@ public class WorkersController {
     private OfficeRepo officeRepo;
 
     @Autowired
+    private WorkerService workerService;
+    @Autowired
     private UserRepo userRepo;
 
     @PostMapping("/workers/delete")
-    public ResponseEntity create(){
+    public ResponseEntity delete(){
         return ResponseEntity.ok(new Message("delete"));
     }
     @PostMapping("/workers/add")
-    public ResponseEntity main(@RequestBody AddWorkerRequest request){
-        Optional<OfficeModel> office = officeRepo.findById(request.getOfficeId());
-
-        return ResponseEntity.ok(office);
+    public ResponseEntity add(@RequestBody AddWorkerRequest request){
+        workerService.saveWorker(request);
+        return ResponseEntity.ok(new Message ("Ok!"));
     }
 
     @PostMapping("/workers/edit")
-    public ResponseEntity become(){
+    public ResponseEntity edit(){
         return ResponseEntity.ok(new Message("edit"));
     }
 }

@@ -22,16 +22,18 @@ public class OfficeModel {
     private Set<UserModel> leaderID;
     private String photo;
 
-
-    public OfficeModel() {
-    }
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "office_workers",
             joinColumns = @JoinColumn(name = "office_id")
     )
     private Set<WorkerModel> workerId;
+
+
+    public OfficeModel() {
+    }
+
+
 
     public OfficeModel(Long id, String location, String name, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId) {
         this.id = id;
