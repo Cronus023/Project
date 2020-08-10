@@ -1,5 +1,4 @@
 'use strict';
-
 // Declare app level module which depends on views, and core components
 angular.module('myApp', [
   'ngRoute',
@@ -12,6 +11,7 @@ angular.module('myApp', [
   'myApp.office',
   'office',
   'myApp.workers',
+  'workers'
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
   $httpProvider.interceptors.push('AuthInterceptor');
@@ -39,9 +39,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     templateUrl: 'components/officePage/office.html',
     controller: 'OfficeCtrl'
   })
-  $routeProvider.when(`/workers/`, {
+  $routeProvider.when(`/workers/:id`, {
     templateUrl: 'components/workersPage/workers.html',
-    controller: 'WorkersCtrl'
+    controller: 'WorkersCtrl',
+
   })
   $routeProvider.otherwise({
     redirectTo: '/login'}

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp.main', ['ngRoute'])
-    .controller('MainCtrl', function($scope, officeService, $window) {
+    .controller('MainCtrl', function($scope, officeService, $window, $route) {
         $scope.flag = false
 
         officeService.get_office().then(function(value){
@@ -27,7 +27,7 @@ angular.module('myApp.main', ['ngRoute'])
         }
         $scope.view = function(office){
             const id = office.id
-            $window.location.href = `/#!/workers/`
+            $window.location.href = `/#!/workers/${id}`
         }
 
-    });
+    })

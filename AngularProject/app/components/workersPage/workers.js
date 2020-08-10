@@ -1,5 +1,5 @@
 angular.module('myApp.workers', [])
-    .controller('WorkersCtrl', function($scope, authService) {
+    .controller('WorkersCtrl', function($scope, workersService, $routeParams) {
         $scope.checkAll = false
         $scope.data = [
             {
@@ -9,6 +9,7 @@ angular.module('myApp.workers', [])
                 name: "lol1", surname: "kek2"
             }
         ]
+        $scope.id = $routeParams["id"]
         $scope.selected = []
         $scope.exist = function(item){
             return $scope.selected.indexOf(item) > -1
@@ -39,5 +40,18 @@ angular.module('myApp.workers', [])
 
         $scope.click = function(simple){
             console.log(simple)
+        }
+
+        $scope.add = function(){
+            workersService.add()
+            console.log($scope.id)
+        }
+        $scope.delete = function(){
+            console.log($scope.selected)
+            workersService.delete()
+        }
+        $scope.edit = function(){
+            workersService.edit()
+            console.log($scope.id)
         }
     })

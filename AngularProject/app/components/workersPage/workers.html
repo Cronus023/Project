@@ -16,8 +16,12 @@
     </tr>
     </tbody>
 </table>
-<p>
-    <button type="button" class="btn btn-success">Add worker</button>
-    <button type="button" class="btn btn-danger">Delete</button>
-    <button type="button" class="btn btn-primary">Edit</button>
-</p>
+<div class = "row">
+    <p class = "ml-3" ng-if = "selected.length != 0">
+        <button type="button" class="btn btn-danger" ng-click="delete()">Delete</button>
+        <button type="button" class="btn btn-primary" ng-click="edit()">Edit</button>
+    </p>
+    <div class = "ml-3">
+        <button type="button" class="btn btn-success" ng-click ="add()">Add worker</button>
+    </div>
+</div>
