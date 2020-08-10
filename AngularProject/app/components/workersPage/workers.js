@@ -1,5 +1,5 @@
 angular.module('myApp.workers', [])
-    .controller('WorkersCtrl', function($scope, workersService, $routeParams) {
+    .controller('WorkersCtrl', function($scope, workersService, $routeParams,$window) {
         $scope.checkAll = false
         $scope.data = [
             {
@@ -43,8 +43,7 @@ angular.module('myApp.workers', [])
         }
 
         $scope.add = function(){
-            workersService.add()
-            console.log($scope.id)
+            $window.location.href = `#!/workers/add/${$scope.id}`
         }
         $scope.delete = function(){
             console.log($scope.selected)

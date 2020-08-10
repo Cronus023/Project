@@ -26,12 +26,21 @@ public class OfficeModel {
     public OfficeModel() {
     }
 
-    public OfficeModel(String location, String name, String contact_details, Set<UserModel> leaderID, String photo) {
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "office_workers",
+            joinColumns = @JoinColumn(name = "office_id")
+    )
+    private Set<WorkerModel> workerId;
+
+    public OfficeModel(Long id, String location, String name, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId) {
+        this.id = id;
         this.location = location;
         this.name = name;
         this.contact_details = contact_details;
         this.leaderID = leaderID;
         this.photo = photo;
+        this.workerId = workerId;
     }
 
     public Long getId() {
@@ -80,5 +89,13 @@ public class OfficeModel {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Set<WorkerModel> getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(Set<WorkerModel> workerId) {
+        this.workerId = workerId;
     }
 }

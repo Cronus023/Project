@@ -11,7 +11,8 @@ angular.module('myApp', [
   'myApp.office',
   'office',
   'myApp.workers',
-  'workers'
+  'workers',
+  'myApp.workers.addWorker'
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
   $httpProvider.interceptors.push('AuthInterceptor');
@@ -42,7 +43,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/workers/:id`, {
     templateUrl: 'components/workersPage/workers.html',
     controller: 'WorkersCtrl',
-
+  })
+  $routeProvider.when(`/workers/add/:id`, {
+    templateUrl: 'components/workersPage/addWorkerPage/addWorker.html',
+    controller: 'AddWorkerCtrl',
   })
   $routeProvider.otherwise({
     redirectTo: '/login'}
