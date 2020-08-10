@@ -1,36 +1,36 @@
 package by.project.first.controllers;
 
-import by.project.first.config.jwt.JwtProvider;
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
-import by.project.first.models.WorkerModel;
 import by.project.first.repositories.OfficeRepo;
-import by.project.first.repositories.UserRepo;
 import by.project.first.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins="http://localhost:8000")
 public class WorkersController {
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private WorkerService workerService;
 
     @Autowired
     private OfficeRepo officeRepo;
-
-    @Autowired
-    private WorkerService workerService;
-    @Autowired
-    private UserRepo userRepo;
+    @GetMapping("/workers/get_workers")
+    public ResponseEntity get_workers(@RequestParam String name){
+        OfficeModel office = officeRepo.findByName(name);
+        if(office != null){
+            return ResponseEntity.ok(office.getWorkerId());
+        }
+        return ResponseEntity.status(400).body(new Message("error"));
+    }
 
     @PostMapping("/workers/delete")
     public ResponseEntity delete(){
+
         return ResponseEntity.ok(new Message("delete"));
     }
     @PostMapping("/workers/add")

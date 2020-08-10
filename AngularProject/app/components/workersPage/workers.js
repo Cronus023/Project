@@ -1,15 +1,14 @@
 angular.module('myApp.workers', [])
     .controller('WorkersCtrl', function($scope, workersService, $routeParams,$window) {
         $scope.checkAll = false
-        $scope.data = [
-            {
-                name: "lol", surname: "kek"
-            },
-            {
-                name: "lol1", surname: "kek2"
-            }
-        ]
+        
         $scope.id = $routeParams["id"]
+        workersService.get_workers($scope.id).then(function(value){
+            $scope.data = value
+            console.log(value)
+        })
+
+
         $scope.selected = []
         $scope.exist = function(item){
             return $scope.selected.indexOf(item) > -1

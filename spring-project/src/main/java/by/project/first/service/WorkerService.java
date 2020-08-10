@@ -8,8 +8,6 @@ import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class WorkerService {
 
@@ -18,10 +16,6 @@ public class WorkerService {
 
     @Autowired
     private OfficeRepo officeRepo;
-
-    public Optional<OfficeModel> findById(Long id) {
-        return officeRepo.findById(id);
-    }
 
     public WorkerModel saveWorker(AddWorkerRequest request) {
         WorkerModel worker = request.getWorker();

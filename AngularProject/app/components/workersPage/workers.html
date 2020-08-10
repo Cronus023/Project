@@ -2,17 +2,19 @@
     <thead>
     <tr>
         <th scope="col"><input type = "checkbox" ng-model = "checkAll" ng-click="selectAll()"> Select/Deselect all</th>
-        <th scope="col">#</th>
+        <th scope="col">id</th>
         <th scope="col">Name</th>
-        <th scope="col">Surname</th>
+        <th scope="col">Education</th>
+        <th scope="col">Email</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="item in data">
         <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
-        <th scope="row">{{data.indexOf(item)+1}}</th>
+        <th scope="row">{{item.id}}</th>
         <td>{{item.name}}</td>
-        <td>{{item.surname}}</td>
+        <td>{{item.education}}</td>
+        <td>{{item.email}}</td>
     </tr>
     </tbody>
 </table>
