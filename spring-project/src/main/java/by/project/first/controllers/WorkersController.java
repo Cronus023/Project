@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -24,6 +25,7 @@ public class WorkersController {
 
     @Autowired
     private OfficeRepo officeRepo;
+
     @GetMapping("/workers/get_workers")
     public ResponseEntity get_workers(@RequestParam String name){
         OfficeModel office = officeRepo.findByName(name);
@@ -31,6 +33,16 @@ public class WorkersController {
             return ResponseEntity.ok(office.getWorkerId());
         }
         return ResponseEntity.status(400).body(new Message("error"));
+    }
+
+
+    @GetMapping("/workers/get_worker_by_id")
+    public ResponseEntity get_workers(@RequestParam Long id){
+        Optional<WorkerModel> worker = workerService.findById(id);
+        if(worker == null){
+            return ResponseEntity.status(400).body(new Message("error"));
+        }
+        else return ResponseEntity.ok(worker);
     }
 
     @PostMapping("/workers/delete")
@@ -45,7 +57,8 @@ public class WorkersController {
     }
 
     @PostMapping("/workers/edit")
-    public ResponseEntity edit(){
+    public ResponseEntity edit(@RequestBody WorkerModel worker){
+        workerService.editWorker(worker);
         return ResponseEntity.ok(new Message("edit"));
     }
 }

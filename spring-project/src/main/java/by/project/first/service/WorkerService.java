@@ -9,6 +9,7 @@ import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -31,6 +32,11 @@ public class WorkerService {
 
         return newWorker;
     }
+
+    public Optional<WorkerModel> findById(Long id) {
+        Optional<WorkerModel> worker = workerRepo.findById(id);
+        return worker;
+    }
     public OfficeModel deleteWorker (DeleteWorkerRequest request) {
         Set<WorkerModel> workers =  request.getNewWorkers();
 
@@ -43,5 +49,7 @@ public class WorkerService {
         OfficeModel newOffice = officeRepo.save(office);
         return newOffice;
     }
-
+    public WorkerModel editWorker (WorkerModel worker) {
+        return workerRepo.save(worker);
+    }
 }

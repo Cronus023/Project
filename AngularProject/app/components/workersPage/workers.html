@@ -6,22 +6,27 @@
         <th scope="col">Name</th>
         <th scope="col">Education</th>
         <th scope="col">Email</th>
+        <th scope="col">Edit worker</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in data">
-        <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
-        <th scope="row">{{item.id}}</th>
-        <td>{{item.name}}</td>
-        <td>{{item.education}}</td>
-        <td>{{item.email}}</td>
-    </tr>
+        <tr ng-repeat="item in data">
+            <div>
+                <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
+                <th scope="row" >{{item.id}}</th>
+                <td> {{item.name}}</td>
+                <td>{{item.education}}</td>
+                <td>{{item.email}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary" ng-click="edit(item)">Edit</button>
+                </td>
+            </div>
+        </tr>
     </tbody>
 </table>
 <div class = "row">
     <p class = "ml-3" ng-if = "selected.length != 0">
         <button type="button" class="btn btn-danger" ng-click="delete()">Delete</button>
-        <button type="button" class="btn btn-primary" ng-click="edit()">Edit</button>
     </p>
     <div class = "ml-3">
         <button type="button" class="btn btn-success" ng-click ="add()">Add worker</button>

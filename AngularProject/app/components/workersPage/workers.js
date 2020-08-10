@@ -8,7 +8,6 @@ angular.module('myApp.workers', [])
             console.log(value)
         })
 
-
         $scope.selected = []
         $scope.exist = function(item){
             return $scope.selected.indexOf(item) > -1
@@ -37,13 +36,10 @@ angular.module('myApp.workers', [])
             }
         }
 
-        $scope.click = function(simple){
-            console.log(simple)
-        }
-
         $scope.add = function(){
             $window.location.href = `#!/workers/add/${$scope.id}`
         }
+
         $scope.delete = function(){
             $scope.selected.map(function(item){
                 const index = $scope.data.indexOf(item)
@@ -51,8 +47,9 @@ angular.module('myApp.workers', [])
             })
             workersService.delete($scope.data, $scope.id, $scope.selected)
         }
-        $scope.edit = function(){
-            workersService.edit()
-            console.log($scope.id)
+
+        $scope.edit = function(item){
+            $window.location.href = `#!/workers/edit/${$scope.id}/${item.id}`
         }
+
     })

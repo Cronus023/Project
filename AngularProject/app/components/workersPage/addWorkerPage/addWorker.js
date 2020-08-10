@@ -12,8 +12,14 @@ angular.module('myApp.workers.addWorker', [])
                     email: $scope.email,
                 }
                 workersService.add(worker,$scope.id)
+                $scope.message = 'Worker successfully added!'
+
+                setTimeout(function(){
+                    $scope.message = ''
+                }, 3000)
             }
         }
+
         $scope.back = function(){
             $window.location.href = `#!/workers/${$scope.id}`
             $window.location.reload()
