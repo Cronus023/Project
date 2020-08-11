@@ -1,1 +1,20 @@
 <h1>Trainings</h1>
+<div class="row">
+    <div class="col-sm-3" ng-repeat="training in trainings">
+        <div class="card" style="width: 20rem;" >
+            <div class="card-body">
+                <h5 class="card-title">Trainer : {{training.trainerID.login}}</h5>
+                <label>Date of training : </label>
+                <p class="card-text">{{training.date}}</p>
+                <label>End of registration : </label>
+                <p class="card-text">{{training.dateOfEnd}}</p>
+                <label>Type : </label>
+                <p class="card-text">{{training.type}}</p>
+                <label>Trainer : </label>
+                <p class="card-text">{{training.trainerID.login}}</p>
+
+                <button class="btn btn-info">Registration</button>
+            </div>
+        </div>
+    </div>
+</div>

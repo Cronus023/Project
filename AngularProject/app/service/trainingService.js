@@ -17,10 +17,12 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
         },
 
         get_trainings: function(){
+            const deferred = $q.defer()
             $http.get('http://localhost:8080/training/get_trainings').
             then(function (response) {
-                console.log(response)
+                deferred.resolve(response.data)
             })
+            return deferred.promise
         },
     }
 }] )

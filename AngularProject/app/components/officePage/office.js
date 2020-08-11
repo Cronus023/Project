@@ -4,7 +4,7 @@ angular.module('myApp.office', ['ngRoute'])
         $scope.create = function(officeForm){
             if(officeForm.$valid){
                 const officeBody = {
-                    name: $scope.name,
+                    name: $scope.nameOfOffice,
                     location: $scope.location,
                     contact_details: $scope.contact
                 }
