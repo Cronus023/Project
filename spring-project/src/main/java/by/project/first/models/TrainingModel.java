@@ -30,31 +30,18 @@ public class TrainingModel {
 
 
     private String type;
-    private String addressOfInstructor;
-    private String emailOfInstructor;
     private Number numberOfSeats;
 
     public TrainingModel() {
     }
 
-    public TrainingModel(Long id, Date date, Date dateOfEnd, Set<WorkerModel> workerID, UserModel trainerID, String type, String addressOfInstructor, String emailOfInstructor, Number numberOfSeats) {
-        this.id = id;
+    public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, UserModel trainerID, String type, Number numberOfSeats) {
         this.date = date;
         this.dateOfEnd = dateOfEnd;
         this.workerID = workerID;
         this.trainerID = trainerID;
         this.type = type;
-        this.addressOfInstructor = addressOfInstructor;
-        this.emailOfInstructor = emailOfInstructor;
         this.numberOfSeats = numberOfSeats;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Date getDate() {
@@ -95,22 +82,6 @@ public class TrainingModel {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getAddressOfInstructor() {
-        return addressOfInstructor;
-    }
-
-    public void setAddressOfInstructor(String addressOfInstructor) {
-        this.addressOfInstructor = addressOfInstructor;
-    }
-
-    public String getEmailOfInstructor() {
-        return emailOfInstructor;
-    }
-
-    public void setEmailOfInstructor(String emailOfInstructor) {
-        this.emailOfInstructor = emailOfInstructor;
     }
 
     public Number getNumberOfSeats() {

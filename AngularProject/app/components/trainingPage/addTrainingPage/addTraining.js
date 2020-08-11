@@ -4,7 +4,7 @@ angular.module('myApp.trainings.add', [])
 
         $scope.add = function(trainingForm){
             if(trainingForm.$valid){
-                const date = new Date
+                const date = new Date()
                 if($scope.dateOfTraining <=  date || $scope.endOfRegistration <=  date){
                     $scope.message = "Incorrect date"
                 }

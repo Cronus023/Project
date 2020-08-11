@@ -1,3 +1,4 @@
+'use strict'
 angular.module('myApp.register', ['ngRoute'])
     .controller('RegisterCtrl', function($scope, authService, $window) {
         $scope.typesOfRoles = [
@@ -31,10 +32,9 @@ angular.module('myApp.register', ['ngRoute'])
                         $scope.message = value
                         if(value == null){
                             console.log(value)
-                            $window.location.href = '#!/login'
-                            $window.location.reload()
                         }
                     })
+
                 }
             }
         }
