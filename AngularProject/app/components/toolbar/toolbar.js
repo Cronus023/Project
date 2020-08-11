@@ -7,11 +7,15 @@ angular.module('myApp.toolbar', [])
             controller: 'toolbarCtrl'
         }
     })
-    .controller('toolbarCtrl', function($scope, authService){
+    .controller('toolbarCtrl', function($scope, authService, $window){
         $scope.token = localStorage.getItem('JwtToken')
         $scope.role = localStorage.getItem('UserRole')
+        $scope.name = localStorage.getItem('UserLogin')
 
         $scope.logout = function(){
             authService.logout()
+        }
+        $scope.addTraining = function(){
+            $window.location.href = `#!/trainings/add/${$scope.name}`
         }
     })

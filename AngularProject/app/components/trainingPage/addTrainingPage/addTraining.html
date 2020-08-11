@@ -1,0 +1,30 @@
+<div class = "d-flex justify-content-center">
+    <div class="signin card" style="width: 40rem;" ng-form="trainingForm">
+        <h1 class="text-center card-header">Add training</h1>
+        <div class="form-signin ">
+            <form>
+
+                <label for="inputName" class="sr-only">Name</label>
+                <input type="text" ng-model="name" id="inputName" class="form-control" placeholder="Name" required>
+
+                <label for="inputEducation" class="sr-only">Education</label>
+                <input type="text" ng-model="education" id="inputEducation" class="form-control" placeholder="Education" required>
+                <br>
+                <label>Date of training : </label>
+                <input type="datetime-local" ng-model="dateOfTraining" class="form-control" placeholder="Date" required><br>
+
+                <label>End of registration : </label>
+                <input type="datetime-local" ng-model="endOfRegistration" class="form-control" placeholder="Date" required><br><br>
+                <label ng-if="message!=''"><p class = "sign_in_up-error">{{message}}</p></label>
+
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click ="add(trainingForm)">Add</button>
+
+            </form>
+
+            <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>
+
+        </div>
+
+    </div>
+</div>

@@ -20,6 +20,15 @@ public class TrainingModel {
     )
     private Set<WorkerModel> workerID;
 
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "training_provider",
+            joinColumns = @JoinColumn(name = "trainer_id")
+    )
+    private UserModel trainerID;
+
+
     private String type;
     private String addressOfInstructor;
     private String emailOfInstructor;
@@ -28,10 +37,12 @@ public class TrainingModel {
     public TrainingModel() {
     }
 
-    public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, String type, String addressOfInstructor, String emailOfInstructor, Number numberOfSeats) {
+    public TrainingModel(Long id, Date date, Date dateOfEnd, Set<WorkerModel> workerID, UserModel trainerID, String type, String addressOfInstructor, String emailOfInstructor, Number numberOfSeats) {
+        this.id = id;
         this.date = date;
         this.dateOfEnd = dateOfEnd;
         this.workerID = workerID;
+        this.trainerID = trainerID;
         this.type = type;
         this.addressOfInstructor = addressOfInstructor;
         this.emailOfInstructor = emailOfInstructor;
@@ -68,6 +79,14 @@ public class TrainingModel {
 
     public void setWorkerID(Set<WorkerModel> workerID) {
         this.workerID = workerID;
+    }
+
+    public UserModel getTrainerID() {
+        return trainerID;
+    }
+
+    public void setTrainerID(UserModel trainerID) {
+        this.trainerID = trainerID;
     }
 
     public String getType() {
