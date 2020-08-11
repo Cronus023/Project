@@ -12,8 +12,13 @@
                 <p class="card-text">{{training.type}}</p>
                 <label>Trainer : </label>
                 <p class="card-text">{{training.trainerID.login}}</p>
-
-                <button class="btn btn-info">Registration</button>
+                <div ng-if = "training.trainerID.login == userLogin">
+                    <button class="btn btn-success">Training control</button>
+                    <button class="btn btn-info">Registration</button>
+                </div>
+                <div ng-if = "training.trainerID.login != userLogin">
+                    <button class="btn btn-info">Registration</button>
+                </div>
             </div>
         </div>
     </div>
