@@ -1,6 +1,5 @@
 package by.project.first.controllers;
 
-import by.project.first.models.Message;
 import by.project.first.models.UserModel;
 import by.project.first.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
