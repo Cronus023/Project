@@ -30,18 +30,26 @@ public class TrainingModel {
 
 
     private String type;
-    private Number numberOfSeats;
+    private Integer numberOfSeats;
 
     public TrainingModel() {
     }
 
-    public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, UserModel trainerID, String type, Number numberOfSeats) {
+    public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, UserModel trainerID, String type, Integer numberOfSeats) {
         this.date = date;
         this.dateOfEnd = dateOfEnd;
         this.workerID = workerID;
         this.trainerID = trainerID;
         this.type = type;
         this.numberOfSeats = numberOfSeats;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getDate() {
@@ -84,11 +92,11 @@ public class TrainingModel {
         this.type = type;
     }
 
-    public Number getNumberOfSeats() {
+    public Integer getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(Number numberOfSeats) {
+    public void setNumberOfSeats(Integer numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
 }
