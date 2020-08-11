@@ -1,0 +1,29 @@
+<h1>Registration</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col"><input type = "checkbox" ng-model = "checkAll" ng-click="selectAll()"> Select/Deselect all</th>
+        <th scope="col">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Education</th>
+        <th scope="col">Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <div>
+            <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
+            <th scope="row" >{{item.id}}</th>
+            <td> {{item.name}}</td>
+            <td>{{item.education}}</td>
+            <td>{{item.email}}</td>
+        </div>
+    </tr>
+    </tbody>
+</table>
+<label ng-if="message!=''"><p class = "add_worker_ok">{{message}}</p></label>
+<div class = "row">
+    <p class = "ml-3" ng-if = "selected.length != 0">
+        <button type="button" class="btn btn-danger" ng-click="register()">Register</button>
+    </p>
+</div>

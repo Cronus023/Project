@@ -24,5 +24,34 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
             })
             return deferred.promise
         },
+        get_workers: function(id){
+            const deferred = $q.defer()
+
+            const request = {
+                login: localStorage.getItem('UserLogin'),
+                id: id
+            }
+            $http.post(`http://localhost:8080/training/get_workers`, request).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
+        register_workers: function(id, newWorkers){
+            const deferred = $q.defer()
+            const request = {
+                newWorkers: newWorkers,
+                id: id
+            }
+            $http.post(`http://localhost:8080/training/register_workers`, request).
+            then(function (response) {
+                deferred.resolve(response.data)
+                if(response.data.title != 'ok'){
+                    alert('error!')
+                    $window.location.reload()
+                }
+            })
+            return deferred.promise
+        },
     }
 }] )

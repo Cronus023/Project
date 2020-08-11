@@ -10,14 +10,16 @@
                 <p class="card-text">{{training.dateOfEnd}}</p>
                 <label>Type : </label>
                 <p class="card-text">{{training.type}}</p>
-                <label>Trainer : </label>
-                <p class="card-text">{{training.trainerID.login}}</p>
+
+                <label>Remaining seats : </label>
+                <p class="card-text">{{training.numberOfSeats - training.workerID.length}}</p>
+
                 <div ng-if = "training.trainerID.login == userLogin">
                     <button class="btn btn-success">Training control</button>
-                    <button class="btn btn-info">Registration</button>
+                    <button class="btn btn-info" ng-click = "register(training.id)">Registration</button>
                 </div>
                 <div ng-if = "training.trainerID.login != userLogin">
-                    <button class="btn btn-info">Registration</button>
+                    <button class="btn btn-info" ng-click = "register(training.id)">Registration</button>
                 </div>
             </div>
         </div>

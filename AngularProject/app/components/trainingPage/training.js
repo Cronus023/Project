@@ -13,4 +13,7 @@ angular.module('myApp.trainings', [])
             }
             return flag
         }
+        $scope.register = function(id){
+            $window.location.href = `#!/trainings/registration/${id}`
+        }
     })

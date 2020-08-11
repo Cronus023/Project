@@ -7,7 +7,7 @@ angular.module('myApp.workers.addWorker', [])
         $scope.add = function(workerForm){
             if(workerForm.$valid){
                 const worker = {
-                    name : $scope.name,
+                    name : $scope.nameOfWorker,
                     education: $scope.education,
                     email: $scope.email,
                 }

@@ -16,8 +16,8 @@ angular.module('myApp', [
   'myApp.workers.addWorker',
   'myApp.workers.edit',
   'myApp.trainings',
-  'myApp.trainings.add'
-
+  'myApp.trainings.add',
+  'myApp.trainings.reg',
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
   $httpProvider.interceptors.push('AuthInterceptor');
@@ -60,6 +60,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/trainings/add/:name`, {
     templateUrl: 'components/trainingPage/addTrainingPage/addTraining.html',
     controller: 'AddTrainingsCtrl',
+  })
+  $routeProvider.when(`/trainings/registration/:id`, {
+    templateUrl: 'components/trainingPage/regTrainingPage/regTraining.html',
+    controller: 'RegTrainingsCtrl',
   })
   $routeProvider.when(`/workers/edit/:name/:id`, {
     templateUrl: 'components/workersPage/editWorkerPage/editWorker.html',
