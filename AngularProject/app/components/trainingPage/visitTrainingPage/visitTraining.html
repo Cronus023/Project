@@ -1,0 +1,42 @@
+<h1>Visit and passing!</h1>
+
+<div class = "d-flex justify-content-center">
+    <label ng-if="message!=''">
+        <p class = "sign_in_up-error">{{message}}</p>
+        <buton class="btn btn-info" ng-click = "return()">Return to trainings</buton>
+    </label>
+</div>
+
+
+
+<table ng-if="message==''" class="table">
+    <thead>
+    <tr>
+        <th scope="col"><input type = "checkbox" ng-model = "checkAllVisit" ng-click="selectAllVisit()"> Visit</th>
+        <th scope="col"><input type = "checkbox" ng-model = "checkAllPassage" ng-click="selectAllPassing()"> Passing the test</th>
+
+        <th scope="col">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Education</th>
+        <th scope="col">Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <div>
+            <td><input type = "checkbox" ng-model = "selectedForVisit" ng-checked="existVisit(item)" ng-click="selectVisit(item)"></td>
+            <td><input type = "checkbox" ng-model = "selectedForPassing" ng-checked="existPassing(item)" ng-click="selectPassing(item)"></td>
+
+            <th scope="row" >{{item.id}}</th>
+            <td> {{item.name}}</td>
+            <td>{{item.education}}</td>
+            <td>{{item.email}}</td>
+        </div>
+    </tr>
+    </tbody>
+</table>
+
+<div class = "row">
+    <button ng-if = "selectedForVisit.length != 0" type="button" class="btn btn-info ml-3" ng-click="register()">Mark the visit</button>
+    <button ng-if = "selectedForPassing.length != 0" type="button" class="btn btn-danger ml-3" ng-click="register()">Mark the passing</button>
+</div>

@@ -37,6 +37,12 @@ public class TrainingController {
         return ResponseEntity.ok(workers);
     }
 
+    @PostMapping("/training/get_visit_and_passing")
+    public ResponseEntity get_visit_and_passing(@RequestBody GetWorkersTrainingRequest request){
+        ResponseEntity response= trainingService.findTrainingWorkers(request);
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping("/training/register_workers")
     public ResponseEntity register_workers(@RequestBody RegWorkersToTraining request){

@@ -39,6 +39,20 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
             })
             return deferred.promise
         },
+        get_visit_and_passing: function(id){
+            const deferred = $q.defer()
+
+            const request = {
+                login: localStorage.getItem('UserLogin'),
+                id: id
+            }
+
+            $http.post(`http://localhost:8080/training/get_visit_and_passing`, request).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         register_workers: function(id, newWorkers){
             const deferred = $q.defer()
             const request = {

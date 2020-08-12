@@ -9,6 +9,7 @@ import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,6 +28,7 @@ public class TrainingService {
     @Autowired
     private OfficeRepo officeRepo;
 
+
     public Message saveTraining (AddTrainingRequest request){
         TrainingModel training = request.getTraining();
         String login = request.getUserLogin();
@@ -43,18 +45,8 @@ public class TrainingService {
         UserModel user = userRepo.findByLogin(request.getLogin());
 
         if(user.getRoles().contains(RoleModel.PROVIDER)){
-            Set<WorkerModel> workers = new HashSet<>();
             Iterable<OfficeModel> offices = officeRepo.findAll();
-            Iterator<OfficeModel> it = offices.iterator();
-            while(it.hasNext()){
-                OfficeModel office = it.next();
-                if(!office.getLeaderID().contains(user)){
-                    it.remove();
-                }
-                else{
-                    workers.addAll(office.getWorkerId());
-                }
-            }
+            Set<WorkerModel> workers = workersOfProvider(offices, user);
             workers.removeAll(training.get().getWorkerID());
             return workers;
         }
@@ -94,5 +86,47 @@ public class TrainingService {
         }
         trainingRepo.save(training.get());
         return new Message("ok");
+    }
+
+
+    public ResponseEntity findTrainingWorkers (GetWorkersTrainingRequest request){
+        Optional<TrainingModel> training = trainingRepo.findById(request.getId());
+        Date date = new Date();
+
+        if(date.compareTo(training.get().getDate()) <= 0){
+            return ResponseEntity.status(400).body( new Message("It's too early"));
+        }
+
+        UserModel user = userRepo.findByLogin(request.getLogin());
+
+        if(user.getRoles().contains(RoleModel.PROVIDER)){
+            Iterable<OfficeModel> offices = officeRepo.findAll();
+            Set<WorkerModel> workers = workersOfProvider(offices, user);
+            Set<WorkerModel> trainingWorkers = new HashSet<>();
+            workers.forEach(worker->{
+                if(training.get().getWorkerID().contains(worker)){
+                    trainingWorkers.add(worker);
+                }
+            });
+            return ResponseEntity.ok(trainingWorkers);
+        }
+        return ResponseEntity.ok(training.get().getWorkerID());
+
+    }
+
+    public Set<WorkerModel> workersOfProvider (Iterable<OfficeModel> offices, UserModel user){
+        Set<WorkerModel> workers = new HashSet<>();
+
+        Iterator<OfficeModel> it = offices.iterator();
+        while(it.hasNext()){
+            OfficeModel office = it.next();
+            if(!office.getLeaderID().contains(user)){
+                it.remove();
+            }
+            else{
+                workers.addAll(office.getWorkerId());
+            }
+        }
+        return workers;
     }
 }

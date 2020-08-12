@@ -14,13 +14,13 @@
                 <label>Remaining seats : </label>
                 <p class="card-text">{{training.numberOfSeats}}</p>
 
-                <div ng-if = "training.trainerID.login == userLogin">
-                    <button class="btn btn-success">Training control</button>
-                    <button class="btn btn-info" ng-click = "register(training.id)">Registration</button>
+                <div>
+                    <button ng-if = "training.trainerID.login == userLogin" class="btn btn-success">Training control</button>
+                    <button class="btn btn-info " ng-click = "register(training.id)">Registration</button>
+
+                    <button class="btn btn-primary mt-1" ng-click = "visit(training.id)">To acknowledge the presence</button>
                 </div>
-                <div ng-if = "training.trainerID.login != userLogin">
-                    <button class="btn btn-info" ng-click = "register(training.id)">Registration</button>
-                </div>
+
             </div>
         </div>
     </div>

@@ -1,6 +1,7 @@
 angular.module('myApp.trainings', [])
     .controller('TrainingsCtrl', function($scope, trainingService,$window) {
         $scope.userLogin = localStorage.getItem('UserLogin')
+
         trainingService.get_trainings().then(function(value){
             $scope.trainings = value
         })
@@ -15,5 +16,8 @@ angular.module('myApp.trainings', [])
             }
             else dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" +  dateFormat.getMinutes()
             return dateString
+        }
+        $scope.visit = function(id){
+            $window.location.href = `#!/trainings/visit/${id}`
         }
     })
