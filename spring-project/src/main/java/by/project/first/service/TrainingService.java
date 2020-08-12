@@ -9,7 +9,6 @@ import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -82,7 +81,14 @@ public class TrainingService {
         if(training.isEmpty()){
             return new Message("error");
         }
+        if(training.get().getNumberOfSeats() <= 0){
+            return new Message("The number of seats for registration - 0!");
+        }
+        if(training.get().getNumberOfSeats() - request.getNewWorkers().size() < 0){
+            return new Message("Select fewer workers for registration!");
+        }
         request.getNewWorkers().forEach(worker-> training.get().getWorkerID().add(worker));
+        
         trainingRepo.save(training.get());
         return new Message("ok");
     }

@@ -2,10 +2,7 @@ package by.project.first.controllers;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
-import by.project.first.models.Message;
-import by.project.first.models.OfficeModel;
-import by.project.first.models.UserModel;
-import by.project.first.models.WorkerModel;
+import by.project.first.models.*;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +44,7 @@ public class WorkersController {
 
     @PostMapping("/workers/delete")
     public ResponseEntity delete(@RequestBody DeleteWorkerRequest request){
-        OfficeModel office= workerService.deleteWorker(request);
+        Iterable<TrainingModel> office= workerService.deleteWorker(request);
         return ResponseEntity.ok(office);
     }
     @PostMapping("/workers/add")

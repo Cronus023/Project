@@ -6,9 +6,9 @@ import java.util.Set;
 
 public class RegWorkersToTraining {
     private Long id;
-    private Iterable<WorkerModel> newWorkers;
+    private Set<WorkerModel> newWorkers;
 
-    public RegWorkersToTraining(Long id, Iterable<WorkerModel> newWorkers) {
+    public RegWorkersToTraining(Long id, Set<WorkerModel> newWorkers) {
         this.id = id;
         this.newWorkers = newWorkers;
     }
@@ -21,11 +21,11 @@ public class RegWorkersToTraining {
         this.id = id;
     }
 
-    public Iterable<WorkerModel> getNewWorkers() {
+    public Set<WorkerModel> getNewWorkers() {
         return newWorkers;
     }
 
-    public void setNewWorkers(Iterable<WorkerModel> newWorkers) {
+    public void setNewWorkers(Set<WorkerModel> newWorkers) {
         this.newWorkers = newWorkers;
     }
 }

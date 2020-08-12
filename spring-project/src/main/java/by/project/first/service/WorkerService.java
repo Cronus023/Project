@@ -2,21 +2,26 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
-import by.project.first.models.OfficeModel;
-import by.project.first.models.WorkerModel;
+import by.project.first.models.*;
 import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class WorkerService {
 
     @Autowired
     private WorkerRepo workerRepo;
+
+    @Autowired
+    private TrainingRepo trainingRepo;
 
     @Autowired
     private OfficeRepo officeRepo;
@@ -29,7 +34,6 @@ public class WorkerService {
         office.getWorkerId().add(newWorker);
 
         officeRepo.save(office);
-
         return newWorker;
     }
 
@@ -37,18 +41,27 @@ public class WorkerService {
         Optional<WorkerModel> worker = workerRepo.findById(id);
         return worker;
     }
-    public OfficeModel deleteWorker (DeleteWorkerRequest request) {
+    public Iterable<TrainingModel> deleteWorker (DeleteWorkerRequest request) {
         Set<WorkerModel> workers =  request.getNewWorkers();
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
         office.setWorkerId(workers);
 
+        Iterable<TrainingModel> trainings = trainingRepo.findAll();
+        trainings.forEach(training->{
+            request.getDeletedWorkers().forEach(deletedWorker->{
+                Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
+                training.getWorkerID().remove(w.get());
+                trainingRepo.save(training);
+            });
+        });
         Iterable<WorkerModel> deletedWorkers = request.getDeletedWorkers();
         deletedWorkers.forEach(worker -> workerRepo.delete(worker));
 
-        OfficeModel newOffice = officeRepo.save(office);
-        return newOffice;
+        officeRepo.save(office);
+        return trainings;
     }
+
     public WorkerModel editWorker (WorkerModel worker) {
         return workerRepo.save(worker);
     }

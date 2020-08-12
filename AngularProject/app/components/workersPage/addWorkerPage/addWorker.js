@@ -16,7 +16,7 @@ angular.module('myApp.workers.addWorker', [])
 
                 setTimeout(function(){
                     $scope.message = ''
-                }, 3000)
+                }, 1000)
             }
         }
 

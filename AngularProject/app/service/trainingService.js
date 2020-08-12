@@ -49,10 +49,6 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
             $http.post(`http://localhost:8080/training/register_workers`, request).
             then(function (response) {
                 deferred.resolve(response.data)
-                if(response.data.title != 'ok'){
-                    alert('error!')
-                    $window.location.reload()
-                }
             })
             return deferred.promise
         },
