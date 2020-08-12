@@ -9,8 +9,11 @@ angular.module('myApp.trainings', [])
         }
         $scope.dateFormat = function(date){
             const dateFormat = new Date(date)
-            const dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" +  dateFormat.getMinutes()
+            let dateString = ""
+            if(dateFormat.getMinutes() < 10){
+                dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" + "0"+dateFormat.getMinutes()
+            }
+            else dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" +  dateFormat.getMinutes()
             return dateString
         }
-
     })

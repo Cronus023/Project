@@ -51,7 +51,11 @@ public class WorkerService {
         trainings.forEach(training->{
             request.getDeletedWorkers().forEach(deletedWorker->{
                 Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
-                training.getWorkerID().remove(w.get());
+                if(training.getWorkerID().contains(w.get())){
+                    Integer newSeats = training.getNumberOfSeats() + +1 ;
+                    training.getWorkerID().remove(w.get());
+                    training.setNumberOfSeats(newSeats);
+                }
                 trainingRepo.save(training);
             });
         });

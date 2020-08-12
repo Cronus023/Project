@@ -12,7 +12,7 @@
                 <p class="card-text">{{training.type}}</p>
 
                 <label>Remaining seats : </label>
-                <p class="card-text">{{training.numberOfSeats - training.workerID.length}}</p>
+                <p class="card-text">{{training.numberOfSeats}}</p>
 
                 <div ng-if = "training.trainerID.login == userLogin">
                     <button class="btn btn-success">Training control</button>

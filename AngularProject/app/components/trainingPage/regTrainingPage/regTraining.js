@@ -37,8 +37,15 @@ angular.module('myApp.trainings.reg', [])
             trainingService.register_workers($scope.trainingId, $scope.selected).then(function(value){
                 $scope.message = value.title
             })
-            setTimeout(function(){
-                $window.location.reload()
-            }, 1000)
+            if($scope.message === 'ok'){
+                setTimeout(function(){
+                    $window.location.reload()
+                }, 2000)
+            }
+            else {
+                setTimeout(function(){
+                    $scope.message = ''
+                }, 1000)
+            }
         }
     })

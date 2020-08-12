@@ -30,8 +30,8 @@ angular.module('myApp.register', ['ngRoute'])
                     const response = authService.registration(registerBody)
                     response.then(function(value){
                         $scope.message = value
-                        if(value == null){
-                            console.log(value)
+                        if(value == ""){
+                            $window.location.href = '#!/login'
                         }
                     })
 

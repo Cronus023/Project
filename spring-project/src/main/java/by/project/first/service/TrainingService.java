@@ -11,10 +11,7 @@ import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TrainingService {
@@ -78,17 +75,23 @@ public class TrainingService {
 
     public Message registerWorkers (RegWorkersToTraining request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
+        Date date = new Date();
+
         if(training.isEmpty()){
             return new Message("error");
+        }
+        if(date.compareTo(training.get().getDateOfEnd()) > 0){
+            return new Message("Registration for this training is not possible");
         }
         if(training.get().getNumberOfSeats() <= 0){
             return new Message("The number of seats for registration - 0!");
         }
-        if(training.get().getNumberOfSeats() - request.getNewWorkers().size() < 0){
+        request.getNewWorkers().forEach(worker-> training.get().getWorkerID().add(worker));
+        Integer seats = training.get().getNumberOfSeats()- request.getNewWorkers().size();
+        training.get().setNumberOfSeats(seats);
+        if(training.get().getNumberOfSeats() < 0){
             return new Message("Select fewer workers for registration!");
         }
-        request.getNewWorkers().forEach(worker-> training.get().getWorkerID().add(worker));
-        
         trainingRepo.save(training.get());
         return new Message("ok");
     }

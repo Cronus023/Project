@@ -16,20 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @CrossOrigin(origins="http://localhost:8000")
 public class TrainingController {
 
     @Autowired
     private TrainingRepo trainingRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private OfficeRepo officeRepo;
 
     @Autowired
     private TrainingService trainingService;
