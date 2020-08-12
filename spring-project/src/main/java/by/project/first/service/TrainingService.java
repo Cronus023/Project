@@ -4,6 +4,7 @@ import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
 import by.project.first.models.*;
+import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +28,9 @@ public class TrainingService {
     @Autowired
     private WorkerRepo workerRepo;
 
+    @Autowired
+    private OfficeRepo officeRepo;
+
     public Message saveTraining (AddTrainingRequest request){
         TrainingModel training = request.getTraining();
         String login = request.getUserLogin();
@@ -39,16 +44,26 @@ public class TrainingService {
     }
     public Iterable<WorkerModel> findByIdAndUserLogin (GetWorkersTrainingRequest request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-
         UserModel user = userRepo.findByLogin(request.getLogin());
 
-       /* if(user.getRoles().contains(RoleModel.PROVIDER)){
-            return new Message("PROVIDER");
-        }*/
+        if(user.getRoles().contains(RoleModel.PROVIDER)){
+            Set<WorkerModel> workers = new HashSet<>();
+            Iterable<OfficeModel> offices = officeRepo.findAll();
+            Iterator<OfficeModel> it = offices.iterator();
+            while(it.hasNext()){
+                OfficeModel office = it.next();
+                if(!office.getLeaderID().contains(user)){
+                    it.remove();
+                }
+                else{
+                    workers.addAll(office.getWorkerId());
+                }
+            }
+            workers.removeAll(training.get().getWorkerID());
+            return workers;
+        }
 
         if(user.getRoles().contains(RoleModel.TRAINING_OPERATOR)){
-            boolean flag = false;
-            Set<WorkerModel> newWorkers = null;
             Iterable<WorkerModel> allWorkers = workerRepo.findAll();
             Iterator<WorkerModel> it = allWorkers.iterator();
             while(it.hasNext()){

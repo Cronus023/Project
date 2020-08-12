@@ -3,17 +3,14 @@ angular.module('myApp.trainings', [])
         $scope.userLogin = localStorage.getItem('UserLogin')
         trainingService.get_trainings().then(function(value){
             $scope.trainings = value
-            console.log(value)
         })
-        $scope.check = function(login){
-            let flag = false
-            console.log($scope.userLogin)
-            if($scope.userLogin == login){
-                return true
-            }
-            return flag
-        }
         $scope.register = function(id){
             $window.location.href = `#!/trainings/registration/${id}`
         }
+        $scope.dateFormat = function(date){
+            const dateFormat = new Date(date)
+            const dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" +  dateFormat.getMinutes()
+            return dateString
+        }
+
     })

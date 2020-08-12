@@ -5,8 +5,12 @@ import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
 import by.project.first.models.Message;
+import by.project.first.models.OfficeModel;
+import by.project.first.models.UserModel;
 import by.project.first.models.WorkerModel;
+import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
+import by.project.first.repositories.UserRepo;
 import by.project.first.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +26,25 @@ public class TrainingController {
     private TrainingRepo trainingRepo;
 
     @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private OfficeRepo officeRepo;
+
+    @Autowired
     private TrainingService trainingService;
 
     @GetMapping("/training/get_trainings")
     public ResponseEntity get_trainings(){
         return ResponseEntity.ok(trainingRepo.findAll());
     }
+
     @PostMapping("/training/get_workers")
     public ResponseEntity get_workers(@RequestBody GetWorkersTrainingRequest request){
         Iterable<WorkerModel> workers= trainingService.findByIdAndUserLogin(request);
         return ResponseEntity.ok(workers);
     }
+
 
     @PostMapping("/training/register_workers")
     public ResponseEntity register_workers(@RequestBody RegWorkersToTraining request){

@@ -5,9 +5,9 @@
             <div class="card-body">
                 <h5 class="card-title">Trainer : {{training.trainerID.login}}</h5>
                 <label>Date of training : </label>
-                <p class="card-text">{{training.date}}</p>
+                <p class="card-text">{{dateFormat(training.date)}}</p>
                 <label>End of registration : </label>
-                <p class="card-text">{{training.dateOfEnd}}</p>
+                <p class="card-text">{{dateFormat(training.dateOfEnd)}}</p>
                 <label>Type : </label>
                 <p class="card-text">{{training.type}}</p>
 

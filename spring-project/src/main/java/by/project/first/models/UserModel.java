@@ -1,6 +1,7 @@
 package by.project.first.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class UserModel {
     private Long id;
     private String login;
     private String password;
-    private String adress;
+    private String address;
     private String email;
     private String education;
     private String phone;
@@ -25,13 +26,20 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Set<RoleModel> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "provider_offices",
+            joinColumns = @JoinColumn(name = "provider_id")
+    )
+    private Set<OfficeModel> officeID;
+
     public UserModel() {
     }
 
-    public UserModel(String login, String password, String adress, String email, String education, String phone, String name, String surname, boolean active, Set<RoleModel> roles) {
+    public UserModel(String login, String password, String address, String email, String education, String phone, String name, String surname, boolean active, Set<RoleModel> roles, Set<OfficeModel> officeID) {
         this.login = login;
         this.password = password;
-        this.adress = adress;
+        this.address = address;
         this.email = email;
         this.education = education;
         this.phone = phone;
@@ -39,6 +47,7 @@ public class UserModel {
         this.surname = surname;
         this.active = active;
         this.roles = roles;
+        this.officeID = officeID;
     }
 
     public Long getId() {
@@ -65,12 +74,12 @@ public class UserModel {
         this.password = password;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -127,5 +136,13 @@ public class UserModel {
 
     public void setRoles(Set<RoleModel> roles) {
         this.roles = roles;
+    }
+
+    public Set<OfficeModel> getOfficeID() {
+        return officeID;
+    }
+
+    public void setOfficeID(Set<OfficeModel> officeID) {
+        this.officeID = officeID;
     }
 }

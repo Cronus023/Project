@@ -37,7 +37,7 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
         add: function(worker, officeId){
             const requestBody = {
                 worker: worker,
-                officeName:officeId
+                officeName:officeId,
             }
             $http.post('http://localhost:8080/workers/add', requestBody).
             then(function (response) {

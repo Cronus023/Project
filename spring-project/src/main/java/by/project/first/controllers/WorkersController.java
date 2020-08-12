@@ -47,8 +47,8 @@ public class WorkersController {
 
     @PostMapping("/workers/delete")
     public ResponseEntity delete(@RequestBody DeleteWorkerRequest request){
-        OfficeModel newOffice = workerService.deleteWorker(request);
-        return ResponseEntity.ok(newOffice);
+        OfficeModel office= workerService.deleteWorker(request);
+        return ResponseEntity.ok(office);
     }
     @PostMapping("/workers/add")
     public ResponseEntity add(@RequestBody AddWorkerRequest request){

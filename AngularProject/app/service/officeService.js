@@ -8,6 +8,7 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
             }
             $http.post('http://localhost:8080/become',becomeRequest).
             then(function (response) {
+                console.log(response)
                 if(response.status == 400){
                     alert("something wrong!")
                 }
@@ -18,10 +19,25 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
         },
         get_office: function(){
             const deferred = $q.defer()
-
             $http.get('http://localhost:8080/get_office').
             then(function (response) {
                 deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
+        create: function(officeBody){
+            const deferred = $q.defer()
+
+            $http.post('http://localhost:8080/create',officeBody).
+            then(function (response) {
+
+                if(response.status == 400){
+                    deferred.resolve(response.data)
+                }
+                else{
+                    $window.location.href = '#!/main'
+                    $window.location.reload()
+                }
             })
             return deferred.promise
         }

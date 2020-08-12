@@ -48,7 +48,6 @@ public class OfficeController {
     }
     @PostMapping("/become")
     public ResponseEntity become(@RequestBody BecomeRequest request){
-
         String login = jwtProvider.getLoginFromToken(request.getToken());
         if (login == null){
             return ResponseEntity.status(400).body(new Message("bad!"));
@@ -58,7 +57,9 @@ public class OfficeController {
         OfficeModel office = request.getOffice();
 
         office.getLeaderID().add(user);
+
         officeRepo.save(office);
-        return ResponseEntity.ok(new Message("Now you are provider of the office"));
+
+        return ResponseEntity.ok(new Message("ok!"));
     }
 }

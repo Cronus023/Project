@@ -3,8 +3,7 @@ angular.module('myApp.trainings.reg', [])
         $scope.message = ''
          $scope.trainingId = $routeParams["id"]
          trainingService.get_workers($scope.trainingId).then(function(value){
-            $scope.data = value
-             console.log(value)
+             $scope.data = value
          })
 
         $scope.selected = []

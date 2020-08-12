@@ -31,8 +31,10 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
                 login: localStorage.getItem('UserLogin'),
                 id: id
             }
+
             $http.post(`http://localhost:8080/training/get_workers`, request).
             then(function (response) {
+                console.log(response)
                 deferred.resolve(response.data)
             })
             return deferred.promise
@@ -43,6 +45,7 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
                 newWorkers: newWorkers,
                 id: id
             }
+
             $http.post(`http://localhost:8080/training/register_workers`, request).
             then(function (response) {
                 deferred.resolve(response.data)
