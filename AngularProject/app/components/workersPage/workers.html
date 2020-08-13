@@ -6,6 +6,7 @@
         <th scope="col">Name</th>
         <th scope="col">Education</th>
         <th scope="col">Email</th>
+        <th scope="col">Passed trainings</th>
         <th scope="col">Edit worker</th>
     </tr>
     </thead>
@@ -17,6 +18,9 @@
                 <td> {{item.name}}</td>
                 <td>{{item.education}}</td>
                 <td>{{item.email}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary" ng-click="viewTrainings(item.id)">View trainings</button>
+                </td>
                 <td>
                     <button type="button" class="btn btn-primary" ng-click="edit(item)">Edit</button>
                 </td>

@@ -7,8 +7,10 @@ import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,6 +41,25 @@ public class WorkerService {
         Optional<WorkerModel> worker = workerRepo.findById(id);
         return worker;
     }
+
+
+    public ResponseEntity view_trainings(Long id) {
+        Iterable<TrainingModel> trainings = trainingRepo.findAll();
+        Optional<WorkerModel> worker = workerRepo.findById(id);
+        if(worker.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Can not find worker!"));
+        }
+        Set<TrainingModel> workerTrainings = new HashSet<>();
+        trainings.forEach(training->{
+            if(training.getTrainingPassedID().contains(worker.get())){
+                workerTrainings.add(training);
+            }
+        });
+
+        return ResponseEntity.ok(workerTrainings);
+    }
+
+
     public Iterable<TrainingModel> deleteWorker (DeleteWorkerRequest request) {
         Set<WorkerModel> workers =  request.getNewWorkers();
 

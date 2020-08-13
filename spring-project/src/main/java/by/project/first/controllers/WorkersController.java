@@ -32,6 +32,11 @@ public class WorkersController {
         return ResponseEntity.status(400).body(new Message("error"));
     }
 
+    @GetMapping("/workers/view_trainings")
+    public ResponseEntity view_trainings(@RequestParam Long id){
+        ResponseEntity response = workerService.view_trainings(id);
+        return response;
+    }
 
     @GetMapping("/workers/get_worker_by_id")
     public ResponseEntity get_workers(@RequestParam Long id){

@@ -15,6 +15,7 @@ angular.module('myApp', [
   'training',
   'myApp.workers.addWorker',
   'myApp.workers.edit',
+  'myApp.workers.trainings',
   'myApp.trainings',
   'myApp.trainings.add',
   'myApp.trainings.reg',
@@ -49,6 +50,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/workers/:id`, {
     templateUrl: 'components/workersPage/workers.html',
     controller: 'WorkersCtrl',
+  })
+  $routeProvider.when(`/workers/trainings/:id`, {
+    templateUrl: 'components/workersPage/workerTrainingsPage/workerTrainings.html',
+    controller: 'TrainingsWorkersCtrl',
   })
   $routeProvider.when(`/workers/add/:id`, {
     templateUrl: 'components/workersPage/addWorkerPage/addWorker.html',

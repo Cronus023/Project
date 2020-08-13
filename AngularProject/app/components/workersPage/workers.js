@@ -50,5 +50,8 @@ angular.module('myApp.workers', [])
         $scope.edit = function(item){
             $window.location.href = `#!/workers/edit/${$scope.id}/${item.id}`
         }
+        $scope.viewTrainings = function(id){
+            $window.location.href = `#!/workers/trainings/${id}`
+        }
 
     })
