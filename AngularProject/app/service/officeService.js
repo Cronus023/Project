@@ -17,6 +17,14 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
                 }
             })
         },
+        get_office_by_provider_login: function(login){
+            const deferred = $q.defer()
+            $http.get(`http://localhost:8080/get_office_by_login?login=${login}`).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         get_office: function(){
             const deferred = $q.defer()
             $http.get('http://localhost:8080/get_office').

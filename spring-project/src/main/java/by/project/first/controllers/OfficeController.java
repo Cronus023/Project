@@ -8,6 +8,7 @@ import by.project.first.models.Token;
 import by.project.first.models.UserModel;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.UserRepo;
+import by.project.first.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,8 @@ public class OfficeController {
 
     @Autowired
     private OfficeRepo officeRepo;
-
+    @Autowired
+    private OfficeService officeService;
     @Autowired
     private UserRepo userRepo;
 
@@ -41,10 +43,13 @@ public class OfficeController {
     }
     @GetMapping("/get_office")
     public ResponseEntity main(){
-        Iterable<OfficeModel> offices;
-        offices = officeRepo.findAll();
-
+        Iterable<OfficeModel> offices = officeRepo.findAll();
         return ResponseEntity.ok(offices);
+    }
+    @GetMapping("/get_office_by_login")
+    public ResponseEntity get_office_by_login (@RequestParam String login){
+        ResponseEntity response = officeService.get_offices_by_login(login);
+        return ResponseEntity.ok(response);
     }
     @PostMapping("/become")
     public ResponseEntity become(@RequestBody BecomeRequest request){
