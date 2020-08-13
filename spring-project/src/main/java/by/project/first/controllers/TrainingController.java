@@ -4,10 +4,7 @@ package by.project.first.controllers;
 import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
-import by.project.first.models.Message;
-import by.project.first.models.OfficeModel;
-import by.project.first.models.UserModel;
-import by.project.first.models.WorkerModel;
+import by.project.first.models.*;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
@@ -15,6 +12,8 @@ import by.project.first.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins="http://localhost:8000")
@@ -31,10 +30,34 @@ public class TrainingController {
         return ResponseEntity.ok(trainingRepo.findAll());
     }
 
+    @GetMapping("/training/get_training_by_id")
+    public ResponseEntity get_training_by_id(@RequestParam Long id){
+        return ResponseEntity.ok(trainingRepo.findById(id));
+    }
     @PostMapping("/training/get_workers")
     public ResponseEntity get_workers(@RequestBody GetWorkersTrainingRequest request){
         Iterable<WorkerModel> workers= trainingService.findByIdAndUserLogin(request);
         return ResponseEntity.ok(workers);
+    }
+    @PostMapping("/training/edit_training")
+    public ResponseEntity edit_training(@RequestBody TrainingModel request){
+        Long id = request.getId();
+        Optional<TrainingModel> training = trainingRepo.findById(id);
+        if(training.isEmpty()){
+            ResponseEntity.status(400).body(new Message("This training does not exist!"));
+        }
+        trainingRepo.save(request);
+        return ResponseEntity.ok(new Message("ok!"));
+    }
+
+    @PostMapping("/training/delete_training")
+    public ResponseEntity delete_training(@RequestParam Long id){
+        Optional<TrainingModel> training= trainingRepo.findById(id);
+        if(training.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Can not find training"));
+        }
+        else trainingRepo.deleteById(id);
+        return ResponseEntity.ok(new Message("ok!"));
     }
 
     @PostMapping("/training/get_visit_and_passing")

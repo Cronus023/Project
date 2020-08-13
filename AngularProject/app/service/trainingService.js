@@ -15,7 +15,30 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
                 else alert("error")
             })
         },
-
+        delete_training: function(id){
+            const deferred = $q.defer()
+            $http.post(`http://localhost:8080/training/delete_training?id=${id}`).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
+        edit_training: function(training){
+            const deferred = $q.defer()
+            $http.post(`http://localhost:8080/training/edit_training`, training).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
+        get_training_by_id: function(id){
+            const deferred = $q.defer()
+            $http.get(`http://localhost:8080/training/get_training_by_id?id=${id}`).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         get_trainings: function(){
             const deferred = $q.defer()
             $http.get('http://localhost:8080/training/get_trainings').

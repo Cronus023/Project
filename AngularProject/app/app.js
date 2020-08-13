@@ -13,12 +13,15 @@ angular.module('myApp', [
   'myApp.workers',
   'workers',
   'training',
+
   'myApp.workers.addWorker',
   'myApp.workers.edit',
   'myApp.workers.trainings',
+
   'myApp.trainings',
   'myApp.trainings.add',
   'myApp.trainings.reg',
+  'myApp.trainings.control',
   'myApp.trainings.visit',
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
@@ -62,6 +65,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/trainings`, {
     templateUrl: 'components/trainingPage/training.html',
     controller: 'TrainingsCtrl',
+  })
+  $routeProvider.when(`/trainings/control/:id`, {
+    templateUrl: 'components/trainingPage/controlTrainingPage/controlTraining.html',
+    controller: 'ControlTrainingsCtrl',
   })
   $routeProvider.when(`/trainings/add/:name`, {
     templateUrl: 'components/trainingPage/addTrainingPage/addTraining.html',
