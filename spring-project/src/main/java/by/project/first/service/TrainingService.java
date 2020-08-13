@@ -141,6 +141,15 @@ public class TrainingService {
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
     }
+    public ResponseEntity delete_workers(Optional<TrainingModel> training, Set<WorkerModel> newWorkers){
+        newWorkers.forEach(worker->{
+            Long id = worker.getId();
+            Optional<WorkerModel> deletedWorker = workerRepo.findById(id);
+            training.get().getWorkerID().remove(deletedWorker.get());
+        });
+        trainingRepo.save(training.get());
+        return ResponseEntity.ok(new Message("ok!"));
+    }
 
     public ResponseEntity addVisitors (RegWorkersToTraining request){
         Set<WorkerModel> visitors = request.getNewWorkers();

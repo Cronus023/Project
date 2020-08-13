@@ -23,6 +23,18 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
             })
             return deferred.promise
         },
+        delete_workers_in_training: function(id, workers){
+            const deferred = $q.defer()
+            const requestBody = {
+                id: id,
+                newWorkers:workers
+            }
+            $http.post(`http://localhost:8080/training/delete_workers_in_training`, requestBody).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         edit_training: function(training){
             const deferred = $q.defer()
             $http.post(`http://localhost:8080/training/edit_training`, training).

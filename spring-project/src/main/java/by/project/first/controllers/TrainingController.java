@@ -50,8 +50,19 @@ public class TrainingController {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
+    @PostMapping("/training/delete_workers_in_training")
+    public ResponseEntity delete_workers_in_training(@RequestBody RegWorkersToTraining request){
+        Optional<TrainingModel> training= trainingRepo.findById(request.getId());
+        if(training.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Can not find training"));
+        }
+        ResponseEntity response = trainingService.delete_workers(training, request.getNewWorkers());
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/training/delete_training")
     public ResponseEntity delete_training(@RequestParam Long id){
+
         Optional<TrainingModel> training= trainingRepo.findById(id);
         if(training.isEmpty()){
             return ResponseEntity.status(400).body(new Message("Can not find training"));
@@ -65,7 +76,6 @@ public class TrainingController {
         ResponseEntity response= trainingService.findTrainingWorkers(request);
         return ResponseEntity.ok(response);
     }
-
 
     @PostMapping("/training/register_workers")
     public ResponseEntity register_workers(@RequestBody RegWorkersToTraining request){

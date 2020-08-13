@@ -34,13 +34,15 @@ angular.module('myApp.trainings.control', [])
                 else {
                     trainingService.edit_training($scope.data).then(function(value){
                         $scope.message = value.title
-                        //$scope.message= "Training successfully edited!"
                     })
                     setTimeout(function(){
                         $scope.message = ''
                     }, 1000)
                 }
             }
+        }
+        $scope.workersControl =function(){
+            $window.location.href = `#!/trainings/control/workers/${$routeParams["id"]}`
         }
     })
 
