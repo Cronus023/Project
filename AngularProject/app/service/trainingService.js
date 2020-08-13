@@ -69,7 +69,6 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
 
             $http.post(`http://localhost:8080/training/get_workers`, request).
             then(function (response) {
-                console.log(response)
                 deferred.resolve(response.data)
             })
             return deferred.promise

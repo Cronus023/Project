@@ -1,8 +1,7 @@
 angular.module('myApp.trainings.reg', [])
     .controller('RegTrainingsCtrl', function($scope, $routeParams,trainingService, $window) {
          $scope.message = ''
-         $scope.trainingId = $routeParams["id"]
-         trainingService.get_workers($scope.trainingId).then(function(value){
+         trainingService.get_workers($routeParams["id"]).then(function(value){
              $scope.data = value
          })
 
@@ -34,7 +33,7 @@ angular.module('myApp.trainings.reg', [])
             }
         }
         $scope.register = function (){
-            trainingService.register_workers($scope.trainingId, $scope.selected).then(function(value){
+            trainingService.register_workers($routeParams["id"], $scope.selected).then(function(value){
                 if(value.title === 'ok'){
                     setTimeout(function(){
                         $window.location.reload()

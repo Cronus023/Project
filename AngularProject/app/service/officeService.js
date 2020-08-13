@@ -3,18 +3,12 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
     return{
         become: function(office){
             const becomeRequest ={
-                token: localStorage.getItem('JwtToken'),
+                login: localStorage.getItem('UserLogin'),
                 office:office
             }
             $http.post('http://localhost:8080/become',becomeRequest).
             then(function (response) {
-                console.log(response)
-                if(response.status == 400){
-                    alert("something wrong!")
-                }
-                else{
-                    $window.location.reload()
-                }
+                $window.location.reload()
             })
         },
         get_office_by_provider_login: function(login){

@@ -26,22 +26,35 @@ public class WorkerService {
     @Autowired
     private OfficeRepo officeRepo;
 
-    public WorkerModel saveWorker(AddWorkerRequest request) {
+    public ResponseEntity get_workers(String name){
+        OfficeModel office = officeRepo.findByName(name);
+        if(office != null){
+            return ResponseEntity.ok(office.getWorkerId());
+        }
+        return ResponseEntity.status(400).body(new Message("error"));
+    }
+
+    public ResponseEntity get_worker_by_id(Long id){
+        Optional<WorkerModel> worker = workerRepo.findById(id);
+        if(worker.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("error"));
+        }
+        else return ResponseEntity.ok(worker);
+    }
+
+    public ResponseEntity saveWorker(AddWorkerRequest request) {
         WorkerModel worker = request.getWorker();
         WorkerModel newWorker = workerRepo.save(worker);
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
+        if(office == null){
+            return ResponseEntity.status(400).body(new Message("Can not find office!"));
+        }
         office.getWorkerId().add(newWorker);
 
         officeRepo.save(office);
-        return newWorker;
+        return ResponseEntity.ok(new Message("ok!"));
     }
-
-    public Optional<WorkerModel> findById(Long id) {
-        Optional<WorkerModel> worker = workerRepo.findById(id);
-        return worker;
-    }
-
 
     public ResponseEntity view_trainings(Long id) {
         Iterable<TrainingModel> trainings = trainingRepo.findAll();
@@ -60,10 +73,13 @@ public class WorkerService {
     }
 
 
-    public Iterable<TrainingModel> deleteWorker (DeleteWorkerRequest request) {
+    public ResponseEntity deleteWorker (DeleteWorkerRequest request) {
         Set<WorkerModel> workers =  request.getNewWorkers();
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
+        if(office == null){
+            return ResponseEntity.status(400).body(new Message("Office does not exist"));
+        }
         office.setWorkerId(workers);
 
         Iterable<TrainingModel> trainings = trainingRepo.findAll();
@@ -84,10 +100,14 @@ public class WorkerService {
         deletedWorkers.forEach(worker -> workerRepo.delete(worker));
 
         officeRepo.save(office);
-        return trainings;
+        return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public WorkerModel editWorker (WorkerModel worker) {
-        return workerRepo.save(worker);
+    public ResponseEntity editWorker (WorkerModel worker) {
+        if(workerRepo.findById(worker.getId()).isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Worker does not exist!"));
+        }
+        workerRepo.save(worker);
+        return ResponseEntity.ok(new Message("ok!"));
     }
 }

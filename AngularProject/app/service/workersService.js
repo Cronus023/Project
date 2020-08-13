@@ -31,7 +31,10 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
             }
             $http.post('http://localhost:8080/workers/delete',requestBody).
             then(function (response) {
-                console.log(response)
+                if(response.status === 400){
+                    alert(response.data.title)
+                    $window.location.reload()
+                }
             })
         },
         add: function(worker, officeId){
@@ -41,14 +44,18 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
             }
             $http.post('http://localhost:8080/workers/add', requestBody).
             then(function (response) {
-                console.log(response)
+                if(response.status === 400){
+                    alert(response.data.title)
+                    $window.location.reload()
+                }
             })
         },
         edit: function(worker, officeName){
             $http.post('http://localhost:8080/workers/edit', worker).
             then(function (response) {
                 if(response.status == 400){
-                    alert('error!')
+                    alert(response.data.title)
+                    $window.location.href = `#!/workers/${officeName}`
                 }
                 else {
                     $window.location.href = `#!/workers/${officeName}`

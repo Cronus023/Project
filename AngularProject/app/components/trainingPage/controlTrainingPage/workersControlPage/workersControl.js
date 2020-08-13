@@ -37,7 +37,7 @@ angular.module('myApp.trainings.control.workers', [])
         }
         $scope.delete = function(){
             trainingService.delete_workers_in_training($scope.id,$scope.selected).then(function(value){
-                $scope.message = value.body.title
+                $scope.message = value.title
                 if($scope.message === 'ok!'){
                     setTimeout(function(){
                         $window.location.reload()

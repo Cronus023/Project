@@ -1,21 +1,18 @@
 angular.module('myApp.trainings.visit', [])
     .controller('VisitTrainingsCtrl', function($scope, trainingService,$routeParams, $window) {
-        $scope.trainingId = $routeParams["id"]
         $scope.message = ''
         $scope.messageOfAdd = ''
         $scope.checkAllVisit = false
         $scope.checkAllPassing  = false
 
-        trainingService.get_visit_and_passing($scope.trainingId).then(function(value){
-            console.log(value.body.training)
-            if(value.body.title){
-                $scope.message = value.body.title
+        trainingService.get_visit_and_passing($routeParams["id"]).then(function(value){
+            if(value.title){
+                $scope.message = value.title
             }
             else{
-                $scope.data = value.body.trainingWorkers
-                $scope.training = value.body.training
+                $scope.data = value.trainingWorkers
+                $scope.training = value.training
             }
-
         })
 
         $scope.selectedForVisit = []
@@ -81,11 +78,10 @@ angular.module('myApp.trainings.visit', [])
                 $scope.selectedForPassing = []
             }
             $scope.checkAllPassage = !$scope.checkAllPassage
-
         }
         $scope.add_visitors = function(){
-            trainingService.add_visitors($scope.trainingId, $scope.selectedForVisit).then(function(value){
-                if (value.body.title === 'ok!'){
+            trainingService.add_visitors($routeParams["id"], $scope.selectedForVisit).then(function(value){
+                if (value.title === 'ok!'){
                     $scope.messageOfAdd = 'Workers successfully marked!'
                     setTimeout(function(){
                         $window.location.reload()
@@ -100,8 +96,8 @@ angular.module('myApp.trainings.visit', [])
             })
         }
         $scope.add_passed = function(){
-            trainingService.add_passed($scope.trainingId, $scope.selectedForPassing).then(function(value){
-                if (value.body.title === 'ok!'){
+            trainingService.add_passed($routeParams["id"], $scope.selectedForPassing).then(function(value){
+                if (value.title === 'ok!'){
                     $scope.messageOfAdd = 'Workers successfully passed!'
                     setTimeout(function(){
                         $window.location.reload()

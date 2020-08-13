@@ -4,11 +4,11 @@ import by.project.first.models.OfficeModel;
 
 public class BecomeRequest {
     private OfficeModel office;
-    private String token;
+    private String login;
 
-    public BecomeRequest(OfficeModel office, String token) {
+    public BecomeRequest(OfficeModel office, String login) {
         this.office = office;
-        this.token = token;
+        this.login = login;
     }
 
     public OfficeModel getOffice() {
@@ -19,11 +19,11 @@ public class BecomeRequest {
         this.office = office;
     }
 
-    public String getToken() {
-        return token;
+    public String getLogin() {
+        return login;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
