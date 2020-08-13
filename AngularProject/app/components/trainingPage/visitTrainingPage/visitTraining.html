@@ -1,13 +1,12 @@
 <h1>Visit and passing!</h1>
 
+
 <div class = "d-flex justify-content-center">
     <label ng-if="message!=''">
         <p class = "sign_in_up-error">{{message}}</p>
         <buton class="btn btn-info" ng-click = "return()">Return to trainings</buton>
     </label>
 </div>
-
-
 
 <table ng-if="message==''" class="table">
     <thead>
@@ -24,8 +23,10 @@
     <tbody>
     <tr ng-repeat="item in data">
         <div>
-            <td><input type = "checkbox" ng-model = "selectedForVisit" ng-checked="existVisit(item)" ng-click="selectVisit(item)"></td>
-            <td><input type = "checkbox" ng-model = "selectedForPassing" ng-checked="existPassing(item)" ng-click="selectPassing(item)"></td>
+            <td ng-if="!checkVisiting(item)"><input type = "checkbox" ng-model = "selectedForVisit" ng-checked="existVisit(item)" ng-click="selectVisit(item)"></td>
+            <td ng-if = "checkVisiting(item)"><label>marked</label></td>
+            <td ng-if="!checkPassing(item)"><input type = "checkbox"  ng-model = "selectedForPassing" ng-checked="existPassing(item)" ng-click="selectPassing(item)"></td>
+            <td ng-if = "checkPassing(item)"><label>passed</label></td>
 
             <th scope="row" >{{item.id}}</th>
             <td> {{item.name}}</td>
@@ -35,8 +36,9 @@
     </tr>
     </tbody>
 </table>
-
+<label ng-if="messageOfAdd!='' && messageOfAdd == 'error'"><p class = "sign_in_up-error">{{messageOfAdd}}</p></label>
+<label ng-if="messageOfAdd!='error' && messageOfAdd != ''"><p class = "add_worker_ok">{{messageOfAdd}}</p></label>
 <div class = "row">
-    <button ng-if = "selectedForVisit.length != 0" type="button" class="btn btn-info ml-3" ng-click="register()">Mark the visit</button>
-    <button ng-if = "selectedForPassing.length != 0" type="button" class="btn btn-danger ml-3" ng-click="register()">Mark the passing</button>
+    <button ng-if = "selectedForVisit.length != 0" type="button" class="btn btn-info ml-3" ng-click="add_visitors()">Mark the visit</button>
+    <button ng-if = "selectedForPassing.length != 0" type="button" class="btn btn-danger ml-3" ng-click="add_passed()">Mark the passing</button>
 </div>

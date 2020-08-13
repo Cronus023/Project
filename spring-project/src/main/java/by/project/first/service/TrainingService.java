@@ -1,6 +1,7 @@
 package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
+import by.project.first.controllers.ReqAndRes.FindTrainingWorkersResponse;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
 import by.project.first.models.*;
@@ -108,9 +109,9 @@ public class TrainingService {
                     trainingWorkers.add(worker);
                 }
             });
-            return ResponseEntity.ok(trainingWorkers);
+            return ResponseEntity.ok(new FindTrainingWorkersResponse(trainingWorkers, training.get()));
         }
-        return ResponseEntity.ok(training.get().getWorkerID());
+        return ResponseEntity.ok(new FindTrainingWorkersResponse(training.get().getWorkerID(), training.get()));
 
     }
 
@@ -129,4 +130,27 @@ public class TrainingService {
         }
         return workers;
     }
+
+    public ResponseEntity addPassedWorkers (RegWorkersToTraining request){
+        Set<WorkerModel> passedWorkers = request.getNewWorkers();
+        Optional<TrainingModel> training = trainingRepo.findById(request.getId());
+        if(training.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("error"));
+        }
+        training.get().getTrainingPassedID().addAll(passedWorkers);
+        trainingRepo.save(training.get());
+        return ResponseEntity.ok(new Message("ok!"));
+    }
+
+    public ResponseEntity addVisitors (RegWorkersToTraining request){
+        Set<WorkerModel> visitors = request.getNewWorkers();
+        Optional<TrainingModel> training = trainingRepo.findById(request.getId());
+        if(training.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("error"));
+        }
+        training.get().getTrainingVisitorsID().addAll(visitors);
+        trainingRepo.save(training.get());
+        return ResponseEntity.ok(new Message("ok!"));
+    }
+
 }

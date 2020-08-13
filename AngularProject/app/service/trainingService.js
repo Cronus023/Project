@@ -66,5 +66,33 @@ trainer.factory('trainingService',['$http','$q','$window', function($http,  $q, 
             })
             return deferred.promise
         },
+        add_visitors: function(id, workers){
+            const deferred = $q.defer()
+            const request = {
+                newWorkers: workers,
+                id: id
+            }
+
+            $http.post(`http://localhost:8080/training/add_visitors`, request).
+            then(function (response) {
+                console.log(response)
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
+        add_passed: function(id,workers){
+            const deferred = $q.defer()
+            const request = {
+                newWorkers: workers,
+                id: id
+            }
+
+            $http.post(`http://localhost:8080/training/add_passed`, request).
+            then(function (response) {
+                console.log(response)
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        }
     }
 }] )

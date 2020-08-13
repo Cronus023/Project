@@ -2,11 +2,20 @@ angular.module('myApp.trainings.visit', [])
     .controller('VisitTrainingsCtrl', function($scope, trainingService,$routeParams, $window) {
         $scope.trainingId = $routeParams["id"]
         $scope.message = ''
+        $scope.messageOfAdd = ''
+        $scope.checkAllVisit = false
+        $scope.checkAllPassing  = false
+
         trainingService.get_visit_and_passing($scope.trainingId).then(function(value){
+            console.log(value.body.training)
             if(value.body.title){
                 $scope.message = value.body.title
             }
-            else $scope.data = value.body
+            else{
+                $scope.data = value.body.trainingWorkers
+                $scope.training = value.body.training
+            }
+
         })
 
         $scope.selectedForVisit = []
@@ -42,7 +51,7 @@ angular.module('myApp.trainings.visit', [])
             if(!$scope.checkAllVisit){
                 $scope.data.map(function(item){
                     const index = $scope.selectedForVisit.indexOf(item)
-                    if(index >=0){
+                    if(index >=0 || $scope.checkVisiting(item)){
                         return true
                     }
                     else{
@@ -53,13 +62,14 @@ angular.module('myApp.trainings.visit', [])
             else{
                 $scope.selectedForVisit = []
             }
+            $scope.checkAllVisit = !$scope.checkAllVisit
         }
 
         $scope.selectAllPassing = function(){
             if(!$scope.checkAllPassage){
                 $scope.data.map(function(item){
                     const index = $scope.selectedForPassing.indexOf(item)
-                    if(index >=0){
+                    if(index >=0 || $scope.checkPassing(item)){
                         return true
                     }
                     else{
@@ -70,11 +80,59 @@ angular.module('myApp.trainings.visit', [])
             else{
                 $scope.selectedForPassing = []
             }
-        }
-        $scope.register = function(){
-            console.log($scope.selectedForPassing)
-            console.log($scope.selectedForVisit)
+            $scope.checkAllPassage = !$scope.checkAllPassage
 
         }
-
+        $scope.add_visitors = function(){
+            trainingService.add_visitors($scope.trainingId, $scope.selectedForVisit).then(function(value){
+                if (value.body.title === 'ok!'){
+                    $scope.messageOfAdd = 'Workers successfully marked!'
+                    setTimeout(function(){
+                        $window.location.reload()
+                    }, 1000)
+                }
+                else{
+                    $scope.messageOfAdd = 'error'
+                    setTimeout(function(){
+                        $scope.messageOfAdd = ''
+                    }, 1000)
+                }
+            })
+        }
+        $scope.add_passed = function(){
+            trainingService.add_passed($scope.trainingId, $scope.selectedForPassing).then(function(value){
+                if (value.body.title === 'ok!'){
+                    $scope.messageOfAdd = 'Workers successfully passed!'
+                    setTimeout(function(){
+                        $window.location.reload()
+                    }, 1000)
+                }
+                else{
+                    $scope.messageOfAdd = 'error'
+                    setTimeout(function(){
+                        $scope.messageOfAdd = ''
+                    }, 1000)
+                }
+            })
+        }
+        $scope.checkVisiting = function(worker){
+            let flag = false
+            $scope.training.trainingVisitorsID.filter(function(item) {
+                if(worker.id == item.id){
+                    flag = true
+                }
+            })
+            return flag
+        }
+        $scope.checkPassing = function(worker){
+            let flag = false
+            $scope.training.trainingPassedID.filter(function(item) {
+                if(worker.id == item.id){
+                    flag = true
+                }
+            })
+            return flag
+        }
     })
+
+

@@ -20,6 +20,20 @@ public class TrainingModel {
     )
     private Set<WorkerModel> workerID;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "training_visitors",
+            joinColumns = @JoinColumn(name = "training_id")
+    )
+    private Set<WorkerModel> trainingVisitorsID;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "training_passing",
+            joinColumns = @JoinColumn(name = "training_id")
+    )
+    private Set<WorkerModel> trainingPassedID;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
@@ -35,10 +49,12 @@ public class TrainingModel {
     public TrainingModel() {
     }
 
-    public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, UserModel trainerID, String type, Integer numberOfSeats) {
+    public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, Set<WorkerModel> trainingVisitorsID, Set<WorkerModel> trainingPassedID, UserModel trainerID, String type, Integer numberOfSeats) {
         this.date = date;
         this.dateOfEnd = dateOfEnd;
         this.workerID = workerID;
+        this.trainingVisitorsID = trainingVisitorsID;
+        this.trainingPassedID = trainingPassedID;
         this.trainerID = trainerID;
         this.type = type;
         this.numberOfSeats = numberOfSeats;
@@ -74,6 +90,22 @@ public class TrainingModel {
 
     public void setWorkerID(Set<WorkerModel> workerID) {
         this.workerID = workerID;
+    }
+
+    public Set<WorkerModel> getTrainingVisitorsID() {
+        return trainingVisitorsID;
+    }
+
+    public void setTrainingVisitorsID(Set<WorkerModel> trainingVisitorsID) {
+        this.trainingVisitorsID = trainingVisitorsID;
+    }
+
+    public Set<WorkerModel> getTrainingPassedID() {
+        return trainingPassedID;
+    }
+
+    public void setTrainingPassedID(Set<WorkerModel> trainingPassedID) {
+        this.trainingPassedID = trainingPassedID;
     }
 
     public UserModel getTrainerID() {

@@ -50,6 +50,18 @@ public class TrainingController {
         return ResponseEntity.ok(message);
     }
 
+    @PostMapping("/training/add_visitors")
+    public ResponseEntity add_visitors(@RequestBody RegWorkersToTraining request){
+        ResponseEntity message = trainingService.addVisitors(request);
+        return ResponseEntity.ok(message);
+    }
+
+    @PostMapping("/training/add_passed")
+    public ResponseEntity add_passed(@RequestBody RegWorkersToTraining request){
+        ResponseEntity message = trainingService.addPassedWorkers(request);
+        return ResponseEntity.ok(message);
+    }
+
 
     @PostMapping("/training/add")
     public ResponseEntity add_training(@RequestBody AddTrainingRequest request){
