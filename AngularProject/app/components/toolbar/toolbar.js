@@ -18,4 +18,8 @@ angular.module('myApp.toolbar', [])
         $scope.addTraining = function(){
             $window.location.href = `#!/trainings/add/${$scope.name}`
         }
+        $scope.application = function(){
+            const login = localStorage.getItem('UserLogin')
+            $window.location.href = `#!/application/${login}`
+        }
     })

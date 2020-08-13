@@ -15,7 +15,7 @@
                 <p class="card-text">{{training.numberOfSeats}}</p>
 
                 <div>
-                    <button ng-if = "checkControl(training)" class="btn btn-success" ng-click="control(training.id)">Training control</button>
+                    <button ng-if="checkControl(training)" class="btn btn-success" ng-click="control(training.id)">Training control</button>
                     <button ng-if="checkRegister(training)" class="btn btn-info " ng-click = "register(training.id)">Registration</button>
 
                     <button class="btn btn-primary mt-1" ng-click = "visit(training.id)">To acknowledge the presence</button>

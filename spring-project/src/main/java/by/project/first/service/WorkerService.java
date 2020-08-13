@@ -73,6 +73,8 @@ public class WorkerService {
                 if(training.getWorkerID().contains(w.get())){
                     Integer newSeats = training.getNumberOfSeats() + +1 ;
                     training.getWorkerID().remove(w.get());
+                    training.getTrainingPassedID().remove(w.get());
+                    training.getTrainingVisitorsID().remove(w.get());
                     training.setNumberOfSeats(newSeats);
                 }
                 trainingRepo.save(training);

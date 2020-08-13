@@ -23,6 +23,9 @@ angular.module('myApp', [
   'myApp.trainings.reg',
   'myApp.trainings.control',
   'myApp.trainings.visit',
+
+  'myApp.application',
+
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
   $httpProvider.interceptors.push('AuthInterceptor');
@@ -85,6 +88,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/workers/edit/:name/:id`, {
     templateUrl: 'components/workersPage/editWorkerPage/editWorker.html',
     controller: 'EditWorkersCtrl',
+  })
+  $routeProvider.when(`/application/:login`, {
+    templateUrl: 'components/applicationPage/application.html',
+    controller: 'ApplicationCtrl',
   })
   $routeProvider.otherwise({
     redirectTo: '/login'}
