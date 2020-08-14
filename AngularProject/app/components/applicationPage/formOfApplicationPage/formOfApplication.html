@@ -1,4 +1,15 @@
-<div class = "d-flex justify-content-center">
+<div ng-if="messageFromBack!=''" class = "d-flex justify-content-center">
+    <div>
+        <label>
+            <p class = "sign_in_up-error ">{{messageFromBack}}</p>
+            <buton class="btn btn-info ml-5" ng-click = "return()">Return to main page</buton>
+        </label>
+    </div>
+
+</div>
+
+
+<div ng-if="messageFromBack==''" class = "d-flex justify-content-center">
     <div class="signin card" style="width: 60rem;" ng-form="applicationForm">
         <h1 class="text-center card-header">Step {{navigation+1}}</h1>
         <div class="form-application ">
@@ -50,28 +61,28 @@
                     </div>
                     <div>
                         <label>0-2 age:</label>
-                        <input ng-model="application.groups.group02.numberOfClasses" min=1 class="form-control" type="number"><br>
-                        <textarea ng-model = "application.groups.group02.activities" class="form-control" ></textarea><br>
+                        <input ng-model="application.groups[0].numberOfClasses" min=1 class="form-control" type="number"><br>
+                        <textarea ng-model = "application.groups[0].activities" class="form-control" ></textarea><br>
                         <br>
                     </div>
 
                     <div>
                         <label>2-4 age:</label>
-                        <input  ng-model="application.groups.group24.numberOfClasses"  min=1 class="form-control" type="number"><br>
-                        <textarea ng-model = "application.groups.group24.activities" class="form-control" ></textarea><br>
+                        <input  ng-model="application.groups[1].numberOfClasses"  min=1 class="form-control" type="number"><br>
+                        <textarea ng-model = "application.groups[1].activities" class="form-control" ></textarea><br>
                         <br>
                     </div>
 
                    <div>
                        <label>5-6 age:</label>
-                       <input  ng-model="application.groups.group65.numberOfClasses"  min=1 class="form-control" type="number"><br>
-                       <textarea  ng-model = "application.groups.group65.activities" class="form-control" ></textarea><br>
+                       <input  ng-model="application.groups[2].numberOfClasses"  min=1 class="form-control" type="number"><br>
+                       <textarea  ng-model = "application.groups[2].activities" class="form-control" ></textarea><br>
                        <br>
                    </div>
                    <div>
                        <label>6+ age :</label>
-                       <input  ng-model="application.groups.group6h.numberOfClasses"  min=1 class="form-control" type="number"><br>
-                       <textarea ng-model = "application.groups.group6h.activities" class="form-control" ></textarea><br>
+                       <input  ng-model="application.groups[3].numberOfClasses"  min=1 class="form-control" type="number"><br>
+                       <textarea ng-model = "application.groups[3].activities" class="form-control" ></textarea><br>
                        <br>
                    </div>
                 </div>
@@ -97,33 +108,33 @@
                             </li>
                             <li class="list-group-item ml-5">
                                 <label>0-2 age:</label><br>
-                                <label>Number of classes: {{application.groups.group02.numberOfClasses}} </label>
+                                <label>Number of classes: {{application.groups[0].numberOfClasses}} </label>
                                 <p>
-                                    5 activities: {{application.groups.group02.activities}}
+                                    5 activities: {{application.groups[0].activities}}
                                 </p>
                                 <br>
                             </li>
                             <li class="list-group-item ml-5">
                                 <label>2-4 age:</label><br>
-                                <label>Number of classes:  {{application.groups.group24.numberOfClasses}} </label>
+                                <label>Number of classes:  {{application.groups[1].numberOfClasses}} </label>
                                 <p>
-                                    5 activities: {{application.groups.group24.activities}}
+                                    5 activities: {{application.groups[1].activities}}
                                 </p>
                                 <br>
                             </li>
                             <li class="list-group-item ml-5">
                                 <label>5-6 age:</label><br>
-                                <label>Number of classes: {{application.groups.group65.numberOfClasses}}</label>
+                                <label>Number of classes: {{application.groups[2].numberOfClasses}}</label>
                                 <p>
-                                    5 activities: {{application.groups.group65.activities}}
+                                    5 activities: {{application.groups[2].activities}}
                                 </p>
                                 <br>
                             </li>
                             <li class="list-group-item ml-5">
                                 <label>6+ age:</label><br>
-                                <label>Number of classes: {{application.groups.group6h.numberOfClasses}}</label>
+                                <label>Number of classes: {{application.groups[3].numberOfClasses}}</label>
                                 <p>
-                                    5 activities: {{application.groups.group6h.activities}}
+                                    5 activities: {{application.groups[3].activities}}
                                 </p>
                                 <br>
                             </li>

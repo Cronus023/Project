@@ -1,9 +1,10 @@
 angular.module('myApp.application.form', [])
-    .controller('FormApplicationCtrl', function($scope, $routeParams,$window, officeService) {
+    .controller('FormApplicationCtrl', function($scope, $routeParams,$window, applicationService, officeService) {
          $scope.navigation = 0;
          $scope.confirmData = false
          $scope.step2Status = true
          $scope.errorConfirm = ''
+         $scope.messageFromBack= ''
          $scope.typesOfReasons = [
             { key: 1, value: "DISEASE"},
             { key: 2, value: "MEDICAL_EXAMINATION" },
@@ -11,30 +12,33 @@ angular.module('myApp.application.form', [])
             { key: 4, value: "UNEXPECTED_BREAKDOWN" },
          ]
          $scope.application = {
-            educationalProgram: "",
-            groups:{
-                 group02:{
+             educationalProgram: "",
+             groups:[
+                 {
+                     name: "0-2 age",
                      numberOfClasses: 1,
                      activities:""
                  },
-                 group24:{
+                 {
+                     name: "2-4 age",
                      numberOfClasses: 1,
                      activities:""
                  },
-                 group65:{
+                 {
+                     name: "5-6 age",
                      numberOfClasses: 1,
                      activities:""
                  },
-                 group6h:{
+                 {
+                     name: "6+ age",
                      numberOfClasses: 1,
                      activities:""
                  },
-             },
+             ]
          }
          officeService.get_office_by_name($routeParams["name"]).then(function(value){
              if(value.title){
-                 alert(value.title)
-                 $window.location.href = '#!/main'
+                 $scope.messageFromBack = value.title
              }
              $scope.office = value.office
              $scope.notPassedWorkers = value.notPassedWorkers
@@ -50,18 +54,30 @@ angular.module('myApp.application.form', [])
          }
 
          $scope.submit = function(){
-             console.log($scope.confirmData)
              if(!$scope.confirmData){
                  $scope.errorConfirm = "Confirm your data!"
              }
              else{
+                 $scope.notPassedReasons = []
+                 $scope.notPassedWorkers.map(function(value){
+                     $scope.notPassedReasons.push({
+                         workerId: value.id,
+                         reason: value.reason
+                     })
+                 })
+                 applicationService.create_application($scope.application, $scope.notPassedReasons, $scope.office).then(function(value){
+                     if(value.title){
+                         alert(value.title)
+                         $scope.return()
+                     }
+                 })
                  $scope.errorConfirm =''
-                 console.log($scope.office)
-                 console.log($scope.application)
              }
 
          }
-
+         $scope.return = function(){
+             $window.location.href = '#!/main'
+         }
          $scope.checkData = function(){
              let flag = true
              if($scope.office.location === undefined){
@@ -80,12 +96,13 @@ angular.module('myApp.application.form', [])
                  $scope.errorMessage = "Back to step 3 and enter educational program!"
                  return false
              }
-             for(let i in $scope.application.groups){
+             for(let i = 0; i < $scope.application.groups.length; i++){
                  if($scope.application.groups[i].activities === ""){
                      $scope.errorMessage = "Back to step 3 and enter activities"
                      return false
                  }
              }
+
              return flag
          }
     })

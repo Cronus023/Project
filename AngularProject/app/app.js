@@ -13,6 +13,7 @@ angular.module('myApp', [
   'myApp.workers',
   'workers',
   'training',
+  'application',
 
   'myApp.workers.addWorker',
   'myApp.workers.edit',

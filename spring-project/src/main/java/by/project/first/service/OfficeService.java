@@ -4,6 +4,8 @@ package by.project.first.service;
 import by.project.first.controllers.ReqAndRes.BecomeRequest;
 import by.project.first.controllers.ReqAndRes.FindNotPassedWorkersResponse;
 import by.project.first.models.*;
+import by.project.first.models.ApplicationModels.ApplicationModel;
+import by.project.first.repositories.ApplicationRepo;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class OfficeService {
@@ -23,6 +26,9 @@ public class OfficeService {
 
     @Autowired
     private TrainingRepo trainingRepo;
+
+    @Autowired
+    private ApplicationRepo applicationRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -67,12 +73,21 @@ public class OfficeService {
         if(office == null){
             return ResponseEntity.status(400).body(new Message("Can not find office"));
         }
+        Iterable<ApplicationModel> applications = applicationRepo.findAll();
+
+        for (ApplicationModel application : applications) {
+            if (application.getOffice().getName().equals(name)) {
+                return ResponseEntity.status(400).body(new Message("Application already exist!"));
+            }
+        }
+
+
         Set<WorkerModel> passedWorkers = new HashSet<>();
         Set<WorkerModel> notPassedWorkers = office.getWorkerId();
         Iterable<TrainingModel> trainings = trainingRepo.findAll();
 
         trainings.forEach(training->{
-            office.getWorkerId().forEach(worker->{
+            notPassedWorkers.forEach(worker->{
                 if(training.getTrainingPassedID().contains(worker)){
                     passedWorkers.add(worker);
                 }
