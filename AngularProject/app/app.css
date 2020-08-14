@@ -5,6 +5,12 @@
   padding: 15px;
   margin: auto;
 }
+.form-application {
+  width: 100%;
+  max-width: 700px;
+  padding: 15px;
+  margin: auto;
+}
 .form-signin .form-control {
   position: relative;
   box-sizing: border-box;

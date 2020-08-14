@@ -19,6 +19,14 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
             })
             return deferred.promise
         },
+        get_office_by_name: function(name){
+            const deferred = $q.defer()
+            $http.get(`http://localhost:8080/get_office_by_name?name=${name}`).
+            then(function (response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         get_office: function(){
             const deferred = $q.defer()
             $http.get('http://localhost:8080/get_office').

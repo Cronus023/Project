@@ -33,6 +33,11 @@ public class OfficeController {
         return officeService.get_offices_by_login(login);
     }
 
+    @GetMapping("/get_office_by_name")
+    public ResponseEntity get_office_by_name (@RequestParam String name){
+        return officeService.get_office_by_name(name);
+    }
+
     @PostMapping("/become")
     public ResponseEntity become(@RequestBody BecomeRequest request){
         return officeService.become_provider(request);

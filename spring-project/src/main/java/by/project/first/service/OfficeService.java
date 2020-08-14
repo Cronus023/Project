@@ -2,10 +2,10 @@ package by.project.first.service;
 
 
 import by.project.first.controllers.ReqAndRes.BecomeRequest;
-import by.project.first.models.Message;
-import by.project.first.models.OfficeModel;
-import by.project.first.models.UserModel;
+import by.project.first.controllers.ReqAndRes.FindNotPassedWorkersResponse;
+import by.project.first.models.*;
 import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,9 @@ public class OfficeService {
 
     @Autowired
     private OfficeRepo officeRepo;
+
+    @Autowired
+    private TrainingRepo trainingRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -59,4 +62,24 @@ public class OfficeService {
         }
     }
 
+    public ResponseEntity get_office_by_name (String name ){
+        OfficeModel office = officeRepo.findByName(name);
+        if(office == null){
+            return ResponseEntity.status(400).body(new Message("Can not find office"));
+        }
+        Set<WorkerModel> passedWorkers = new HashSet<>();
+        Set<WorkerModel> notPassedWorkers = office.getWorkerId();
+        Iterable<TrainingModel> trainings = trainingRepo.findAll();
+
+        trainings.forEach(training->{
+            office.getWorkerId().forEach(worker->{
+                if(training.getTrainingPassedID().contains(worker)){
+                    passedWorkers.add(worker);
+                }
+            });
+        });
+        notPassedWorkers.removeAll(passedWorkers);
+
+        return ResponseEntity.ok(new FindNotPassedWorkersResponse(office, notPassedWorkers));
+    }
 }

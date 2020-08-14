@@ -7,4 +7,7 @@ angular.module('myApp.application', [])
             }
             $scope.offices = value
         })
+        $scope.makeApplication = function(officeName){
+            $window.location.href = `#!/application/form/${officeName}`
+        }
     })

@@ -1,6 +1,7 @@
 package by.project.first.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class OfficeModel {
             name = "office_providers",
             joinColumns = @JoinColumn(name = "office_id")
     )
-    private Set<UserModel> leaderID;
+    private Set<UserModel> leaderID = new HashSet<>();
     private String photo;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -27,7 +28,7 @@ public class OfficeModel {
             name = "office_workers",
             joinColumns = @JoinColumn(name = "office_id")
     )
-    private Set<WorkerModel> workerId;
+    private Set<WorkerModel> workerId = new HashSet<>();
 
 
     public OfficeModel() {

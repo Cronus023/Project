@@ -26,6 +26,7 @@ angular.module('myApp', [
   'myApp.trainings.visit',
 
   'myApp.application',
+  'myApp.application.form',
 
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
@@ -97,6 +98,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/application/:login`, {
     templateUrl: 'components/applicationPage/application.html',
     controller: 'ApplicationCtrl',
+  })
+  $routeProvider.when(`/application/form/:name`, {
+    templateUrl: 'components/applicationPage/formOfApplicationPage/formOfApplication.html',
+    controller: 'FormApplicationCtrl',
   })
   $routeProvider.otherwise({
     redirectTo: '/login'}

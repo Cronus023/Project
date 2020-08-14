@@ -2,6 +2,7 @@ package by.project.first.models;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,14 +19,14 @@ public class TrainingModel {
             name = "training_participants",
             joinColumns = @JoinColumn(name = "training_id")
     )
-    private Set<WorkerModel> workerID;
+    private Set<WorkerModel> workerID = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "training_visitors",
             joinColumns = @JoinColumn(name = "training_id")
     )
-    private Set<WorkerModel> trainingVisitorsID;
+    private Set<WorkerModel> trainingVisitorsID = new HashSet<>();
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -33,7 +34,7 @@ public class TrainingModel {
             name = "training_passing",
             joinColumns = @JoinColumn(name = "training_id")
     )
-    private Set<WorkerModel> trainingPassedID;
+    private Set<WorkerModel> trainingPassedID = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
