@@ -1,14 +1,14 @@
 package by.project.first.service;
 
+import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.ApplicationModels.GroupsModel;
 import by.project.first.models.ApplicationModels.ReasonsModel;
+import by.project.first.models.ApplicationModels.WorkerModelForResponse;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
-import by.project.first.repositories.ApplicationRepo;
-import by.project.first.repositories.GroupRepo;
-import by.project.first.repositories.OfficeRepo;
-import by.project.first.repositories.ReasonRepo;
+import by.project.first.models.WorkerModel;
+import by.project.first.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,9 @@ public class ApplicationService {
 
     @Autowired
     private ApplicationRepo applicationRepo;
+
+    @Autowired
+    private WorkerRepo workerRepo;
 
     @Autowired
     private ReasonRepo reasonRepo;
@@ -71,4 +74,19 @@ public class ApplicationService {
         }
         return ResponseEntity.ok(application);
     }
+
+    public ResponseEntity get_application(Long id){
+        Optional<ApplicationModel> application = applicationRepo.findById(id);
+        if(application.isEmpty()) {
+            ResponseEntity.status(400).body(new Message("Can not find application"));
+        }
+        Set<WorkerModelForResponse> workers = new HashSet<>();
+        application.get().getReasons().forEach(reason->{
+            Optional<WorkerModel> worker = workerRepo.findById(reason.getWorkerID());
+            workers.add(new WorkerModelForResponse(worker.get(), reason.getReason()));
+        });
+        return ResponseEntity.ok(new RegularReviewerResponse(workers, application.get()));
+    }
 }
+
+

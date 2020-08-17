@@ -183,7 +183,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   })
   $routeProvider.when(`/application/reviewers/regular/:id`, {
     templateUrl: 'components/applicationPage/reviewersPage/regularPage/regular.html',
-    controller: 'CurriculumReviewersApplicationCtrl',
+    controller: 'RegularReviewersApplicationCtrl',
     resolve:{
       check:function($window, authService){
         authService.checkLogin()

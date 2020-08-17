@@ -35,6 +35,18 @@ application.factory('applicationService',['$http','$q','$window', function($http
                 deferred.resolve(response.data)
             })
             return deferred.promise
+        },
+        get_application_by_id: function(id){
+            const deferred = $q.defer()
+            $http.get(`http://localhost:8080/application/get_application?id=${id}`).
+            then(function success(response) {
+                if(response.data.title){
+                    alert(response.data.title)
+                    $window.location.href = '#!/application/reviewers/view'
+                }
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
         }
     }
 }] )
