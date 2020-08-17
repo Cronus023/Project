@@ -50,7 +50,7 @@ public class ApplicationService {
             office.setLocation(request.getOffice().getLocation());
             OfficeModel newOffice = officeRepo.save(office);
 
-            ApplicationModel application = new ApplicationModel(reasons, groups, newOffice, request.getEducationalProgram());
+            ApplicationModel application = new ApplicationModel(reasons, groups, newOffice, request.getEducationalProgram(),request.getAdditionalInfo());
             ApplicationModel newApplication = applicationRepo.save(application);
 
             return ResponseEntity.ok(newApplication);

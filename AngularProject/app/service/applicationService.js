@@ -4,6 +4,7 @@ application.factory('applicationService',['$http','$q','$window', function($http
         create_application: function(application, reasons,office){
             const deferred = $q.defer()
             const requestBody ={
+                additionalInfo: application.additionalInfo,
                 educationalProgram: application.educationalProgram,
                 groups: application.groups,
                 office:office,

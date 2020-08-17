@@ -45,6 +45,7 @@ angular.module('myApp.workers', [])
                 $scope.data.splice(index, 1)
             })
             workersService.delete($scope.data, $scope.id, $scope.selected)
+            $window.location.reload()
         }
 
         $scope.edit = function(item){

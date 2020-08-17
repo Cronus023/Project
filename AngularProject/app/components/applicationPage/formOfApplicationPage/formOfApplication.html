@@ -142,18 +142,20 @@
 
                     </ul>
                     <div ng-if = "checkData()">
+                        <label for="inputAdditionalInfo" class="sr-only">Phone</label>
+                        <input type="text" ng-model="application.additionalInfo" id="inputAdditionalInfo" class="form-control" placeholder="Help needed when filling out" required><br>
+                        <label ng-if="navigation == 3 && errorAdditionalInfo !=''" class="sign_in_up-error">{{errorAdditionalInfo}}</label><br><br>
                         <label>Confirm data: </label>
                         <input ng-click="changeConfirm()" type = "checkbox"><br><br>
                     </div>
                 </div>
             </form>
 
-            <label ng-if="navigation == 3 && !checkData()" class="sign_in_up-error">{{errorMessage}}</label><br><br>
+            <label ng-if="navigation == 3 && !checkData() " class="sign_in_up-error">{{errorMessage}}</label><br><br>
             <label ng-if="navigation == 3 && errorConfirm!=''" class="sign_in_up-error"> {{errorConfirm}} </label>
             <button ng-if="navigation < 3" class="btn btn-lg btn-primary btn-block mt-1" ng-click ="next()">Next</button>
             <button ng-if="navigation > 0 " class="btn btn-lg btn-primary btn-block mt-1" ng-click ="back()">Back</button>
             <button ng-if="navigation == 3 && checkData() " class="btn btn-lg btn-primary btn-block mt-1" ng-click ="submit(applicationForm)">Submit</button>
-
             <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>
 
         </div>

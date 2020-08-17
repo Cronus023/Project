@@ -5,6 +5,7 @@ angular.module('myApp.application.form', [])
          $scope.step2Status = true
          $scope.errorConfirm = ''
          $scope.messageFromBack= ''
+         $scope.errorAdditionalInfo= ''
          $scope.typesOfReasons = [
             { key: 1, value: "DISEASE"},
             { key: 2, value: "MEDICAL_EXAMINATION" },
@@ -12,12 +13,13 @@ angular.module('myApp.application.form', [])
             { key: 4, value: "UNEXPECTED_BREAKDOWN" },
          ]
          $scope.application = {
-             educationalProgram: "",
+             additionalInfo: "",
+             educationalProgram: '',
              groups:[
                  {
                      name: "0-2 age",
                      numberOfClasses: 1,
-                     activities:""
+                     activities:''
                  },
                  {
                      name: "2-4 age",
@@ -27,12 +29,12 @@ angular.module('myApp.application.form', [])
                  {
                      name: "5-6 age",
                      numberOfClasses: 1,
-                     activities:""
+                     activities:''
                  },
                  {
                      name: "6+ age",
                      numberOfClasses: 1,
-                     activities:""
+                     activities:''
                  },
              ]
          }
@@ -57,6 +59,9 @@ angular.module('myApp.application.form', [])
              if(!$scope.confirmData){
                  $scope.errorConfirm = "Confirm your data!"
              }
+             else if($scope.application.additionalInfo === '' ){
+                 $scope.errorAdditionalInfo = 'Enter additional info in step 4!'
+             }
              else{
                  $scope.notPassedReasons = []
                  $scope.notPassedWorkers.map(function(value){
@@ -70,8 +75,12 @@ angular.module('myApp.application.form', [])
                          alert(value.title)
                          $scope.return()
                      }
+                     else{
+                         $scope.return()
+                     }
                  })
-                 $scope.errorConfirm =''
+                 $scope.errorConfirm = ''
+                 $scope.errorAdditionalInfo= ''
              }
 
          }
@@ -102,7 +111,6 @@ angular.module('myApp.application.form', [])
                      return false
                  }
              }
-
              return flag
          }
     })
