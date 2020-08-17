@@ -10,11 +10,11 @@
                     <button style="color:#28c143" class="btn ml-1" ng-click="selectWorkers()">Workers section</button>
                 </li>
             </ul><br>
-            <div ng-if ="section==1">
+            <div ng-if ="section.number==1 && !section.groupStatus">
                 <label>Groups information: </label><br>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item ml-5">
-                        <label>0-2 age:</label><br>
+                        <label>{{applicationData.groups[0].name}}</label><br>
                         <label>Number of classes: {{applicationData.groups[0].numberOfClasses}} </label>
                         <p>
                             5 activities: {{applicationData.groups[0].activities}}
@@ -22,7 +22,7 @@
                         <br>
                     </li>
                     <li class="list-group-item ml-5">
-                        <label>2-4 age:</label><br>
+                        <label>{{applicationData.groups[1].name}}</label><br>
                         <label>Number of classes:  {{applicationData.groups[1].numberOfClasses}} </label>
                         <p>
                             5 activities: {{applicationData.groups[1].activities}}
@@ -30,7 +30,7 @@
                         <br>
                     </li>
                     <li class="list-group-item ml-5">
-                        <label>5-6 age:</label><br>
+                        <label>{{applicationData.groups[2].name}}</label><br>
                         <label>Number of classes: {{applicationData.groups[2].numberOfClasses}}</label>
                         <p>
                             5 activities: {{applicationData.groups[2].activities}}
@@ -38,7 +38,7 @@
                         <br>
                     </li>
                     <li class="list-group-item ml-5">
-                        <label>6+ age:</label><br>
+                        <label>{{applicationData.groups[3].name}}</label><br>
                         <label>Number of classes: {{applicationData.groups[3].numberOfClasses}}</label>
                         <p>
                             5 activities: {{applicationData.groups[3].activities}}
@@ -47,8 +47,13 @@
                     </li>
 
                 </ul>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
             </div>
-            <div ng-if ="section==2">
+            <div ng-if ="section.number==1 && section.groupStatus">
+                <label class = "sign_in_up-error">You have already answered this section </label><br>
+            </div>
+            <div ng-if ="section.number==2 && !section.workersStatus">
                 <label>Workers information: </label><br>
                 <table class="table">
                     <thead>
@@ -70,9 +75,13 @@
                     </tr>
                     </tbody>
                 </table>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
             </div>
-            <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the application</button>
-            <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the application</button>
+            <div ng-if ="section.number==2 && section.workersStatus">
+                <label class = "sign_in_up-error">You have already answered this section </label><br>
+            </div>
+
         </div>
     </div>
 </div>

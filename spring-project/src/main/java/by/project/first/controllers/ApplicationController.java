@@ -30,8 +30,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/application/get_application")
-    public ResponseEntity get_application (@RequestParam Long id){
-        return applicationService.get_application(id);
+    public ResponseEntity get_application (@RequestParam Long id, @RequestParam String login){
+        return applicationService.get_application(id, login);
     }
 
     @PostMapping("/application/reject_accept")

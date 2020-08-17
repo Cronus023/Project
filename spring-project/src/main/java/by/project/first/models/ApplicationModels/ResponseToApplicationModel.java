@@ -14,6 +14,8 @@ public class ResponseToApplicationModel {
 
     private String responseStatus;
 
+    private String typeOfSection;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "responses_owners",
@@ -33,8 +35,9 @@ public class ResponseToApplicationModel {
     public ResponseToApplicationModel() {
     }
 
-    public ResponseToApplicationModel(String responseStatus, UserModel user, ApplicationModel applicationID, Date dateOfResponse) {
+    public ResponseToApplicationModel(String responseStatus, String typeOfSection, UserModel user, ApplicationModel applicationID, Date dateOfResponse) {
         this.responseStatus = responseStatus;
+        this.typeOfSection = typeOfSection;
         this.user = user;
         this.applicationID = applicationID;
         this.dateOfResponse = dateOfResponse;
@@ -54,6 +57,14 @@ public class ResponseToApplicationModel {
 
     public void setResponseStatus(String responseStatus) {
         this.responseStatus = responseStatus;
+    }
+
+    public String getTypeOfSection() {
+        return typeOfSection;
+    }
+
+    public void setTypeOfSection(String typeOfSection) {
+        this.typeOfSection = typeOfSection;
     }
 
     public UserModel getUser() {

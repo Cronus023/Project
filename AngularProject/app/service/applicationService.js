@@ -38,7 +38,8 @@ application.factory('applicationService',['$http','$q','$window', function($http
         },
         get_application_by_id: function(id){
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/application/get_application?id=${id}`).
+            const login = localStorage.getItem('UserLogin')
+            $http.get(`http://localhost:8080/application/get_application?id=${id}&login=${login}`).
             then(function success(response) {
                 if(response.data.title){
                     alert(response.data.title)
@@ -48,12 +49,13 @@ application.factory('applicationService',['$http','$q','$window', function($http
             })
             return deferred.promise
         },
-        reject_accept_application: function(id, application, status){
+        reject_accept_application: function(id, application, status, section){
             const deferred = $q.defer()
             const requestBody = {
                 application: application,
-                userLogin: localStorage.getItem('UserLogin'),
-                status: status
+                login: localStorage.getItem('UserLogin'),
+                status: status,
+                typeOfSection: section
             }
             $http.post(`http://localhost:8080/application/reject_accept`, requestBody).
             then(function success(response) {

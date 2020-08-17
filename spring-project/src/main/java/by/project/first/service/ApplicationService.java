@@ -2,18 +2,17 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
 import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
-import by.project.first.models.ApplicationModels.ApplicationModel;
-import by.project.first.models.ApplicationModels.GroupsModel;
-import by.project.first.models.ApplicationModels.ReasonsModel;
-import by.project.first.models.ApplicationModels.WorkerModelForResponse;
+import by.project.first.models.ApplicationModels.*;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
+import by.project.first.models.UserModel;
 import by.project.first.models.WorkerModel;
 import by.project.first.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -28,10 +27,16 @@ public class ApplicationService {
     private ApplicationRepo applicationRepo;
 
     @Autowired
+    private ResponseToApplicationRepo responseToApplicationRepo;
+
+    @Autowired
     private WorkerRepo workerRepo;
 
     @Autowired
     private ReasonRepo reasonRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
     private GroupRepo groupRepo;
@@ -71,26 +76,41 @@ public class ApplicationService {
     public ResponseEntity get_educational_program(Long id){
         Optional<ApplicationModel> application = applicationRepo.findById(id);
         if(application.isEmpty()) {
-            ResponseEntity.status(400).body(new Message("Can not find application"));
+           return ResponseEntity.status(400).body(new Message("Can not find application"));
         }
         return ResponseEntity.ok(application);
     }
 
-    public ResponseEntity get_application(Long id){
+    public ResponseEntity get_application(Long id, String login){
+        UserModel user = userRepo.findByLogin(login);
+        if(user == null){
+            return ResponseEntity.status(400).body(new Message("Can not find user by login"));
+        }
+
         Optional<ApplicationModel> application = applicationRepo.findById(id);
         if(application.isEmpty()) {
-            ResponseEntity.status(400).body(new Message("Can not find application"));
+            return ResponseEntity.status(400).body(new Message("Can not find application"));
         }
+        Iterable<ResponseToApplicationModel> responsesOfCurrentUser = responseToApplicationRepo.findAllByUser(user);
+
         Set<WorkerModelForResponse> workers = new HashSet<>();
         application.get().getReasons().forEach(reason->{
             Optional<WorkerModel> worker = workerRepo.findById(reason.getWorkerID());
-            workers.add(new WorkerModelForResponse(worker.get(), reason.getReason()));
+            workers.add(new WorkerModelForResponse(worker.get(), reason.getReason() ));
         });
-        return ResponseEntity.ok(new RegularReviewerResponse(workers, application.get()));
+
+        return ResponseEntity.ok(new RegularReviewerResponse(workers, application.get(), responsesOfCurrentUser));
+
     }
 
     public ResponseEntity reject_accept(RejectAndAcceptRequest request){
-        return ResponseEntity.ok(request.getApplication());
+        UserModel user = userRepo.findByLogin(request.getLogin());
+        if(user == null){
+            return ResponseEntity.status(400).body(new Message("Can not find user by login"));
+        }
+        Date date = new Date();
+        ResponseToApplicationModel response = new ResponseToApplicationModel(request.getStatus(), request.getTypeOfSection(), user, request.getApplication(), date);
+        return ResponseEntity.ok(responseToApplicationRepo.save(response));
     }
 }
 

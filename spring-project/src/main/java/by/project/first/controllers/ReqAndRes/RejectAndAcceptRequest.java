@@ -6,11 +6,13 @@ public class RejectAndAcceptRequest {
     private String login;
     private ApplicationModel application;
     private String status;
+    private String typeOfSection;
 
-    public RejectAndAcceptRequest(String login, ApplicationModel application, String status) {
+    public RejectAndAcceptRequest(String login, ApplicationModel application, String status, String typeOfSection) {
         this.login = login;
         this.application = application;
         this.status = status;
+        this.typeOfSection = typeOfSection;
     }
 
     public String getLogin() {
@@ -35,5 +37,13 @@ public class RejectAndAcceptRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTypeOfSection() {
+        return typeOfSection;
+    }
+
+    public void setTypeOfSection(String typeOfSection) {
+        this.typeOfSection = typeOfSection;
     }
 }
