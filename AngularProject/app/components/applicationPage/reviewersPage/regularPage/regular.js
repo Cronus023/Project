@@ -11,4 +11,9 @@ angular.module('myApp.application.reviewers.regular', [])
         $scope.selectWorkers = function(){
             $scope.section = 2
         }
+        $scope.rejectAndAccept = function(status){
+            applicationService.reject_accept_application($routeParams["id"],$scope.applicationData, status).then(function(value){
+                console.log(value)
+            })
+        }
     })

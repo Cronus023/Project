@@ -1,6 +1,7 @@
 package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
+import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.ApplicationModels.GroupsModel;
 import by.project.first.models.ApplicationModels.ReasonsModel;
@@ -86,6 +87,10 @@ public class ApplicationService {
             workers.add(new WorkerModelForResponse(worker.get(), reason.getReason()));
         });
         return ResponseEntity.ok(new RegularReviewerResponse(workers, application.get()));
+    }
+
+    public ResponseEntity reject_accept(RejectAndAcceptRequest request){
+        return ResponseEntity.ok(request.getApplication());
     }
 }
 

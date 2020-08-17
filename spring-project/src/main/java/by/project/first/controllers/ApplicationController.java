@@ -1,5 +1,6 @@
 package by.project.first.controllers;
 
+import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,10 @@ public class ApplicationController {
     public ResponseEntity get_application (@RequestParam Long id){
         return applicationService.get_application(id);
     }
+
+    @PostMapping("/application/reject_accept")
+    public ResponseEntity reject_accept(@RequestBody RejectAndAcceptRequest request){
+        return applicationService.reject_accept(request);
+    }
+
 }

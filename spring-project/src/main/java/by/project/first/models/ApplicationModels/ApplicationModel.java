@@ -3,7 +3,6 @@ package by.project.first.models.ApplicationModels;
 import by.project.first.models.OfficeModel;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 

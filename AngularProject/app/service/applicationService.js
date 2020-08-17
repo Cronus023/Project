@@ -47,6 +47,23 @@ application.factory('applicationService',['$http','$q','$window', function($http
                 deferred.resolve(response.data)
             })
             return deferred.promise
+        },
+        reject_accept_application: function(id, application, status){
+            const deferred = $q.defer()
+            const requestBody = {
+                application: application,
+                userLogin: localStorage.getItem('UserLogin'),
+                status: status
+            }
+            $http.post(`http://localhost:8080/application/reject_accept`, requestBody).
+            then(function success(response) {
+                if(response.data.title){
+                    alert(response.data.title)
+                    $window.location.href = '#!/application/reviewers/view'
+                }
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
         }
     }
 }] )
