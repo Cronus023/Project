@@ -66,7 +66,7 @@ angular.module('myApp.application.form', [])
                  $scope.notPassedReasons = []
                  $scope.notPassedWorkers.map(function(value){
                      $scope.notPassedReasons.push({
-                         workerId: value.id,
+                         workerID: value.id,
                          reason: value.reason
                      })
                  })

@@ -29,7 +29,8 @@ angular.module('myApp', [
   'myApp.application',
   'myApp.application.form',
   'myApp.application.reviewers',
-
+  'myApp.application.reviewers.curriculum',
+  'myApp.application.reviewers.regular',
 
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
@@ -165,6 +166,24 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/application/reviewers/view`, {
     templateUrl: 'components/applicationPage/reviewersPage/reviewers.html',
     controller: 'ReviewersApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
+  })
+  $routeProvider.when(`/application/reviewers/curriculum/:id`, {
+    templateUrl: 'components/applicationPage/reviewersPage/curriculumPage/curriculum.html',
+    controller: 'CurriculumReviewersApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
+  })
+  $routeProvider.when(`/application/reviewers/regular/:id`, {
+    templateUrl: 'components/applicationPage/reviewersPage/regularPage/regular.html',
+    controller: 'CurriculumReviewersApplicationCtrl',
     resolve:{
       check:function($window, authService){
         authService.checkLogin()

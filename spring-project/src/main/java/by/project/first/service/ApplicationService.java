@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -55,7 +56,19 @@ public class ApplicationService {
 
             return ResponseEntity.ok(newApplication);
         }
-
         return ResponseEntity.ok(new Message("ok!"));
+    }
+
+    public ResponseEntity get_applications(){
+        Iterable<ApplicationModel> applications = applicationRepo.findAll();
+        return ResponseEntity.ok(applications);
+    }
+
+    public ResponseEntity get_educational_program(Long id){
+        Optional<ApplicationModel> application = applicationRepo.findById(id);
+        if(application.isEmpty()) {
+            ResponseEntity.status(400).body(new Message("Can not find application"));
+        }
+        return ResponseEntity.ok(application);
     }
 }
