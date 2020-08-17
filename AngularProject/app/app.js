@@ -28,6 +28,8 @@ angular.module('myApp', [
 
   'myApp.application',
   'myApp.application.form',
+  'myApp.application.reviewers',
+
 
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider, authService) {
@@ -40,70 +42,145 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     templateUrl: 'components/mainPage/main.html',
     controller: 'MainCtrl',
     resolve:{
-      check:function($window){
-        if(localStorage.getItem('JwtToken') == null){
-          $window.location.href = '#!/login'
-        }
+      check:function($window, authService){
+        authService.checkLogin()
       }
     }
 
   })
   $routeProvider.when('/register', {
     templateUrl: 'components/registerPage/register.html',
-    controller: 'RegisterCtrl'
+    controller: 'RegisterCtrl',
+
   })
   $routeProvider.when('/office', {
     templateUrl: 'components/officePage/office.html',
-    controller: 'OfficeCtrl'
+    controller: 'OfficeCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/workers/:id`, {
     templateUrl: 'components/workersPage/workers.html',
     controller: 'WorkersCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/workers/trainings/:id`, {
     templateUrl: 'components/workersPage/workerTrainingsPage/workerTrainings.html',
     controller: 'TrainingsWorkersCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/workers/add/:id`, {
     templateUrl: 'components/workersPage/addWorkerPage/addWorker.html',
     controller: 'AddWorkerCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/trainings`, {
     templateUrl: 'components/trainingPage/training.html',
     controller: 'TrainingsCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/trainings/control/:id`, {
     templateUrl: 'components/trainingPage/controlTrainingPage/controlTraining.html',
     controller: 'ControlTrainingsCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/trainings/control/workers/:id`, {
     templateUrl: 'components/trainingPage/controlTrainingPage/workersControlPage/workersControl.html',
     controller: 'WorkersControlTrainingsCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/trainings/add/:name`, {
     templateUrl: 'components/trainingPage/addTrainingPage/addTraining.html',
     controller: 'AddTrainingsCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
+
   })
   $routeProvider.when(`/trainings/visit/:id`, {
     templateUrl: 'components/trainingPage/visitTrainingPage/visitTraining.html',
     controller: 'VisitTrainingsCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/trainings/registration/:id`, {
     templateUrl: 'components/trainingPage/regTrainingPage/regTraining.html',
     controller: 'RegTrainingsCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/workers/edit/:name/:id`, {
     templateUrl: 'components/workersPage/editWorkerPage/editWorker.html',
     controller: 'EditWorkersCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/application/:login`, {
     templateUrl: 'components/applicationPage/application.html',
     controller: 'ApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
+  })
+  $routeProvider.when(`/application/reviewers/view`, {
+    templateUrl: 'components/applicationPage/reviewersPage/reviewers.html',
+    controller: 'ReviewersApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when(`/application/form/:name`, {
     templateUrl: 'components/applicationPage/formOfApplicationPage/formOfApplication.html',
     controller: 'FormApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
+
   $routeProvider.otherwise({
     redirectTo: '/login'}
     )

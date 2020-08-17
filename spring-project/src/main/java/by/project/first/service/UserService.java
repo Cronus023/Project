@@ -75,4 +75,12 @@ public class UserService {
         }
         return null;
     }
+
+    public ResponseEntity checkAuth(String token) {
+        boolean check = jwtProvider.validateToken(token);
+        if(check){
+            return ResponseEntity.ok(new Message("ok!"));
+        }
+        else return ResponseEntity.status(400).body(new Message("bad token!"));
+    }
 }

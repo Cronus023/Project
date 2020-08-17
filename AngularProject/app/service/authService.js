@@ -2,11 +2,15 @@ const auth = angular.module('auth', [])
 auth.factory('authService',['$http','$q','$window', function($http,  $q, $window){
     return{
         checkLogin: function(){
-            if(localStorage.getItem('JwtToken') == null){
-                return false
-            }
-            else return true
+            const token = localStorage.getItem('JwtToken')
+            $http.get(`http://localhost:8080/auth/check?token=${token}`).
+            then(function (response) {
+                if(response.status === 400){
+                    $window.location.href = '#!/login'
+                }
+            })
         },
+
         login:function(authBody){
             const deferred = $q.defer()
 

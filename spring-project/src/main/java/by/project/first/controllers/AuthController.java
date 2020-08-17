@@ -1,5 +1,6 @@
 package by.project.first.controllers;
 
+import by.project.first.models.Message;
 import by.project.first.models.UserModel;
 import by.project.first.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,8 @@ public class AuthController {
         return userService.logout(login);
     }
 
+    @GetMapping("/auth/check")
+    public ResponseEntity checkAuth(@RequestParam String token){
+        return userService.checkAuth(token);
+    }
 }
