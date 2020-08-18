@@ -7,6 +7,9 @@
                 <h5 class="card-title">{{office.name}}</h5>
                 <p class="card-text">{{office.location}}</p>
                 <p class="card-text">{{office.contact_details}}</p>
+                <p ng-if = "office.dateOfLastPermission != null">
+                    <label style="color:#0f26b3">Last permission: {{dateFormat(office.dateOfLastPermission)}}</label>
+                </p>
                 <div ng-if="!check(office)">
                     <button class="btn btn-primary" ng-click="become(office)">Become a provider</button>
                 </div>

@@ -100,6 +100,8 @@ public class TrainingService {
 
     public ResponseEntity findTrainingWorkers (GetWorkersTrainingRequest request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
+
+
         Date date = new Date();
 
         if(date.compareTo(training.get().getDate()) <= 0){

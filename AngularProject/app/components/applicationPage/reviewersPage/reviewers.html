@@ -22,7 +22,7 @@
             <td>
                 <button ng-if="userRole != 'REGULAR_REVIEWER'" class="btn btn-outline-primary" ng-click="curriculum(item.id)">Curriculum reviewer</button>
                 <button ng-if="userRole != 'CURRICULUM_REVIEWER'" class="btn btn-outline-primary" ng-click="regular(item.id)">Regular reviewer</button>
-                <button ng-if="userRole == 'SUPERVISION'"  class="btn btn-outline-primary">Make the final decision</button>
+                <button ng-if="userRole == 'SUPERVISION'"  class="btn btn-outline-primary" ng-click="finalDecision(item.id)">Make the final decision</button>
             </td>
         </div>
     </tr>

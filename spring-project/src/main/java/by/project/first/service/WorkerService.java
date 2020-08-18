@@ -57,18 +57,11 @@ public class WorkerService {
     }
 
     public ResponseEntity view_trainings(Long id) {
-        Iterable<TrainingModel> trainings = trainingRepo.findAll();
         Optional<WorkerModel> worker = workerRepo.findById(id);
         if(worker.isEmpty()){
             return ResponseEntity.status(400).body(new Message("Can not find worker!"));
         }
-        Set<TrainingModel> workerTrainings = new HashSet<>();
-        trainings.forEach(training->{
-            if(training.getTrainingPassedID().contains(worker.get())){
-                workerTrainings.add(training);
-            }
-        });
-
+        Iterable<TrainingModel> workerTrainings = trainingRepo.findAllByTrainingPassedID(worker.get());
         return ResponseEntity.ok(workerTrainings);
     }
 

@@ -44,4 +44,8 @@ public class ApplicationController {
         return applicationService.reject_accept(request);
     }
 
+    @PostMapping("/application/final_decision")
+    public ResponseEntity make_final_decision(@RequestParam Long id, @RequestParam String decision){
+        return applicationService.final_decision(id, decision);
+    }
 }

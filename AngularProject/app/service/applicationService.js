@@ -62,6 +62,14 @@ application.factory('applicationService',['$http','$q','$window', function($http
             })
             return deferred.promise
         },
+        make_final_decision: function(id, decision){
+            const deferred = $q.defer()
+            $http.post(`http://localhost:8080/application/final_decision?id=${id}&decision=${decision}`).
+            then(function success(response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         reject_accept_application: function(id, application, status, section){
             const deferred = $q.defer()
             const requestBody = {

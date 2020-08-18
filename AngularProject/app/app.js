@@ -27,9 +27,11 @@ angular.module('myApp', [
   'myApp.trainings.visit',
 
   'myApp.application',
+  'myApp.application.my',
   'myApp.application.form',
   'myApp.application.reviewers',
   'myApp.application.history',
+  'myApp.application.finalDecision',
   'myApp.application.reviewers.curriculum',
   'myApp.application.reviewers.regular',
 
@@ -176,6 +178,24 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when(`/application/history/:id`, {
     templateUrl: 'components/applicationPage/reviewersPage/historyOfApplicationPage/history.html',
     controller: 'HistoryApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
+  })
+  $routeProvider.when(`/application/my/:login`, {
+    templateUrl: 'components/applicationPage/myApplicationsPage/myApplications.html',
+    controller: 'MyApplicationCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
+  })
+  $routeProvider.when(`/application/decision/:id`, {
+    templateUrl: 'components/applicationPage/reviewersPage/finalDicisionPage/finalDecision.html',
+    controller: 'FinalDecisionApplicationCtrl',
     resolve:{
       check:function($window, authService){
         authService.checkLogin()

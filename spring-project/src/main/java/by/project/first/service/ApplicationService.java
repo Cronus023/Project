@@ -70,7 +70,13 @@ public class ApplicationService {
 
     public ResponseEntity get_applications(){
         Iterable<ApplicationModel> applications = applicationRepo.findAll();
-        return ResponseEntity.ok(applications);
+        Set<ApplicationModel> notAnsweredApplications = new HashSet<>();
+        applications.forEach(application->{
+            if(application.getStatus().equals("WAIT_FOR_AN_ANSWER")){
+                notAnsweredApplications.add(application);
+            }
+        });
+        return ResponseEntity.ok(notAnsweredApplications);
     }
 
     public ResponseEntity get_educational_program(Long id, String login){
@@ -121,6 +127,33 @@ public class ApplicationService {
         Iterable<ResponseToApplicationModel> responsesOfApplication = responseToApplicationRepo.findAllByApplicationID(application.get());
 
         return ResponseEntity.ok(responsesOfApplication);
+    }
+
+
+    public ResponseEntity final_decision(Long id, String decision){
+        Optional<ApplicationModel> application = applicationRepo.findById(id);
+        if(application.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Can not find application!"));
+        }
+        Optional<OfficeModel> office = officeRepo.findById(application.get().getOffice().getId());
+        if(office.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Can not find office!"));
+        }
+
+        if(decision.equals("ACCEPT")){
+            office.get().setDateOfLastPermission(new Date());
+            officeRepo.save(office.get());
+
+            application.get().setStatus(decision);
+            applicationRepo.save(application.get());
+            return ResponseEntity.ok(new Message("ok!"));
+        }
+        if(decision.equals("REJECT")){
+            application.get().setStatus(decision);
+            applicationRepo.save(application.get());
+            return ResponseEntity.ok(new Message("ok!"));
+        }
+        return ResponseEntity.status(400).body(new Message("Something wrong"));
     }
 }
 

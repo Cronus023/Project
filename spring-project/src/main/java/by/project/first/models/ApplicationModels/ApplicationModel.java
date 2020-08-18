@@ -37,6 +37,8 @@ public class ApplicationModel {
     private String educationalProgram;
     private String additionalInfo;
 
+    private String status = "WAIT_FOR_AN_ANSWER";
+
     public ApplicationModel() {
     }
 
@@ -94,5 +96,13 @@ public class ApplicationModel {
 
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

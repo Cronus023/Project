@@ -67,7 +67,7 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
             const deferred = $q.defer()
             $http.get(`http://localhost:8080/workers/view_trainings?id=${id}`).
             then(function (response) {
-                if(response.status !=400){
+                if(response.status !== 400){
                     deferred.resolve(response.data)
                 }
                 else alert("Error!")

@@ -43,6 +43,7 @@ angular.module('myApp.application.form', [])
                  $scope.messageFromBack = value.title
              }
              $scope.office = value.office
+             console.log(value.notPassedWorkers)
              $scope.notPassedWorkers = value.notPassedWorkers
          })
          $scope.next= function(){

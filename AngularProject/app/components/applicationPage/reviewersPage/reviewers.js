@@ -15,4 +15,8 @@ angular.module('myApp.application.reviewers', [])
         $scope.historyOfApplication = function(id){
             $window.location.href= `#!/application/history/${id}`
         }
+        $scope.finalDecision = function(id){
+            $window.location.href= `#!/application/decision/${id}`
+
+        }
     })

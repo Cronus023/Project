@@ -12,7 +12,9 @@
             <a class="btn btn-outline-primary ml-1" href="#!/trainings">Trainings</a>
             <a class="btn btn-outline-primary ml-1" href="#!/main">Main page</a>
 
-            <button class="btn btn-outline-primary ml-1" ng-click="application()">My requests</button>
+            <button class="btn btn-outline-primary ml-1" ng-click="application()">Make application</button>
+            <button class="btn btn-outline-primary ml-1" ng-click="myApplications()">My applications</button>
+
             <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
         </nav>
         <nav ng-if="role == 'CURRICULUM_REVIEWER'">

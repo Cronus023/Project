@@ -81,19 +81,12 @@ public class OfficeService {
             }
         }
 
-
-        Set<WorkerModel> passedWorkers = new HashSet<>();
         Set<WorkerModel> notPassedWorkers = office.getWorkerId();
-        Iterable<TrainingModel> trainings = trainingRepo.findAll();
-
-        trainings.forEach(training->{
-            notPassedWorkers.forEach(worker->{
-                if(training.getTrainingPassedID().contains(worker)){
-                    passedWorkers.add(worker);
-                }
-            });
+        notPassedWorkers.forEach(worker->{
+            if(trainingRepo.findAllByTrainingPassedID(worker) != null){
+                notPassedWorkers.remove(worker);
+            }
         });
-        notPassedWorkers.removeAll(passedWorkers);
 
         return ResponseEntity.ok(new FindNotPassedWorkersResponse(office, notPassedWorkers));
     }

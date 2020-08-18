@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myApp.main', ['ngRoute'])
-    .controller('MainCtrl', function($scope, officeService, $window, $route) {
+    .controller('MainCtrl', function($scope, officeService, $window, authService) {
         $scope.flag = false
 
         officeService.get_office().then(function(value){
@@ -13,12 +13,12 @@ angular.module('myApp.main', ['ngRoute'])
         }
         $scope.check = function(office){
             let flag = false
-            if(office.leaderID.length == 0){
+            if(office.leaderID.length === 0){
                 return false
             }
-            if(office.leaderID.length != 0){
+            if(office.leaderID.length !== 0){
                 office.leaderID.map(item =>{
-                    if(item.login == localStorage.getItem('UserLogin')){
+                    if(item.login === localStorage.getItem('UserLogin')){
                         flag = true
                     }
                 })
@@ -29,5 +29,9 @@ angular.module('myApp.main', ['ngRoute'])
             const name = office.name
             $window.location.href = `/#!/workers/${name}`
         }
+        $scope.dateFormat = function(date){
+            return authService.dateFormat(date)
+        }
+
 
     })

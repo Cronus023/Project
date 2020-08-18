@@ -22,4 +22,8 @@ angular.module('myApp.toolbar', [])
             const login = localStorage.getItem('UserLogin')
             $window.location.href = `#!/application/${login}`
         }
+        $scope.myApplications = function(){
+            const login = localStorage.getItem('UserLogin')
+            $window.location.href = `#!/application/my/${login}`
+        }
     })

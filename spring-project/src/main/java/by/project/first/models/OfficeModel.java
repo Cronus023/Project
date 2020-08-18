@@ -1,6 +1,7 @@
 package by.project.first.models;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ public class OfficeModel {
     private Long id;
     private String location;
     private String name;
+
+    private Date dateOfLastPermission;
 
     private String contact_details;
 
@@ -35,11 +38,10 @@ public class OfficeModel {
     }
 
 
-
-    public OfficeModel(Long id, String location, String name, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId) {
-        this.id = id;
+    public OfficeModel(String location, String name, Date dateOfLastPermission, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId) {
         this.location = location;
         this.name = name;
+        this.dateOfLastPermission = dateOfLastPermission;
         this.contact_details = contact_details;
         this.leaderID = leaderID;
         this.photo = photo;
@@ -68,6 +70,14 @@ public class OfficeModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getDateOfLastPermission() {
+        return dateOfLastPermission;
+    }
+
+    public void setDateOfLastPermission(Date dateOfLastPermission) {
+        this.dateOfLastPermission = dateOfLastPermission;
     }
 
     public String getContact_details() {
