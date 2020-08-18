@@ -26,7 +26,8 @@ application.factory('applicationService',['$http','$q','$window', function($http
         },
         get_educational_program_by_id: function(id){
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/application/get_educational_program_by_id?id=${id}`).
+            const login = localStorage.getItem('UserLogin')
+            $http.get(`http://localhost:8080/application/get_educational_program_by_id?id=${id}&login=${login}`).
             then(function success(response) {
                 if(response.data.title){
                     alert(response.data.title)
@@ -59,7 +60,7 @@ application.factory('applicationService',['$http','$q','$window', function($http
             }
             $http.post(`http://localhost:8080/application/reject_accept`, requestBody).
             then(function success(response) {
-                if(response.data.title){
+                if(response.data.title !== 'ok!'){
                     alert(response.data.title)
                     $window.location.href = '#!/application/reviewers/view'
                 }

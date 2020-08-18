@@ -17,6 +17,11 @@ public class RegularReviewerResponse {
         this.responses = responses;
     }
 
+    public RegularReviewerResponse(ApplicationModel application, Iterable<ResponseToApplicationModel> responses) {
+        this.application = application;
+        this.responses = responses;
+    }
+
     public Set<WorkerModelForResponse> getWorkers() {
         return workers;
     }

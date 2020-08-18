@@ -5,13 +5,14 @@ angular.module('myApp.application.reviewers.regular', [])
             $scope.workers = value.workers
             $scope.responses = value.responses
             $scope.responses.map(function(item){
-                if(item.typeOfSection === 'GROUPS'){
+                const applicationId = item.applicationID.id.toString()
+
+                if(item.typeOfSection === 'GROUPS' && applicationId === $routeParams["id"]){
                     $scope.section.groupStatus = true
                 }
-                if(item.typeOfSection === 'WORKERS'){
+                else if(item.typeOfSection === 'WORKERS' && applicationId === $routeParams["id"]){
                     $scope.section.workersStatus = true
                 }
-                console.log(item)
             })
         })
         $scope.section = {
@@ -26,7 +27,7 @@ angular.module('myApp.application.reviewers.regular', [])
             $scope.section.number = 2
         }
         $scope.rejectAndAccept = function(status){
-            let section = "";
+            let section = ""
             if($scope.section.number === 1){
                 section = 'GROUPS'
             }
@@ -34,8 +35,9 @@ angular.module('myApp.application.reviewers.regular', [])
                 section = 'WORKERS'
             }
             applicationService.reject_accept_application($routeParams["id"],$scope.applicationData, status, section).then(function(value){
-                if(value.title){
+                if(value.title !== 'ok!'){
                     alert(value.title)
+                    $window.location.href = '#!/application/reviewers/view'
                 }
                 $window.location.reload()
             })

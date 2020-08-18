@@ -73,34 +73,33 @@ public class ApplicationService {
         return ResponseEntity.ok(applications);
     }
 
-    public ResponseEntity get_educational_program(Long id){
-        Optional<ApplicationModel> application = applicationRepo.findById(id);
-        if(application.isEmpty()) {
-           return ResponseEntity.status(400).body(new Message("Can not find application"));
+    public ResponseEntity get_educational_program(Long id, String login){
+        RegularReviewerResponse response = get_responses_and_application(login, id);
+        if(response.getApplication() == null || response.getResponses() == null){
+            return ResponseEntity.status(400).body(new Message("Wrong data!"));
         }
-        return ResponseEntity.ok(application);
+        return ResponseEntity.ok(response);
+    }
+
+    public RegularReviewerResponse get_responses_and_application (String login, Long id){
+        UserModel user = userRepo.findByLogin(login);
+        Optional<ApplicationModel> application = applicationRepo.findById(id);
+        Iterable<ResponseToApplicationModel> responsesOfCurrentUser = responseToApplicationRepo.findAllByUser(user);
+        return new RegularReviewerResponse(application.get(), responsesOfCurrentUser);
     }
 
     public ResponseEntity get_application(Long id, String login){
-        UserModel user = userRepo.findByLogin(login);
-        if(user == null){
-            return ResponseEntity.status(400).body(new Message("Can not find user by login"));
+        RegularReviewerResponse response = get_responses_and_application(login, id);
+        if(response.getApplication() == null || response.getResponses() == null){
+            return ResponseEntity.status(400).body(new Message("Wrong data!"));
         }
-
-        Optional<ApplicationModel> application = applicationRepo.findById(id);
-        if(application.isEmpty()) {
-            return ResponseEntity.status(400).body(new Message("Can not find application"));
-        }
-        Iterable<ResponseToApplicationModel> responsesOfCurrentUser = responseToApplicationRepo.findAllByUser(user);
 
         Set<WorkerModelForResponse> workers = new HashSet<>();
-        application.get().getReasons().forEach(reason->{
+        response.getApplication().getReasons().forEach(reason->{
             Optional<WorkerModel> worker = workerRepo.findById(reason.getWorkerID());
             workers.add(new WorkerModelForResponse(worker.get(), reason.getReason() ));
         });
-
-        return ResponseEntity.ok(new RegularReviewerResponse(workers, application.get(), responsesOfCurrentUser));
-
+        return ResponseEntity.ok(new RegularReviewerResponse(workers, response.getApplication(), response.getResponses()));
     }
 
     public ResponseEntity reject_accept(RejectAndAcceptRequest request){
@@ -110,7 +109,8 @@ public class ApplicationService {
         }
         Date date = new Date();
         ResponseToApplicationModel response = new ResponseToApplicationModel(request.getStatus(), request.getTypeOfSection(), user, request.getApplication(), date);
-        return ResponseEntity.ok(responseToApplicationRepo.save(response));
+        responseToApplicationRepo.save(response);
+        return ResponseEntity.ok(new Message("ok!"));
     }
 }
 

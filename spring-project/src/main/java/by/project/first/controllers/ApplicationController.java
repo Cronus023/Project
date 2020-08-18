@@ -25,8 +25,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/application/get_educational_program_by_id")
-    public ResponseEntity get_educational_program (@RequestParam Long id){
-        return applicationService.get_educational_program(id);
+    public ResponseEntity get_educational_program (@RequestParam Long id, @RequestParam String login){
+        return applicationService.get_educational_program(id, login);
     }
 
     @GetMapping("/application/get_application")
