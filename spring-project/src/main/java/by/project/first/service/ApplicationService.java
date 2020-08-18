@@ -129,6 +129,21 @@ public class ApplicationService {
         return ResponseEntity.ok(responsesOfApplication);
     }
 
+    public ResponseEntity get_provider_applications(String login){
+        UserModel user = userRepo.findByLogin(login);
+        if(user == null){
+            return ResponseEntity.status(400).body(new Message("Can not find provider!"));
+        }
+        Set<ApplicationModel> providerApplications = new HashSet<>();
+
+        Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(user);
+
+        providerOffices.forEach(office->{
+            Set<ApplicationModel> officeApplications = applicationRepo.findAllByOffice(office);
+            providerApplications.addAll(officeApplications);
+        });
+        return ResponseEntity.ok(providerApplications);
+    }
 
     public ResponseEntity final_decision(Long id, String decision){
         Optional<ApplicationModel> application = applicationRepo.findById(id);

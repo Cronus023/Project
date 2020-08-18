@@ -1,1 +1,21 @@
-<h1>my app</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">Office</th>
+        <th scope="col">Status of application</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <div>
+            <td> {{item.id}}</td>
+            <td> {{item.office.name}}</td>
+            <td> {{item.status}}</td>
+        </div>
+    </tr>
+    </tbody>
+
+</table>
+<button class="btn btn-info" ng-click="back()">Back</button>
+

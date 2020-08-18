@@ -24,6 +24,16 @@ application.factory('applicationService',['$http','$q','$window', function($http
             })
             return deferred.promise
         },
+        get_provider_applications: function(){
+            const deferred = $q.defer()
+            const login = localStorage.getItem('UserLogin')
+            $http.get(`http://localhost:8080/application/get_provider_applications?login=${login}`).
+            then(function success(response) {
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
+
         get_educational_program_by_id: function(id){
             const deferred = $q.defer()
             const login = localStorage.getItem('UserLogin')

@@ -39,6 +39,11 @@ public class ApplicationController {
         return applicationService.get_history(id);
     }
 
+    @GetMapping("/application/get_provider_applications")
+    public ResponseEntity get_provider_applications (@RequestParam String login){
+        return applicationService.get_provider_applications(login);
+    }
+
     @PostMapping("/application/reject_accept")
     public ResponseEntity reject_accept(@RequestBody RejectAndAcceptRequest request){
         return applicationService.reject_accept(request);

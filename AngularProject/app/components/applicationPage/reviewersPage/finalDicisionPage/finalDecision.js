@@ -2,7 +2,11 @@ angular.module('myApp.application.finalDecision', [])
     .controller('FinalDecisionApplicationCtrl', function($scope, $routeParams,$window, applicationService) {
         $scope.finalDecision = function(decision){
             applicationService.make_final_decision($routeParams["id"], decision).then(function(value){
-                console.log(value)
+                if(value.title !== 'ok!'){
+                    alert(value.title)
+                    $window.location.href = '#/application/reviewers/view'
+                }
+                $window.location.href = '#/application/reviewers/view'
             })
         }
     })

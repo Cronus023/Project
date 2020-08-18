@@ -73,18 +73,17 @@ public class OfficeService {
         if(office == null){
             return ResponseEntity.status(400).body(new Message("Can not find office"));
         }
-        Iterable<ApplicationModel> applications = applicationRepo.findAll();
 
-        for (ApplicationModel application : applications) {
-            if (application.getOffice().getName().equals(name)) {
-                return ResponseEntity.status(400).body(new Message("Application already exist!"));
-            }
+        if(!applicationRepo.findAllByOffice(office).isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Application already exist!"));
         }
 
-        Set<WorkerModel> notPassedWorkers = office.getWorkerId();
-        notPassedWorkers.forEach(worker->{
-            if(trainingRepo.findAllByTrainingPassedID(worker) != null){
-                notPassedWorkers.remove(worker);
+        Set<WorkerModel> passedWorkers = office.getWorkerId();
+        Set<WorkerModel> notPassedWorkers = new HashSet<>();
+
+        passedWorkers.forEach(worker->{
+            if(trainingRepo.findAllByTrainingPassedID(worker).isEmpty()){
+                notPassedWorkers.add(worker);
             }
         });
 

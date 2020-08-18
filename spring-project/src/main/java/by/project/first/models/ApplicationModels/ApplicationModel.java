@@ -28,7 +28,7 @@ public class ApplicationModel {
     private Set<GroupsModel> groups = new HashSet<>();
 
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "application_office",
             joinColumns = @JoinColumn(name = "application_id")

@@ -10,4 +10,6 @@ import java.util.Set;
 
 public interface OfficeRepo extends CrudRepository<OfficeModel, Long> {
     OfficeModel findByName(String name);
+
+    Iterable<OfficeModel> findAllByLeaderID(UserModel user);
 }
