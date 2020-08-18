@@ -50,13 +50,9 @@ public class ApplicationService {
         else{
             Set<ReasonsModel> reasons = new HashSet<>();
             Set<GroupsModel> groups = new HashSet<>();
-
-            request.getReasons().forEach(reason->{
-                reasons.add(reasonRepo.save(reason));
-            });
-            request.getGroups().forEach(group->{
-                groups.add(groupRepo.save(group));
-            });
+            reasonRepo.saveAll(request.getReasons());
+            groupRepo.saveAll(request.getGroups());
+         
             office.setLocation(request.getOffice().getLocation());
             OfficeModel newOffice = officeRepo.save(office);
 

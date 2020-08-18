@@ -38,14 +38,7 @@ public class OfficeService {
         if(provider == null){
             return ResponseEntity.status(400).body(new Message("Wrong provider login!"));
         }
-        Iterable<OfficeModel> offices = officeRepo.findAll();
-        Set<OfficeModel> providerOffices = new HashSet<>();
-
-        offices.forEach(office->{
-            if(office.getLeaderID().contains(provider)){
-                providerOffices.add(office);
-            }
-        });
+        Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(provider);
         return ResponseEntity.ok(providerOffices);
     }
 

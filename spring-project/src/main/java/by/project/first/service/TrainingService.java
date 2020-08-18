@@ -112,13 +112,15 @@ public class TrainingService {
 
         if(user.getRoles().contains(RoleModel.PROVIDER)){
             Iterable<OfficeModel> offices = officeRepo.findAll();
-            Set<WorkerModel> workers = workersOfProvider(offices, user);
-            workers.forEach(worker->{
-                if(!training.get().getWorkerID().contains(worker)){
-                    workers.remove(worker);
+            Set<WorkerModel> workersOfProvider = workersOfProvider(offices, user);
+            Set<WorkerModel> workersOfTraining = new HashSet<>();
+
+            workersOfProvider.forEach(worker->{
+                if(training.get().getWorkerID().contains(worker)){
+                    workersOfTraining.add(worker);
                 }
             });
-            return ResponseEntity.ok(new FindTrainingWorkersResponse(workers, training.get()));
+            return ResponseEntity.ok(new FindTrainingWorkersResponse(workersOfTraining, training.get()));
         }
         return ResponseEntity.ok(new FindTrainingWorkersResponse(training.get().getWorkerID(), training.get()));
     }

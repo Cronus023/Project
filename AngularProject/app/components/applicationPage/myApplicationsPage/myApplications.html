@@ -11,7 +11,17 @@
         <div>
             <td> {{item.id}}</td>
             <td> {{item.office.name}}</td>
-            <td> {{item.status}}</td>
+            <td>
+                <div ng-if ="item.status == 'REJECT'">
+                    <label style = "color:#dc0c0c">{{item.status}}</label>
+                </div>
+                <div ng-if ="item.status == 'ACCEPT'">
+                    <label style = "color:#20900d">{{item.status}}</label>
+                </div>
+                <div ng-if ="item.status == 'WAIT_FOR_AN_ANSWER'">
+                    <label>{{item.status}}</label>
+                </div>
+            </td>
         </div>
     </tr>
     </tbody>
