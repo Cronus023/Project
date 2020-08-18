@@ -25,7 +25,7 @@ public class OfficeController {
 
     @GetMapping("/get_office")
     public ResponseEntity main(){
-        return ResponseEntity.ok(officeRepo.findAll());
+        return officeService.get_office();
     }
 
     @GetMapping("/get_office_by_login")

@@ -3,6 +3,7 @@ package by.project.first.models.ApplicationModels;
 import by.project.first.models.OfficeModel;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class ApplicationModel {
     private OfficeModel office;
     private String educationalProgram;
     private String additionalInfo;
-
+    private Date dateOfApplication = new Date();
     private String status = "WAIT_FOR_AN_ANSWER";
 
     public ApplicationModel() {
@@ -48,6 +49,14 @@ public class ApplicationModel {
         this.office = office;
         this.educationalProgram = educationalProgram;
         this.additionalInfo = additionalInfo;
+    }
+
+    public Date getDateOfApplication() {
+        return dateOfApplication;
+    }
+
+    public void setDateOfApplication(Date dateOfApplication) {
+        this.dateOfApplication = dateOfApplication;
     }
 
     public Long getId() {

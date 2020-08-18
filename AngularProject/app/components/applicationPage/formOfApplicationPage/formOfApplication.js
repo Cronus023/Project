@@ -72,7 +72,7 @@ angular.module('myApp.application.form', [])
                      })
                  })
                  applicationService.create_application($scope.application, $scope.notPassedReasons, $scope.office).then(function(value){
-                     if(value.title){
+                     if(value.title !== 'ok!'){
                          alert(value.title)
                          $scope.return()
                      }

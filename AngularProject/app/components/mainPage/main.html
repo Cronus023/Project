@@ -10,6 +10,9 @@
                 <p ng-if = "office.dateOfLastPermission != null">
                     <label style="color:#0f26b3">Last permission: {{dateFormat(office.dateOfLastPermission)}}</label>
                 </p>
+                <p ng-if = "office.statusOfLastApplication != null">
+                    <label style="color:#0f26b3">Status of last application: {{office.statusOfLastApplication}}</label>
+                </p>
                 <div ng-if="!check(office)">
                     <button class="btn btn-primary" ng-click="become(office)">Become a provider</button>
                 </div>

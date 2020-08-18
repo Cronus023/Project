@@ -1,5 +1,7 @@
 package by.project.first.models;
 
+import by.project.first.models.ApplicationModels.ApplicationModel;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -33,12 +35,14 @@ public class OfficeModel {
     )
     private Set<WorkerModel> workerId = new HashSet<>();
 
+    private Long lastApplicationId;
+    private String statusOfLastApplication;
 
     public OfficeModel() {
     }
 
 
-    public OfficeModel(String location, String name, Date dateOfLastPermission, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId) {
+    public OfficeModel(String location, String name, Date dateOfLastPermission, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId, ApplicationModel lastApplication) {
         this.location = location;
         this.name = name;
         this.dateOfLastPermission = dateOfLastPermission;
@@ -46,6 +50,22 @@ public class OfficeModel {
         this.leaderID = leaderID;
         this.photo = photo;
         this.workerId = workerId;
+    }
+
+    public String getStatusOfLastApplication() {
+        return statusOfLastApplication;
+    }
+
+    public void setStatusOfLastApplication(String statusOfLastApplication) {
+        this.statusOfLastApplication = statusOfLastApplication;
+    }
+
+    public Long getLastApplicationId() {
+        return lastApplicationId;
+    }
+
+    public void setLastApplicationId(Long lastApplicationId) {
+        this.lastApplicationId = lastApplicationId;
     }
 
     public Long getId() {

@@ -52,14 +52,16 @@ public class ApplicationService {
             Set<GroupsModel> groups = new HashSet<>();
             reasonRepo.saveAll(request.getReasons());
             groupRepo.saveAll(request.getGroups());
-         
+
+            ApplicationModel application = new ApplicationModel(reasons, groups, office, request.getEducationalProgram(),request.getAdditionalInfo());
+            applicationRepo.save(application);
+
             office.setLocation(request.getOffice().getLocation());
-            OfficeModel newOffice = officeRepo.save(office);
+            office.setLastApplicationId(application.getId());
+            officeRepo.save(office);
 
-            ApplicationModel application = new ApplicationModel(reasons, groups, newOffice, request.getEducationalProgram(),request.getAdditionalInfo());
-            ApplicationModel newApplication = applicationRepo.save(application);
 
-            return ResponseEntity.ok(newApplication);
+            return ResponseEntity.ok(new Message("ok!"));
         }
         return ResponseEntity.ok(new Message("ok!"));
     }

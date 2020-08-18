@@ -4,9 +4,9 @@ angular.module('myApp.application.finalDecision', [])
             applicationService.make_final_decision($routeParams["id"], decision).then(function(value){
                 if(value.title !== 'ok!'){
                     alert(value.title)
-                    $window.location.href = '#/application/reviewers/view'
+                    $window.location.href = '#!/application/reviewers/view'
                 }
-                $window.location.href = '#/application/reviewers/view'
+                $window.location.href = '#!/application/reviewers/view'
             })
         }
     })
