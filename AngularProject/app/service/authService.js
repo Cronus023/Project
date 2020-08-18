@@ -10,13 +10,22 @@ auth.factory('authService',['$http','$q','$window', function($http,  $q, $window
                 }
             })
         },
+        dateFormat : function(date){
+            const dateFormat = new Date(date)
+            let dateString = ""
+            if(dateFormat.getMinutes() < 10){
+                dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" + "0"+dateFormat.getMinutes()
+            }
+            else dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" +  dateFormat.getMinutes()
+            return dateString
+        },
 
         login:function(authBody){
             const deferred = $q.defer()
 
             $http.post('http://localhost:8080/login',authBody).
                 then(function success(response) {
-                    if(response.status == 400){
+                    if(response.status === 400){
                         deferred.resolve(response.data.title)
                     }
                     else{
@@ -40,7 +49,7 @@ auth.factory('authService',['$http','$q','$window', function($http,  $q, $window
             const login = localStorage.getItem('UserLogin')
             $http.get(`http://localhost:8080/authLogout?login=${login}`).
             then(function (response) {
-                if(response.status == 400){
+                if(response.status === 400){
                     alert("error")
                 }
             })

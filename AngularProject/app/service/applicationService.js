@@ -50,6 +50,18 @@ application.factory('applicationService',['$http','$q','$window', function($http
             })
             return deferred.promise
         },
+        get_history_of_application: function(id){
+            const deferred = $q.defer()
+            $http.get(`http://localhost:8080/application/get_history?id=${id}`).
+            then(function success(response) {
+                if(response.data.title){
+                    alert(response.data.title)
+                    $window.location.href = '#!/application/reviewers/view'
+                }
+                deferred.resolve(response.data)
+            })
+            return deferred.promise
+        },
         reject_accept_application: function(id, application, status, section){
             const deferred = $q.defer()
             const requestBody = {

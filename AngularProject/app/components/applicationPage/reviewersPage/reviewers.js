@@ -12,4 +12,7 @@ angular.module('myApp.application.reviewers', [])
         $scope.regular = function(id){
             $window.location.href= `#!/application/reviewers/regular/${id}`
         }
+        $scope.historyOfApplication = function(id){
+            $window.location.href= `#!/application/history/${id}`
+        }
     })

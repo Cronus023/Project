@@ -1,0 +1,26 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Date of response</th>
+        <th scope="col">Response status</th>
+        <th scope="col">Type of section</th>
+        <th scope="col">Owner of response</th>
+        <th scope="col">Owner roles</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in data">
+        <div>
+            <td> {{dateFormat(item.dateOfResponse)}}</td>
+            <td> {{item.responseStatus}}</td>
+            <td> {{item.typeOfSection}}</td>
+            <td> {{item.user.login}}</td>
+            <td> {{item.user.roles}}</td>
+        </div>
+    </tr>
+    </tbody>
+
+</table>
+<button class="btn btn-info" ng-click="back()">Back</button>
+

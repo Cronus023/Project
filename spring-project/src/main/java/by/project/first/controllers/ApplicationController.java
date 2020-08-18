@@ -34,6 +34,11 @@ public class ApplicationController {
         return applicationService.get_application(id, login);
     }
 
+    @GetMapping("/application/get_history")
+    public ResponseEntity get_history (@RequestParam Long id){
+        return applicationService.get_history(id);
+    }
+
     @PostMapping("/application/reject_accept")
     public ResponseEntity reject_accept(@RequestBody RejectAndAcceptRequest request){
         return applicationService.reject_accept(request);

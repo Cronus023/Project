@@ -17,7 +17,7 @@
             <td> {{item.office.name}}</td>
             <td> {{item.office.location}}</td>
             <td>
-                <button class="btn btn-outline-info">History</button>
+                <button class="btn btn-outline-info" ng-click="historyOfApplication(item.id)">History</button>
             </td>
             <td>
                 <button ng-if="userRole != 'REGULAR_REVIEWER'" class="btn btn-outline-primary" ng-click="curriculum(item.id)">Curriculum reviewer</button>
