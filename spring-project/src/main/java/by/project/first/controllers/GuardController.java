@@ -23,4 +23,8 @@ public class GuardController {
     public ResponseEntity check_worker_id(@RequestParam Long id) {
         return guardService.check_worker_id(id);
     }
+    @GetMapping("/guards/check_training_control")
+    public ResponseEntity check_training_control(@RequestParam Long id, @RequestParam String login) {
+        return guardService.check_training_control(id, login);
+    }
 }

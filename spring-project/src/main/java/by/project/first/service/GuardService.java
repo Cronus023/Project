@@ -1,11 +1,9 @@
 package by.project.first.service;
 
 
-import by.project.first.models.Message;
-import by.project.first.models.OfficeModel;
-import by.project.first.models.UserModel;
-import by.project.first.models.WorkerModel;
+import by.project.first.models.*;
 import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,9 @@ public class GuardService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private TrainingRepo trainingRepo;
 
     @Autowired
     private WorkerRepo workerRepo;
@@ -50,5 +51,21 @@ public class GuardService {
             return ResponseEntity.status(400).body(new Message("Wrong worker id!"));
         }
         return  ResponseEntity.ok(new Message("ok!"));
+    }
+
+    public ResponseEntity check_training_control (Long id, String Login){
+        Optional<TrainingModel> training = trainingRepo.findById(id);
+        if(training.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("badStatus1"));
+        }
+        UserModel training_operator = userRepo.findByLogin(Login);
+        if(training_operator == null){
+            return ResponseEntity.status(400).body(new Message("badStatus2"));
+        }
+
+        if(training.get().getTrainerID() != training_operator){
+            return ResponseEntity.ok(new Message("bad!"));
+        }
+        return ResponseEntity.ok(new Message("ok!"));
     }
 }

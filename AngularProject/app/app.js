@@ -141,12 +141,14 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     }
   })
 
-  $routeProvider.when(`/trainings/control/:id`, {
+  $routeProvider.when(`/trainings/control/:trainingID`, {
     templateUrl: 'components/trainingPage/controlTrainingPage/controlTraining.html',
     controller: 'ControlTrainingsCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, trainingGuard){
         authGuard.checkLogin()
+        trainingGuard.checkTrainingControlPage();
+
       }
     }
   })
