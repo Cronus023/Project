@@ -174,25 +174,28 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     }
   })
 
-
-  $routeProvider.when(`/trainings/visit/:id`, {
+  $routeProvider.when(`/trainings/visit/:trainingID`, {
     templateUrl: 'components/trainingPage/visitTrainingPage/visitTraining.html',
     controller: 'VisitTrainingsCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, trainingGuard){
         authGuard.checkLogin()
+        trainingGuard.checkTrainingControlPage();
       }
     }
   })
-  $routeProvider.when(`/trainings/registration/:id`, {
+
+  $routeProvider.when(`/trainings/registration/:trainingID`, {
     templateUrl: 'components/trainingPage/regTrainingPage/regTraining.html',
     controller: 'RegTrainingsCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, trainingGuard){
         authGuard.checkLogin()
+        trainingGuard.checkTrainingControlPage();
       }
     }
   })
+
 
   $routeProvider.when(`/application/:login`, {
     templateUrl: 'components/applicationPage/application.html',

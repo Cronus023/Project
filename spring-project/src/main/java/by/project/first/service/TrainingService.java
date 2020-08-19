@@ -33,9 +33,6 @@ public class TrainingService {
     public ResponseEntity saveTraining (AddTrainingRequest request){
         TrainingModel training = request.getTraining();
         UserModel user = userRepo.findByLogin(request.getUserLogin());
-        if(user == null){
-            return ResponseEntity.ok(new Message("Wrong user login"));
-        }
         training.setTrainerID(user);
         trainingRepo.save(training);
         return ResponseEntity.ok(new Message("ok"));
