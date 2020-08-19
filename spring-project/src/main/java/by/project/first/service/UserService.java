@@ -67,10 +67,10 @@ public class UserService {
     }
 
     public UserModel findByLoginAndPassword(String login, String password) {
-        UserModel userEntity = userRepo.findByLogin(login);
-        if (userEntity != null) {
-            if (passwordEncoder.matches(password, userEntity.getPassword())) {
-                return userEntity;
+        UserModel user = userRepo.findByLogin(login);
+        if (user != null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
             }
         }
         return null;

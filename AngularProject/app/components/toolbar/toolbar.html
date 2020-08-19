@@ -1,4 +1,6 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+
+
     <h5 class="my-0 mr-md-auto font-weight-normal">Itransition</h5>
 
     <nav ng-if = "token == null">
@@ -6,33 +8,93 @@
         <a class="btn btn-outline-primary ml-1" href="#!/register">Sign up</a>
     </nav>
 
+
+
     <div ng-if = "token != null">
+
         <nav ng-if="role == 'PROVIDER'">
-            <a class="btn btn-outline-primary ml-1" href="#!/office">Create office</a>
-            <a class="btn btn-outline-primary ml-1" href="#!/trainings">Trainings</a>
-            <a class="btn btn-outline-primary ml-1" href="#!/main">Main page</a>
+            <div class="btn-group mr-4">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{role}} MENU
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#!/office">Create office</a>
+                    <a class="dropdown-item" href="#!/trainings">Trainings</a>
+                    <a class="dropdown-item" href="#!/main">Main page</a>
 
-            <button class="btn btn-outline-primary ml-1" ng-click="application()">Make application</button>
-            <button class="btn btn-outline-primary ml-1" ng-click="myApplications()">My applications</button>
-
+                    <button class="dropdown-item" ng-click="application()">Make application</button>
+                    <button class="dropdown-item" ng-click="myApplications()">My applications</button>
+                    <button class="dropdown-item" ng-click="logout()">Change role</button>
+                </div>
+            </div>
+            <lavel class="mr-2">Login as: {{role}} </lavel>
             <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
         </nav>
+
         <nav ng-if="role == 'CURRICULUM_REVIEWER'">
-            <a class="btn btn-outline-primary ml-1" href='#!/application/reviewers/view'>Applications</a>
+
+            <div class="btn-group mr-4">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{role}} MENU
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href='#!/application/reviewers/view'>Applications</a>
+                    <button class="dropdown-item" ng-click="logout()">Change role</button>
+                </div>
+            </div>
+
+            <lavel>Login as: {{role}} </lavel>
             <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
         </nav>
+
         <nav ng-if="role == 'REGULAR_REVIEWER'">
-            <a class="btn btn-outline-primary ml-1" href="#!/application/reviewers/view">Applications</a>
+
+            <div class="btn-group mr-4">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{role}} MENU
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#!/application/reviewers/view">Applications</a>
+                    <button class="dropdown-item" ng-click="logout()">Change role</button>
+                </div>
+            </div>
+
+            <lavel>Login as: {{role}} </lavel>
             <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
         </nav>
+
         <nav ng-if="role == 'SUPERVISION'">
-            <a class="btn btn-outline-primary ml-1" href="#!/application/reviewers/view">Applications</a>
+
+            <div class="btn-group mr-4">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{role}} MENU
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" weigth="">
+                    <a class="dropdown-item" href="#!/application/reviewers/view">Applications</a>
+                    <button class="dropdown-item" ng-click="logout()">Change role</button>
+                </div>
+            </div>
+
+            <lavel>Login as: {{role}} </lavel>
             <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
         </nav>
+
         <nav ng-if="role == 'TRAINING_OPERATOR'">
-            <a class="btn btn-outline-primary ml-1" href="#!/trainings">Trainings</a>
-            <button class="btn btn-outline-primary ml-1" ng-click="addTraining()">Add training</button>
+
+            <div class="btn-group mr-4">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{role}} MENU
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" weigth="">
+                    <a class="dropdown-item" href="#!/trainings">Trainings</a>
+                    <button class="dropdown-item" ng-click="addTraining()">Add training</button>
+                    <button class="dropdown-item" ng-click="logout()">Change role</button>
+                </div>
+            </div>
+
+            <lavel>Login as: {{role}} </lavel>
             <button class="btn btn-outline-primary" ng-click="logout()">Logout</button>
         </nav>
+
     </div>
 </div>
