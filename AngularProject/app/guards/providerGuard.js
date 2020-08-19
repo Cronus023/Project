@@ -1,7 +1,6 @@
 const providerGuard = angular.module('myApp.guards.provider', [])
 providerGuard.factory('providerGuard',['$http','$q','$window', '$route', function($http,  $q, $window, $route){
     return{
-
         checkUserRole: function(){
             const role = localStorage.getItem('UserRole')
             if(role !== 'PROVIDER'){

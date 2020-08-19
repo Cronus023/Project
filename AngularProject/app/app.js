@@ -17,6 +17,7 @@ angular.module('myApp', [
 
   'myApp.guards.auth',
   'myApp.guards.provider',
+  'myApp.guards.training',
 
   'myApp.workers.addWorker',
   'myApp.workers.edit',
@@ -89,7 +90,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     templateUrl: 'components/workersPage/workers.html',
     controller: 'WorkersCtrl',
     resolve:{
-      check:function($window, authGuard, providerGuard,){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
         providerGuard.checkWorkersPage()
       }
@@ -133,8 +134,9 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     templateUrl: 'components/trainingPage/training.html',
     controller: 'TrainingsCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, trainingGuard){
         authGuard.checkLogin()
+        trainingGuard.checkUserRole()
       }
     }
   })
