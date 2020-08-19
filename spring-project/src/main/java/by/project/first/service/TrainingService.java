@@ -65,9 +65,6 @@ public class TrainingService {
     public ResponseEntity registerWorkers (RegWorkersToTraining request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         Date date = new Date();
-        if(training.isEmpty()){
-            return ResponseEntity.ok(new Message("error"));
-        }
         if(date.compareTo(training.get().getDateOfEnd()) > 0){
             return ResponseEntity.ok(new Message("Registration for this training is not possible"));
         }

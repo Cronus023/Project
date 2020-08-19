@@ -21,7 +21,24 @@ providerGuard.factory('providerGuard',['$http','$q','$window', '$route', functio
                 }
             }
         },
-        checkWorkersPage: function(){
+        checkFormApplicationPage: function(){
+            this.checkUserRole()
+            const check = 'checkForm'
+            this.checkWorkersPage(check)
+        },
+        checkApplicationsPage: function(){
+            this.checkUserRole()
+            const role = localStorage.getItem('UserRole')
+            if(role === 'PROVIDER'){
+                const login = localStorage.getItem('UserLogin')
+                if($route.current.params.userLogin !== login){
+                    alert('You cannot add applications on behalf of another PROVIDER!')
+                    $window.location.href = '#!/main'
+                    $window.location.reload()
+                }
+            }
+        },
+        checkWorkersPage: function(check){
             this.checkUserRole()
             const role = localStorage.getItem('UserRole')
             if(role === 'PROVIDER'){
@@ -31,9 +48,16 @@ providerGuard.factory('providerGuard',['$http','$q','$window', '$route', functio
                     const data  = response.data
                     if(data.title !== 'ok!'){
                         if(data.title === 'bad!'){
-                            alert('You can not view and change workers of this office')
-                            $window.location.href = '#!/main'
-                            $window.location.reload()
+                            if(check === 'checkForm'){
+                                alert('You can not make form to this office')
+                                $window.location.href = '#!/main'
+                                $window.location.reload()
+                            }
+                            else{
+                                alert('You can not view and change workers of this office')
+                                $window.location.href = '#!/main'
+                                $window.location.reload()
+                            }
                         }
                         if(response.status === 400){
                             if(data.title === 'badStatus1'){

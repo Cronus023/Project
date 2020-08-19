@@ -38,12 +38,11 @@ angular.module('myApp.application.form', [])
                  },
              ]
          }
-         officeService.get_office_by_name($routeParams["name"]).then(function(value){
+         officeService.get_office_by_name($routeParams["officeName"]).then(function(value){
              if(value.title){
                  $scope.messageFromBack = value.title
              }
              $scope.office = value.office
-             console.log(value.notPassedWorkers)
              $scope.notPassedWorkers = value.notPassedWorkers
          })
          $scope.next= function(){

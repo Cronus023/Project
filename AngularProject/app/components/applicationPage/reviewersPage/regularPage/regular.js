@@ -1,16 +1,16 @@
 angular.module('myApp.application.reviewers.regular', [])
     .controller('RegularReviewersApplicationCtrl', function($scope, $routeParams,$window, applicationService) {
-        applicationService.get_application_by_id($routeParams["id"]).then(function(value){
+        applicationService.get_application_by_id($routeParams["applicationID"]).then(function(value){
             $scope.applicationData = value.application
             $scope.workers = value.workers
             $scope.responses = value.responses
             $scope.responses.map(function(item){
                 const applicationId = item.applicationID.id.toString()
 
-                if(item.typeOfSection === 'GROUPS' && applicationId === $routeParams["id"]){
+                if(item.typeOfSection === 'GROUPS' && applicationId === $routeParams["applicationID"]){
                     $scope.section.groupStatus = true
                 }
-                else if(item.typeOfSection === 'WORKERS' && applicationId === $routeParams["id"]){
+                else if(item.typeOfSection === 'WORKERS' && applicationId === $routeParams["applicationID"]){
                     $scope.section.workersStatus = true
                 }
             })
@@ -34,7 +34,7 @@ angular.module('myApp.application.reviewers.regular', [])
             if($scope.section.number === 2){
                 section = 'WORKERS'
             }
-            applicationService.reject_accept_application($routeParams["id"],$scope.applicationData, status, section).then(function(value){
+            applicationService.reject_accept_application($routeParams["applicationID"],$scope.applicationData, status, section).then(function(value){
                 if(value.title !== 'ok!'){
                     alert(value.title)
                     $window.location.href = '#!/application/reviewers/view'

@@ -18,6 +18,7 @@ angular.module('myApp', [
   'myApp.guards.auth',
   'myApp.guards.provider',
   'myApp.guards.training',
+  'myApp.guards.application',
 
   'myApp.workers.addWorker',
   'myApp.workers.edit',
@@ -208,12 +209,13 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   })
 
 
-  $routeProvider.when(`/application/:login`, {
+  $routeProvider.when(`/application/:userLogin`, {
     templateUrl: 'components/applicationPage/application.html',
     controller: 'ApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
+        providerGuard.checkApplicationsPage();
       }
     }
   })
@@ -222,57 +224,64 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     templateUrl: 'components/applicationPage/reviewersPage/reviewers.html',
     controller: 'ReviewersApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, applicationGuard){
         authGuard.checkLogin()
+        applicationGuard.checkUserRole();
       }
     }
   })
 
-  $routeProvider.when(`/application/history/:id`, {
+  $routeProvider.when(`/application/history/:applicationID`, {
     templateUrl: 'components/applicationPage/reviewersPage/historyOfApplicationPage/history.html',
     controller: 'HistoryApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, applicationGuard){
         authGuard.checkLogin()
+        applicationGuard.checkApplicationHistoryPage()
       }
     }
   })
 
-  $routeProvider.when(`/application/decision/:id`, {
+  $routeProvider.when(`/application/decision/:applicationID`, {
     templateUrl: 'components/applicationPage/reviewersPage/finalDicisionPage/finalDecision.html',
     controller: 'FinalDecisionApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, applicationGuard){
         authGuard.checkLogin()
+        applicationGuard.checkFinalDecisionPage()
       }
     }
   })
 
-  $routeProvider.when(`/application/reviewers/curriculum/:id`, {
+  $routeProvider.when(`/application/reviewers/curriculum/:applicationID`, {
     templateUrl: 'components/applicationPage/reviewersPage/curriculumPage/curriculum.html',
     controller: 'CurriculumReviewersApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard,applicationGuard){
         authGuard.checkLogin()
+        applicationGuard.check_CURRICULUM_REVIEWER_Page()
       }
     }
   })
 
-  $routeProvider.when(`/application/reviewers/regular/:id`, {
+  $routeProvider.when(`/application/reviewers/regular/:applicationID`, {
     templateUrl: 'components/applicationPage/reviewersPage/regularPage/regular.html',
     controller: 'RegularReviewersApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, applicationGuard){
         authGuard.checkLogin()
+        applicationGuard.check_REGULAR_REVIEWER_Page()
       }
     }
   })
-  $routeProvider.when(`/application/form/:name`, {
+
+  $routeProvider.when(`/application/form/:officeName`, {
     templateUrl: 'components/applicationPage/formOfApplicationPage/formOfApplication.html',
     controller: 'FormApplicationCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
+        providerGuard.checkFormApplicationPage()
       }
     }
   })

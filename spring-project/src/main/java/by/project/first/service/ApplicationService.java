@@ -119,11 +119,7 @@ public class ApplicationService {
 
     public ResponseEntity get_history(Long id){
         Optional<ApplicationModel> application = applicationRepo.findById(id);
-        if(application.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find application!"));
-        }
         Iterable<ResponseToApplicationModel> responsesOfApplication = responseToApplicationRepo.findAllByApplicationID(application.get());
-
         return ResponseEntity.ok(responsesOfApplication);
     }
 

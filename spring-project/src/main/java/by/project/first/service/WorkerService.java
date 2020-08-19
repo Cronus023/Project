@@ -41,9 +41,6 @@ public class WorkerService {
         WorkerModel newWorker = workerRepo.save(worker);
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
-        if(office == null){
-            return ResponseEntity.status(400).body(new Message("Can not find office!"));
-        }
         office.getWorkerId().add(newWorker);
 
         officeRepo.save(office);
@@ -61,9 +58,6 @@ public class WorkerService {
         Set<WorkerModel> workers =  request.getNewWorkers();
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
-        if(office == null){
-            return ResponseEntity.status(400).body(new Message("Office does not exist"));
-        }
         office.setWorkerId(workers);
 
         Iterable<TrainingModel> trainings = trainingRepo.findAll();

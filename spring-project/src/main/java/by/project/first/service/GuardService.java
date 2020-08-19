@@ -2,10 +2,8 @@ package by.project.first.service;
 
 
 import by.project.first.models.*;
-import by.project.first.repositories.OfficeRepo;
-import by.project.first.repositories.TrainingRepo;
-import by.project.first.repositories.UserRepo;
-import by.project.first.repositories.WorkerRepo;
+import by.project.first.models.ApplicationModels.ApplicationModel;
+import by.project.first.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,10 @@ public class GuardService {
 
     @Autowired
     private WorkerRepo workerRepo;
+
+    @Autowired
+    private ApplicationRepo applicationRepo;
+
 
     public ResponseEntity check_provider_office (String login, String officeName){
         OfficeModel office = officeRepo.findByName(officeName);
@@ -65,6 +67,13 @@ public class GuardService {
 
         if(training.get().getTrainerID() != training_operator){
             return ResponseEntity.ok(new Message("bad!"));
+        }
+        return ResponseEntity.ok(new Message("ok!"));
+    }
+    public ResponseEntity check_application (Long id){
+        Optional<ApplicationModel> application = applicationRepo.findById(id);
+        if(application.isEmpty()){
+            return ResponseEntity.status(400).body(new Message("Application does not exist!"));
         }
         return ResponseEntity.ok(new Message("ok!"));
     }

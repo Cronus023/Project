@@ -27,4 +27,8 @@ public class GuardController {
     public ResponseEntity check_training_control(@RequestParam Long id, @RequestParam String login) {
         return guardService.check_training_control(id, login);
     }
+    @GetMapping("/guards/check_application")
+    public ResponseEntity check_application(@RequestParam Long id) {
+        return guardService.check_application(id);
+    }
 }

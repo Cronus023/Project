@@ -5,7 +5,6 @@ import by.project.first.controllers.ReqAndRes.BecomeRequest;
 import by.project.first.controllers.ReqAndRes.FindNotPassedWorkersResponse;
 import by.project.first.models.*;
 import by.project.first.models.ApplicationModels.ApplicationModel;
-import by.project.first.repositories.ApplicationRepo;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
@@ -18,7 +17,6 @@ import java.util.*;
 @Service
 public class OfficeService {
 
-
     @Autowired
     private OfficeRepo officeRepo;
 
@@ -26,16 +24,10 @@ public class OfficeService {
     private TrainingRepo trainingRepo;
 
     @Autowired
-    private ApplicationRepo applicationRepo;
-
-    @Autowired
     private UserRepo userRepo;
 
     public ResponseEntity get_offices_by_login (String login){
         UserModel provider = userRepo.findByLogin(login);
-        if(provider == null){
-            return ResponseEntity.status(400).body(new Message("Wrong provider login!"));
-        }
         Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(provider);
         return ResponseEntity.ok(providerOffices);
     }
