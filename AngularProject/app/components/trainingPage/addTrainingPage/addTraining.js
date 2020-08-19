@@ -7,7 +7,7 @@ angular.module('myApp.trainings.add', [])
             { key: 3, value: "PERSONAL_GROWTH"},
             { key: 4, value: "COMMUNICATION" },
         ]
-        $scope.userLogin = $routeParams["name"]
+        $scope.userLogin = $routeParams["userLogin"]
         $scope.add = function(trainingForm){
             if(trainingForm.$valid){
                 const date = new Date()

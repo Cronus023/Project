@@ -25,9 +25,8 @@ auth.factory('authService',['$http','$q','$window', function($http,  $q, $window
             else dateString = dateFormat.getDate()+ "-" + dateFormat.getMonth()+ "-" +dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" +  dateFormat.getMinutes()
             return dateString
         },
-        get_user_roles : function(){
+        get_user_roles : function(login){
             const deferred = $q.defer()
-            const login = localStorage.getItem('UserLogin')
             $http.get(`http://localhost:8080/get_roles?login=${login}`).
             then(function success(response) {
                 deferred.resolve(response.data)

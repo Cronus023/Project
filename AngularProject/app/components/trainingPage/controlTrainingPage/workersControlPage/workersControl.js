@@ -2,7 +2,7 @@ angular.module('myApp.trainings.control.workers', [])
     .controller('WorkersControlTrainingsCtrl', function($scope, trainingService,$routeParams, $window) {
         $scope.checkAll = false
         $scope.message = ''
-        $scope.id = $routeParams["id"]
+        $scope.id = $routeParams["trainingID"]
         trainingService.get_training_by_id($scope.id).then(function(value){
             $scope.training = value
             $scope.data = value.workerID

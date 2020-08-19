@@ -1,6 +1,7 @@
 angular.module('myApp.changeRole', [])
     .controller('ChangeRoleCtrl', function($scope,$window, authService) {
-        authService.get_user_roles().then(function(value){
+        $scope.userLogin = localStorage.getItem('UserLogin')
+        authService.get_user_roles($scope.userLogin).then(function(value){
             if(value.title){
                 alert(value.title)
                 $window.location.href = '#!/login'

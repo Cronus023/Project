@@ -1,5 +1,5 @@
 const trainingGuard = angular.module('myApp.guards.training', [])
-trainingGuard.factory('trainingGuard',['$http','$q','$window', '$route', function($http,  $q, $window, $route){
+trainingGuard.factory('trainingGuard',['$http','$q','$window', '$route', 'authService', function($http,  $q, $window, $route, authService){
     return{
         checkUserRole: function(){
             const role = localStorage.getItem('UserRole')
@@ -15,7 +15,6 @@ trainingGuard.factory('trainingGuard',['$http','$q','$window', '$route', functio
             $http.get(`http://localhost:8080/guards/check_training_control?login=${login}&id=${$route.current.params.trainingID}`).
             then(function (response) {
                 const data  = response.data
-                console.log(data)
                 if(data.title !== 'ok!'){
                     if(data.title === 'bad!'){
                         alert('You can not control this training!')
@@ -38,7 +37,22 @@ trainingGuard.factory('trainingGuard',['$http','$q','$window', '$route', functio
                     }
                 }
             })
-            console.log($route.current.params)
+        },
+        checkAddTrainingPage: function(){
+            const role = localStorage.getItem('UserRole')
+            if(role!== 'TRAINING_OPERATOR'){
+                alert('Your current role is ' +  role + ',' + 'change it to TRAINING_OPERATOR before entering this page')
+                $window.location.href = '#!/changeRole'
+                $window.location.reload()
+            }
+            else{
+                const login = localStorage.getItem('UserLogin')
+                if($route.current.params.userLogin !== login){
+                    alert('You cannot add training on behalf of another training_operator!')
+                    $window.location.href = '#!/trainings'
+                    $window.location.reload()
+                }
+            }
         }
     }
 }] )
