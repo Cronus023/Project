@@ -91,7 +91,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     resolve:{
       check:function($window, authGuard, providerGuard,){
         authGuard.checkLogin()
-        //providerGuard.checkWorkersPage()
+        providerGuard.checkWorkersPage()
       }
     }
   })

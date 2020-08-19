@@ -28,10 +28,7 @@ public class WorkerService {
 
     public ResponseEntity get_workers(String name){
         OfficeModel office = officeRepo.findByName(name);
-        if(office != null){
-            return ResponseEntity.ok(office.getWorkerId());
-        }
-        return ResponseEntity.status(400).body(new Message("error"));
+        return ResponseEntity.ok(office.getWorkerId());
     }
 
     public ResponseEntity get_worker_by_id(Long id){
