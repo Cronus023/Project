@@ -20,13 +20,15 @@ providerGuard.factory('providerGuard',['$http','$q','$window', '$route', functio
                     const data  = response.data
                     if(data.title !== 'ok!'){
                         if(data.title === 'bad!'){
-                            alert('You can not view workers of this office')
+                            alert('You can not view and change workers of this office')
                             $window.location.href = '#!/main'
                             $window.location.reload()
                         }
                         if(response.status === 400){
                             if(data.title === 'badStatus1'){
                                 alert("Such office does not exist")
+                                $window.location.href = '#!/main'
+                                $window.location.reload()
                             }
                             if(data.title === 'badStatus2'){
                                 alert("Wrong user login!")
@@ -52,11 +54,13 @@ providerGuard.factory('providerGuard',['$http','$q','$window', '$route', functio
             })
         },
         
-        checkWorkersTrainingsPage: function(){
+        checkWorkersTrainingsAndEditPages: function(){
             this.checkUserRole()
             this.checkWorkersPage()
             this.checkWorkerId()
-        }
+        },
+
+
 
     }
 }] )

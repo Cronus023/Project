@@ -33,10 +33,7 @@ public class WorkerService {
 
     public ResponseEntity get_worker_by_id(Long id){
         Optional<WorkerModel> worker = workerRepo.findById(id);
-        if(worker.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("error"));
-        }
-        else return ResponseEntity.ok(worker);
+        return ResponseEntity.ok(worker);
     }
 
     public ResponseEntity saveWorker(AddWorkerRequest request) {

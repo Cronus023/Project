@@ -102,20 +102,33 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     resolve:{
       check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
-        providerGuard.checkWorkersTrainingsPage()
+        providerGuard.checkWorkersTrainingsAndEditPages()
       }
     }
   })
 
-  $routeProvider.when(`/workers/add/:workerID`, {
+  $routeProvider.when(`/workers/add/:officeName`, {
     templateUrl: 'components/workersPage/addWorkerPage/addWorker.html',
     controller: 'AddWorkerCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
+        providerGuard.checkWorkersPage()
       }
     }
   })
+
+  $routeProvider.when(`/workers/edit/:officeName/:workerID`, {
+    templateUrl: 'components/workersPage/editWorkerPage/editWorker.html',
+    controller: 'EditWorkersCtrl',
+    resolve:{
+      check:function($window, authGuard, providerGuard){
+        authGuard.checkLogin()
+        providerGuard.checkWorkersTrainingsAndEditPages()
+      }
+    }
+  })
+
   $routeProvider.when(`/trainings`, {
     templateUrl: 'components/trainingPage/training.html',
     controller: 'TrainingsCtrl',
@@ -125,6 +138,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when(`/trainings/control/:id`, {
     templateUrl: 'components/trainingPage/controlTrainingPage/controlTraining.html',
     controller: 'ControlTrainingsCtrl',
@@ -171,15 +185,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
-  $routeProvider.when(`/workers/edit/:name/:id`, {
-    templateUrl: 'components/workersPage/editWorkerPage/editWorker.html',
-    controller: 'EditWorkersCtrl',
-    resolve:{
-      check:function($window, authGuard){
-        authGuard.checkLogin()
-      }
-    }
-  })
+
   $routeProvider.when(`/application/:login`, {
     templateUrl: 'components/applicationPage/application.html',
     controller: 'ApplicationCtrl',
