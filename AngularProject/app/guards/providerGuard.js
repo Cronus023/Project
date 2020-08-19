@@ -9,6 +9,18 @@ providerGuard.factory('providerGuard',['$http','$q','$window', '$route', functio
                 $window.location.reload()
             }
         },
+        checkMyApplicationsPage: function(){
+            this.checkUserRole()
+            const role = localStorage.getItem('UserRole')
+            if(role === 'PROVIDER'){
+                const login = localStorage.getItem('UserLogin')
+                if($route.current.params.userLogin !== login){
+                    alert('You cannot view applications of another PROVIDER!')
+                    $window.location.href = '#!/main'
+                    $window.location.reload()
+                }
+            }
+        },
         checkWorkersPage: function(){
             this.checkUserRole()
             const role = localStorage.getItem('UserRole')

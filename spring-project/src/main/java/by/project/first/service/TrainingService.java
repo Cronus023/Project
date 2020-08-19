@@ -86,10 +86,6 @@ public class TrainingService {
     }
 
     public ResponseEntity edit_training(TrainingModel request){
-        Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        if(training.isEmpty()){
-            ResponseEntity.status(400).body(new Message("This training does not exist!"));
-        }
         trainingRepo.save(request);
         return ResponseEntity.ok(new Message("ok!"));
     }
@@ -97,7 +93,6 @@ public class TrainingService {
 
     public ResponseEntity findTrainingWorkers (GetWorkersTrainingRequest request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-
 
         Date date = new Date();
 
@@ -135,9 +130,6 @@ public class TrainingService {
     public ResponseEntity addPassedWorkers (RegWorkersToTraining request){
         Set<WorkerModel> passedWorkers = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        if(training.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("error"));
-        }
         training.get().getTrainingPassedID().addAll(passedWorkers);
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
@@ -145,9 +137,6 @@ public class TrainingService {
 
     public ResponseEntity delete_workers(RegWorkersToTraining request){
         Optional<TrainingModel> training= trainingRepo.findById(request.getId());
-        if(training.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find training"));
-        }
         request.getNewWorkers().forEach(worker->{
             Optional<WorkerModel> deletedWorker = workerRepo.findById(worker.getId());
             training.get().getWorkerID().remove(deletedWorker.get());
@@ -157,10 +146,6 @@ public class TrainingService {
     }
 
     public ResponseEntity delete_training(Long id){
-        Optional<TrainingModel> training = trainingRepo.findById(id);
-        if(training.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find training"));
-        }
         trainingRepo.deleteById(id);
         return ResponseEntity.ok(new Message("ok!"));
     }
@@ -168,9 +153,6 @@ public class TrainingService {
     public ResponseEntity addVisitors (RegWorkersToTraining request){
         Set<WorkerModel> visitors = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        if(training.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("error"));
-        }
         training.get().getTrainingVisitorsID().addAll(visitors);
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));

@@ -129,9 +129,6 @@ public class ApplicationService {
 
     public ResponseEntity get_provider_applications(String login){
         UserModel user = userRepo.findByLogin(login);
-        if(user == null){
-            return ResponseEntity.status(400).body(new Message("Can not find provider!"));
-        }
         Set<ApplicationModel> providerApplications = new HashSet<>();
         Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(user);
 

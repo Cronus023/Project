@@ -196,6 +196,17 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     }
   })
 
+  $routeProvider.when(`/application/my/:userLogin`, {
+    templateUrl: 'components/applicationPage/myApplicationsPage/myApplications.html',
+    controller: 'MyApplicationCtrl',
+    resolve:{
+      check:function($window, authGuard, providerGuard){
+        authGuard.checkLogin()
+        providerGuard.checkMyApplicationsPage()
+      }
+    }
+  })
+
 
   $routeProvider.when(`/application/:login`, {
     templateUrl: 'components/applicationPage/application.html',
@@ -206,6 +217,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when(`/application/reviewers/view`, {
     templateUrl: 'components/applicationPage/reviewersPage/reviewers.html',
     controller: 'ReviewersApplicationCtrl',
@@ -225,15 +237,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
-  $routeProvider.when(`/application/my/:login`, {
-    templateUrl: 'components/applicationPage/myApplicationsPage/myApplications.html',
-    controller: 'MyApplicationCtrl',
-    resolve:{
-      check:function($window, authGuard){
-        authGuard.checkLogin()
-      }
-    }
-  })
+
   $routeProvider.when(`/application/decision/:id`, {
     templateUrl: 'components/applicationPage/reviewersPage/finalDicisionPage/finalDecision.html',
     controller: 'FinalDecisionApplicationCtrl',
@@ -243,6 +247,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when(`/application/reviewers/curriculum/:id`, {
     templateUrl: 'components/applicationPage/reviewersPage/curriculumPage/curriculum.html',
     controller: 'CurriculumReviewersApplicationCtrl',
@@ -252,6 +257,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when(`/application/reviewers/regular/:id`, {
     templateUrl: 'components/applicationPage/reviewersPage/regularPage/regular.html',
     controller: 'RegularReviewersApplicationCtrl',
