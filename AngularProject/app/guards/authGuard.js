@@ -1,4 +1,4 @@
-const authGuard = angular.module('myApp.authGuard', [])
+const authGuard = angular.module('myApp.guards.auth', [])
 authGuard.factory('authGuard',['$http','$q','$window', function($http,  $q, $window){
     return{
         checkLogin: function(){

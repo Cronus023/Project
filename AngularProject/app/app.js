@@ -15,7 +15,8 @@ angular.module('myApp', [
   'training',
   'application',
 
-  'myApp.authGuard',
+  'myApp.guards.auth',
+  'myApp.guards.provider',
 
   'myApp.workers.addWorker',
   'myApp.workers.edit',
@@ -41,19 +42,23 @@ angular.module('myApp', [
 ]).
 config(['$locationProvider', '$routeProvider', '$httpProvider', function($locationProvider, $routeProvider, $httpProvider) {
   $httpProvider.interceptors.push('AuthInterceptor');
+
   $routeProvider.when('/login', {
     templateUrl: 'components/loginPage/login.html',
     controller: 'LoginCtrl',
   })
+
   $routeProvider.when('/main', {
     templateUrl: 'components/mainPage/main.html',
     controller: 'MainCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
+        providerGuard.checkUserRole()
       }
     }
   })
+
   $routeProvider.when('/changeRole', {
     templateUrl: 'components/changeRolePage/changeRole.html',
     controller: 'ChangeRoleCtrl',
@@ -63,28 +68,34 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when('/register', {
     templateUrl: 'components/registerPage/register.html',
     controller: 'RegisterCtrl',
   })
+
   $routeProvider.when('/office', {
     templateUrl: 'components/officePage/office.html',
     controller: 'OfficeCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
+        providerGuard.checkUserRole()
       }
     }
   })
+
   $routeProvider.when(`/workers/:id`, {
     templateUrl: 'components/workersPage/workers.html',
     controller: 'WorkersCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard,){
         authGuard.checkLogin()
+        //providerGuard.checkWorkersPage()
       }
     }
   })
+
   $routeProvider.when(`/workers/trainings/:id`, {
     templateUrl: 'components/workersPage/workerTrainingsPage/workerTrainings.html',
     controller: 'TrainingsWorkersCtrl',
@@ -94,6 +105,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when(`/workers/add/:id`, {
     templateUrl: 'components/workersPage/addWorkerPage/addWorker.html',
     controller: 'AddWorkerCtrl',

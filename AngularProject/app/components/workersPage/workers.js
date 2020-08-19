@@ -3,6 +3,7 @@ angular.module('myApp.workers', [])
         $scope.checkAll = false
 
         $scope.id = $routeParams["id"]
+
         workersService.get_workers($scope.id).then(function(value){
             $scope.data = value
         })
