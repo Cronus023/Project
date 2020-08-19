@@ -14,8 +14,8 @@
     <tr ng-repeat="item in data">
         <div>
             <th scope="row" >{{item.id}}</th>
-            <td> {{item.office.name}}</td>
-            <td> {{item.office.location}}</td>
+            <td> {{item.officeName}}</td>
+            <td> {{item.officeLocation}}</td>
             <td>
                 <button class="btn btn-outline-info" ng-click="historyOfApplication(item.id)">History</button>
             </td>

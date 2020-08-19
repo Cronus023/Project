@@ -28,21 +28,29 @@ public class OfficeModel {
     private Set<UserModel> leaderID = new HashSet<>();
     private String photo;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "office_workers",
             joinColumns = @JoinColumn(name = "office_id")
     )
     private Set<WorkerModel> workerId = new HashSet<>();
 
-    private Long lastApplicationId;
-    private String statusOfLastApplication;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "office_applications",
+            joinColumns = @JoinColumn(name = "office_id")
+    )
+    private Set<ApplicationModel> officeApplications = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private ApplicationModel lastApplication;
+
 
     public OfficeModel() {
     }
 
 
-    public OfficeModel(String location, String name, Date dateOfLastPermission, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId, ApplicationModel lastApplication) {
+    public OfficeModel(String location, String name, Date dateOfLastPermission, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId, Set<ApplicationModel> officeApplications) {
         this.location = location;
         this.name = name;
         this.dateOfLastPermission = dateOfLastPermission;
@@ -50,23 +58,26 @@ public class OfficeModel {
         this.leaderID = leaderID;
         this.photo = photo;
         this.workerId = workerId;
+        this.officeApplications = officeApplications;
+
     }
 
-    public String getStatusOfLastApplication() {
-        return statusOfLastApplication;
+    public ApplicationModel getLastApplication() {
+        return lastApplication;
     }
 
-    public void setStatusOfLastApplication(String statusOfLastApplication) {
-        this.statusOfLastApplication = statusOfLastApplication;
+    public void setLastApplication(ApplicationModel lastApplication) {
+        this.lastApplication = lastApplication;
     }
 
-    public Long getLastApplicationId() {
-        return lastApplicationId;
+    public Set<ApplicationModel> getOfficeApplications() {
+        return officeApplications;
     }
 
-    public void setLastApplicationId(Long lastApplicationId) {
-        this.lastApplicationId = lastApplicationId;
+    public void setOfficeApplications(Set<ApplicationModel> officeApplications) {
+        this.officeApplications = officeApplications;
     }
+
 
     public Long getId() {
         return id;

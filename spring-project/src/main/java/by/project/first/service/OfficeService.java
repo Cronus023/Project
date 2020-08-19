@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class OfficeService {
@@ -61,50 +59,36 @@ public class OfficeService {
         }
     }
 
-    public boolean checkOfficeApplications(Set<ApplicationModel> officeApplications){
+    public boolean checkOfficeApplications(ApplicationModel lastApplication){
 
-        AtomicBoolean flagOfWait = new AtomicBoolean(false);
-        AtomicBoolean flagOfAccept = new AtomicBoolean(false);
-        AtomicReference<Date> date = new AtomicReference<>(new Date());
-
-        officeApplications.forEach(application->{
-            if(application.getStatus().equals("WAIT_FOR_AN_ANSWER")){
-                flagOfWait.set(true);
-            }
-            if(application.getStatus().equals("ACCEPT")){
-                Date dateOfEndOfPermission = application.getOffice().getDateOfLastPermission();
-                dateOfEndOfPermission.setYear(dateOfEndOfPermission.getYear() + 1);
-                if(date.get().compareTo(dateOfEndOfPermission) < 0){
-                    date.set(dateOfEndOfPermission);
-                }
-                flagOfAccept.set(true);
-            }
-
-        });
-        if(officeApplications.isEmpty()){
+        if(lastApplication == null){
             return true;
         }
-        if(flagOfAccept.get()){
-            //check date of last permission
-            if(date.get().compareTo(new Date()) <= 0 ){
+
+        if(lastApplication.getStatus().equals("WAIT_FOR_AN_ANSWER")){
+            return false;
+        }
+
+        if(lastApplication.getStatus().equals("REJECT")){
+            return true;
+        }
+
+        if(lastApplication.getStatus().equals("ACCEPT")){
+            Date dateOfEndOfPermission = lastApplication.getDateOfApplication();
+            dateOfEndOfPermission.setYear(dateOfEndOfPermission.getYear() + 1);
+            if(dateOfEndOfPermission.compareTo(new Date()) <= 0){
                 return true;
             }
-            if(date.get().compareTo(new Date()) > 0 ){
+            if(dateOfEndOfPermission.compareTo(new Date()) > 0){
                 return false;
             }
         }
-        return !flagOfWait.get();
+
+        return false;
     }
     public ResponseEntity get_office(){
         Iterable<OfficeModel> offices = officeRepo.findAll();
-        offices.forEach(office->{
-            Optional<ApplicationModel> lastApplication = applicationRepo.findById(office.getLastApplicationId());
-            office.setStatusOfLastApplication(lastApplication.get().getStatus());
-            officeRepo.save(office);
-        });
-
         return ResponseEntity.ok(offices);
-
     }
 
 
@@ -114,9 +98,9 @@ public class OfficeService {
             return ResponseEntity.status(400).body(new Message("Can not find office"));
         }
 
-        Set<ApplicationModel> officeApplications = applicationRepo.findAllByOffice(office);
+        ApplicationModel lastApplication = office.getLastApplication();
 
-        if(!checkOfficeApplications(officeApplications)){
+        if(!checkOfficeApplications(lastApplication)){
             return ResponseEntity.status(400).body(new Message("Application already exist!"));
         }
 

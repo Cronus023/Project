@@ -3,6 +3,7 @@
     <tr>
         <th scope="col">id</th>
         <th scope="col">Office</th>
+        <th scope="col">Application date</th>
         <th scope="col">Status of application</th>
     </tr>
     </thead>
@@ -10,7 +11,8 @@
     <tr ng-repeat="item in data">
         <div>
             <td> {{item.id}}</td>
-            <td> {{item.office.name}}</td>
+            <td> {{item.officeName}}</td>
+            <td> {{dateFormat(item.dateOfApplication)}}</td>
             <td>
                 <div ng-if ="item.status == 'REJECT'">
                     <label style = "color:#dc0c0c">{{item.status}}</label>

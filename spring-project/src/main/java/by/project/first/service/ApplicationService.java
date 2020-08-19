@@ -1,5 +1,6 @@
 package by.project.first.service;
 
+import by.project.first.controllers.ReqAndRes.ApplicationCreateRequest;
 import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
 import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
 import by.project.first.models.ApplicationModels.*;
@@ -41,7 +42,7 @@ public class ApplicationService {
     @Autowired
     private GroupRepo groupRepo;
 
-    public ResponseEntity create_application(ApplicationModel request){
+    public ResponseEntity create_application(ApplicationCreateRequest request){
         OfficeModel office = officeRepo.findByName(request.getOffice().getName());
 
         if(office == null){
@@ -50,17 +51,16 @@ public class ApplicationService {
         else{
             Set<ReasonsModel> reasons = new HashSet<>();
             Set<GroupsModel> groups = new HashSet<>();
-            reasonRepo.saveAll(request.getReasons());
-            groupRepo.saveAll(request.getGroups());
+            reasonRepo.saveAll(request.getApplication().getReasons());
+            groupRepo.saveAll(request.getApplication().getGroups());
 
-            ApplicationModel application = new ApplicationModel(reasons, groups, office, request.getEducationalProgram(),request.getAdditionalInfo());
-            applicationRepo.save(application);
+            ApplicationModel application = new ApplicationModel(reasons, groups, request.getApplication().getEducationalProgram(),request.getApplication().getAdditionalInfo(), office.getName(), office.getLocation());
+            ApplicationModel newApplication = applicationRepo.save(application);
 
-            office.setLocation(request.getOffice().getLocation());
-            office.setLastApplicationId(application.getId());
+            office.setLastApplication(newApplication);
+            office.getOfficeApplications().add(newApplication);
+
             officeRepo.save(office);
-
-
             return ResponseEntity.ok(new Message("ok!"));
         }
         return ResponseEntity.ok(new Message("ok!"));
@@ -133,13 +133,13 @@ public class ApplicationService {
             return ResponseEntity.status(400).body(new Message("Can not find provider!"));
         }
         Set<ApplicationModel> providerApplications = new HashSet<>();
-
         Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(user);
 
         providerOffices.forEach(office->{
-            Set<ApplicationModel> officeApplications = applicationRepo.findAllByOffice(office);
+            Set<ApplicationModel> officeApplications = office.getOfficeApplications();
             providerApplications.addAll(officeApplications);
         });
+
         return ResponseEntity.ok(providerApplications);
     }
 
@@ -148,14 +148,15 @@ public class ApplicationService {
         if(application.isEmpty()){
             return ResponseEntity.status(400).body(new Message("Can not find application!"));
         }
-        Optional<OfficeModel> office = officeRepo.findById(application.get().getOffice().getId());
-        if(office.isEmpty()){
+        OfficeModel office = officeRepo.findByLastApplication(application);
+
+        if(office == null){
             return ResponseEntity.status(400).body(new Message("Can not find office!"));
         }
 
         if(decision.equals("ACCEPT")){
-            office.get().setDateOfLastPermission(new Date());
-            officeRepo.save(office.get());
+            office.setDateOfLastPermission(new Date());
+            officeRepo.save(office);
 
             application.get().setStatus(decision);
             applicationRepo.save(application.get());

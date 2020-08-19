@@ -1,5 +1,6 @@
 package by.project.first.controllers;
 
+import by.project.first.controllers.ReqAndRes.ApplicationCreateRequest;
 import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.service.ApplicationService;
@@ -15,7 +16,7 @@ public class ApplicationController {
 
 
     @PostMapping("/application/create")
-    public ResponseEntity create_application(@RequestBody ApplicationModel request){
+    public ResponseEntity create_application(@RequestBody ApplicationCreateRequest request){
         return applicationService.create_application(request);
     }
 

@@ -3,12 +3,15 @@ application.factory('applicationService',['$http','$q','$window', function($http
     return{
         create_application: function(application, reasons,office){
             const deferred = $q.defer()
+
             const requestBody ={
-                additionalInfo: application.additionalInfo,
-                educationalProgram: application.educationalProgram,
-                groups: application.groups,
-                office:office,
-                reasons: reasons
+                application: {
+                    additionalInfo: application.additionalInfo,
+                    educationalProgram: application.educationalProgram,
+                    groups: application.groups,
+                    reasons: reasons
+                },
+                office:office
             }
             $http.post('http://localhost:8080/application/create', requestBody).
             then(function success(response) {

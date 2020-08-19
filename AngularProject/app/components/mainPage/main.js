@@ -6,6 +6,7 @@ angular.module('myApp.main', ['ngRoute'])
 
         officeService.get_office().then(function(value){
             $scope.offices = value
+            console.log(value)
         })
 
         $scope.become = function(office){

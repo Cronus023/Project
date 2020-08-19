@@ -28,27 +28,39 @@ public class ApplicationModel {
     )
     private Set<GroupsModel> groups = new HashSet<>();
 
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "application_office",
-            joinColumns = @JoinColumn(name = "application_id")
-    )
-    private OfficeModel office;
     private String educationalProgram;
     private String additionalInfo;
     private Date dateOfApplication = new Date();
     private String status = "WAIT_FOR_AN_ANSWER";
+    private String officeName;
+    private String officeLocation;
 
     public ApplicationModel() {
     }
 
-    public ApplicationModel(Set<ReasonsModel> reasons, Set<GroupsModel> groups, OfficeModel office, String educationalProgram, String additionalInfo) {
+    public ApplicationModel(Set<ReasonsModel> reasons, Set<GroupsModel> groups, String educationalProgram, String additionalInfo, String officeName, String officeLocation) {
         this.reasons = reasons;
         this.groups = groups;
-        this.office = office;
         this.educationalProgram = educationalProgram;
         this.additionalInfo = additionalInfo;
+        this.officeName = officeName;
+        this.officeLocation = officeLocation;
+    }
+
+    public String getOfficeLocation() {
+        return officeLocation;
+    }
+
+    public void setOfficeLocation(String officeLocation) {
+        this.officeLocation = officeLocation;
+    }
+
+    public String getOfficeName() {
+        return officeName;
+    }
+
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
     }
 
     public Date getDateOfApplication() {
@@ -81,14 +93,6 @@ public class ApplicationModel {
 
     public void setGroups(Set<GroupsModel> groups) {
         this.groups = groups;
-    }
-
-    public OfficeModel getOffice() {
-        return office;
-    }
-
-    public void setOffice(OfficeModel office) {
-        this.office = office;
     }
 
     public String getEducationalProgram() {
