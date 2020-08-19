@@ -29,6 +29,11 @@ public class AuthController {
         return userService.logout(login);
     }
 
+    @GetMapping("/get_roles")
+    public ResponseEntity get_user_roles(@RequestParam String login){
+        return userService.get_roles(login);
+    }
+
     @GetMapping("/auth/check")
     public ResponseEntity checkAuth(@RequestParam String token){
         return userService.checkAuth(token);

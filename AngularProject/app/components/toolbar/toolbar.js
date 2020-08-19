@@ -26,4 +26,8 @@ angular.module('myApp.toolbar', [])
             const login = localStorage.getItem('UserLogin')
             $window.location.href = `#!/application/my/${login}`
         }
+
+        $scope.changeRole = function(){
+            $window.location.href = '#!/changeRole'
+        }
     })

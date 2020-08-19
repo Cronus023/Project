@@ -43,6 +43,13 @@ public class UserService {
         }
     }
 
+    public ResponseEntity get_roles (String login){
+        UserModel user = userRepo.findByLogin(login);
+        if(user == null){
+            return ResponseEntity.status(400).body(new Message("Can not find user"));
+        }
+        return ResponseEntity.ok(user.getRoles());
+    }
     public ResponseEntity logout (String login){
         UserModel user = userRepo.findByLogin(login);
         if(user == null){

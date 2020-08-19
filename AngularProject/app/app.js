@@ -20,6 +20,7 @@ angular.module('myApp', [
   'myApp.workers.trainings',
 
   'myApp.trainings',
+  'myApp.changeRole',
   'myApp.trainings.add',
   'myApp.trainings.reg',
   'myApp.trainings.control',
@@ -50,7 +51,15 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
         authService.checkLogin()
       }
     }
-
+  })
+  $routeProvider.when('/changeRole', {
+    templateUrl: 'components/changeRolePage/changeRole.html',
+    controller: 'ChangeRoleCtrl',
+    resolve:{
+      check:function($window, authService){
+        authService.checkLogin()
+      }
+    }
   })
   $routeProvider.when('/register', {
     templateUrl: 'components/registerPage/register.html',
@@ -175,6 +184,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
       }
     }
   })
+
   $routeProvider.when(`/application/history/:id`, {
     templateUrl: 'components/applicationPage/reviewersPage/historyOfApplicationPage/history.html',
     controller: 'HistoryApplicationCtrl',

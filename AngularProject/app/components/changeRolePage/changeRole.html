@@ -1,0 +1,9 @@
+<div class = "d-flex justify-content-center">
+    <div class="signin card" style="width: 40rem;" ng-form = "registrationForm">
+        <h1 class=" text-center card-header" >Change role</h1><br>
+        <label>You can choose following roles: </label>
+        <p ng-repeat = "role in roles">
+            <button class="btn btn-lg btn-info" ng-click="chooseRole(role)">{{role}}</button>
+        </p>
+    </div>
+</div>

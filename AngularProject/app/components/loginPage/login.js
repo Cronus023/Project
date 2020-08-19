@@ -12,22 +12,10 @@ angular.module('myApp.login', ['ngRoute'])
                         $scope.message = value.title
                     }
                     else{
-                        localStorage.setItem('UserRoles', value.roles)
                         localStorage.setItem('UserRole', value.roles[0])
                         localStorage.setItem('JwtToken', value.token)
                         localStorage.setItem('UserLogin', authBody.login)
-                        if(value.roles[0] === 'PROVIDER'){
-                            $window.location.href = '#!/main'
-                            $window.location.reload()
-                        }
-                        if(value.roles[0] === 'CURRICULUM_REVIEWER' || value.roles[0] === 'REGULAR_REVIEWER' ||  value.roles[0] === 'SUPERVISION' ){
-                            $window.location.href = '#!/application/reviewers/view'
-                            $window.location.reload()
-                        }
-                        if(value.roles[0] === 'TRAINING_OPERATOR'){
-                            $window.location.href = '#!/trainings'
-                            $window.location.reload()
-                        }
+                        authService.user_navigation(value.roles[0])
                     }
                 })
             }
