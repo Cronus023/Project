@@ -2,7 +2,7 @@ angular.module('myApp.workers.addWorker', [])
     .controller('AddWorkerCtrl', function($scope, workersService, $routeParams,$window) {
         $scope.message = ''
         $scope.checkAll = false
-        $scope.id = $routeParams["id"]
+        $scope.id = $routeParams["workerID"]
 
         $scope.add = function(workerForm){
             if(workerForm.$valid){

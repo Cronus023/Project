@@ -55,9 +55,6 @@ public class WorkerService {
 
     public ResponseEntity view_trainings(Long id) {
         Optional<WorkerModel> worker = workerRepo.findById(id);
-        if(worker.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find worker!"));
-        }
         Iterable<TrainingModel> workerTrainings = trainingRepo.findAllByTrainingPassedID(worker.get());
         return ResponseEntity.ok(workerTrainings);
     }

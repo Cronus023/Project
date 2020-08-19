@@ -2,7 +2,7 @@ angular.module('myApp.workers', [])
     .controller('WorkersCtrl', function($scope, workersService, $routeParams,$window) {
         $scope.checkAll = false
 
-        $scope.id = $routeParams["id"]
+        $scope.id = $routeParams["officeName"]
 
         workersService.get_workers($scope.id).then(function(value){
             $scope.data = value
@@ -53,7 +53,7 @@ angular.module('myApp.workers', [])
             $window.location.href = `#!/workers/edit/${$scope.id}/${item.id}`
         }
         $scope.viewTrainings = function(id){
-            $window.location.href = `#!/workers/trainings/${id}`
+            $window.location.href = `#!/workers/${$scope.id}/trainings/${id}`
         }
 
     })

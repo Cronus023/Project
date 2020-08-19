@@ -19,4 +19,8 @@ public class GuardController {
     public ResponseEntity check_provider_office(@RequestParam String login, @RequestParam String officeName) {
         return guardService.check_provider_office(login, officeName);
     }
+    @GetMapping("/guards/check_worker_id")
+    public ResponseEntity check_worker_id(@RequestParam Long id) {
+        return guardService.check_worker_id(id);
+    }
 }

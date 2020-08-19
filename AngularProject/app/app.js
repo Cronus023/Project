@@ -85,7 +85,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     }
   })
 
-  $routeProvider.when(`/workers/:id`, {
+  $routeProvider.when(`/workers/:officeName`, {
     templateUrl: 'components/workersPage/workers.html',
     controller: 'WorkersCtrl',
     resolve:{
@@ -96,17 +96,18 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
     }
   })
 
-  $routeProvider.when(`/workers/trainings/:id`, {
+  $routeProvider.when(`/workers/:officeName/trainings/:workerID`, {
     templateUrl: 'components/workersPage/workerTrainingsPage/workerTrainings.html',
     controller: 'TrainingsWorkersCtrl',
     resolve:{
-      check:function($window, authGuard){
+      check:function($window, authGuard, providerGuard){
         authGuard.checkLogin()
+        providerGuard.checkWorkersTrainingsPage()
       }
     }
   })
 
-  $routeProvider.when(`/workers/add/:id`, {
+  $routeProvider.when(`/workers/add/:workerID`, {
     templateUrl: 'components/workersPage/addWorkerPage/addWorker.html',
     controller: 'AddWorkerCtrl',
     resolve:{
