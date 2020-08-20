@@ -4,8 +4,8 @@ describe('myApp.application.finalDecision module', function() {
     describe('application.finalDecision controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('FinalDecisionApplicationCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const FinalDecisionApplicationCtrl = $controller('FinalDecisionApplicationCtrl')
+            expect(FinalDecisionApplicationCtrl).toBeDefined()
         }))
     })
 })

@@ -10,4 +10,11 @@ class FirstApplicationTests {
     void contextLoads() {
     }
 
+
+    @Test
+    void testPlus() {
+        int x =4;
+        int y =4;
+
+    }
 }

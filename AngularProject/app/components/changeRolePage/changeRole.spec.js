@@ -4,8 +4,8 @@ describe('myApp.changeRole module', function() {
     describe('changeRole controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('ChangeRoleCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const ChangeRoleCtrl = $controller('ChangeRoleCtrl')
+            expect(ChangeRoleCtrl).toBeDefined()
         }))
     })
 })

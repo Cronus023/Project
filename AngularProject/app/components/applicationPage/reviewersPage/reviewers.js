@@ -3,7 +3,6 @@ angular.module('myApp.application.reviewers', [])
         $scope.userRole = localStorage.getItem('UserRole')
         applicationService.get_applications().then(function(value){
             $scope.data = value
-            console.log(value)
         })
 
         $scope.curriculum = function(id){

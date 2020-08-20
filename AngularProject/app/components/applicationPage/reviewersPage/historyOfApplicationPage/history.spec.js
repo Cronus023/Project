@@ -4,8 +4,8 @@ describe('myApp.application.history module', function() {
     describe('application.history controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('HistoryApplicationCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const HistoryApplicationCtrl = $controller('HistoryApplicationCtrl')
+            expect(HistoryApplicationCtrl).toBeDefined()
         }))
     })
 })

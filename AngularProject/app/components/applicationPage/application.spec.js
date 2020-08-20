@@ -4,8 +4,8 @@ describe('myApp.application module', function() {
     describe('application controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('ApplicationCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const ApplicationCtrl = $controller('ApplicationCtrl')
+            expect(ApplicationCtrl).toBeDefined()
         }))
     })
 })

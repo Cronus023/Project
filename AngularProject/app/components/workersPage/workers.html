@@ -13,7 +13,7 @@
     <tbody>
         <tr ng-repeat="item in data">
             <div>
-                <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
+                <td><input type = "checkbox" ng-model = "selectedWorkers" ng-checked="existWorker(item)" ng-click="selectWorker(item)"></td>
                 <th scope="row" >{{item.id}}</th>
                 <td> {{item.name}}</td>
                 <td>{{item.education}}</td>

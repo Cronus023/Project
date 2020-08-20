@@ -4,8 +4,8 @@ describe('myApp.trainings module', function() {
     describe('trainings controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('TrainingsCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const TrainingsCtrl = $controller('TrainingsCtrl')
+            expect(TrainingsCtrl).toBeDefined()
         }))
     })
 })

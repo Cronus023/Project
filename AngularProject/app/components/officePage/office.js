@@ -9,10 +9,8 @@ angular.module('myApp.office', ['ngRoute'])
                     contact_details: $scope.contact,
                 }
                 officeService.create(officeBody).then(function(value){
-                    console.log(value)
                     $scope.message = 'Such office already exist!'
                 })
-
             }
         }
     });

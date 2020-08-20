@@ -4,8 +4,8 @@ describe('myApp.application.reviewers module', function() {
     describe('application.reviewers controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('ReviewersApplicationCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const ReviewersApplicationCtrl = $controller('ReviewersApplicationCtrl')
+            expect(ReviewersApplicationCtrl).toBeDefined()
         }))
     })
 })

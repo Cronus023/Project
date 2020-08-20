@@ -138,9 +138,6 @@ public class ApplicationService {
 
     public ResponseEntity final_decision(Long id, String decision){
         Optional<ApplicationModel> application = applicationRepo.findById(id);
-        if(application.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find application!"));
-        }
         OfficeModel office = officeRepo.findByLastApplication(application);
 
         if(office == null){

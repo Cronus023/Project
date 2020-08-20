@@ -4,8 +4,8 @@ describe('myApp.application.reviewers.curriculum module', function() {
     describe('application.reviewers.curriculum controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('CurriculumReviewersApplicationCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const CurriculumReviewersApplicationCtrl = $controller('CurriculumReviewersApplicationCtrl')
+            expect(CurriculumReviewersApplicationCtrl).toBeDefined()
         }))
     })
 })

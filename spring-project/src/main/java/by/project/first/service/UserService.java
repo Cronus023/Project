@@ -3,12 +3,15 @@ package by.project.first.service;
 import by.project.first.config.jwt.JwtProvider;
 import by.project.first.controllers.ReqAndRes.LoginResponse;
 import by.project.first.models.Message;
+import by.project.first.models.RoleModel;
 import by.project.first.models.UserModel;
 import by.project.first.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -25,11 +28,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserModel saveUser(UserModel userModel) {
-        userModel.setActive(true);
-        userModel.setRoles(userModel.getRoles());
+    public void saveUser(UserModel userModel) {
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        return userRepo.save(userModel);
+        userRepo.save(userModel);
     }
 
     public ResponseEntity login (UserModel user){
@@ -43,14 +44,11 @@ public class UserService {
         }
     }
 
-    public ResponseEntity get_roles (String login){
+    public ResponseEntity<Set<RoleModel>> get_roles (String login){
         UserModel user = userRepo.findByLogin(login);
-        if(user == null){
-            return ResponseEntity.status(400).body(new Message("Can not find user"));
-        }
         return ResponseEntity.ok(user.getRoles());
     }
-    public ResponseEntity logout (String login){
+    public ResponseEntity<Message> logout (String login){
         UserModel user = userRepo.findByLogin(login);
         if(user == null){
             return ResponseEntity.status(400).body(new Message("error"));
@@ -62,7 +60,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity register (UserModel user){
+    public ResponseEntity<Message> register (UserModel user){
         UserModel newUser = userRepo.findByLogin(user.getLogin());
         if(newUser == null){
             userService.saveUser(user);
@@ -83,7 +81,7 @@ public class UserService {
         return null;
     }
 
-    public ResponseEntity checkAuth(String token) {
+    public ResponseEntity<Message> checkAuth(String token) {
         boolean check = jwtProvider.validateToken(token);
         if(check){
             return ResponseEntity.ok(new Message("ok!"));

@@ -5,8 +5,8 @@ describe('myApp.office module', function() {
     describe('office controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('OfficeCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const OfficeCtrl = $controller('OfficeCtrl')
+            expect(OfficeCtrl).toBeDefined()
         }))
     })
 })

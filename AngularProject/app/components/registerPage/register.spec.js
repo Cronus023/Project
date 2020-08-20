@@ -4,8 +4,8 @@ describe('myApp.register module', function() {
     describe('register controller', function(){
         it('should ....', inject(function($controller) {
             //spec body
-            const LoginCtrl = $controller('RegisterCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const RegisterCtrl = $controller('RegisterCtrl')
+            expect(RegisterCtrl).toBeDefined()
         }))
     })
 })

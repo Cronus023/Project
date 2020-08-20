@@ -36,6 +36,11 @@ public class UserModel {
     public UserModel() {
     }
 
+    public UserModel(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
     public UserModel(String login, String password, String address, String email, String education, String phone, String name, String surname, boolean active, Set<RoleModel> roles, Set<OfficeModel> officeID) {
         this.login = login;
         this.password = password;

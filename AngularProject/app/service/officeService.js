@@ -40,8 +40,7 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
 
             $http.post('http://localhost:8080/create',officeBody).
             then(function (response) {
-
-                if(response.status == 400){
+                if(response.status === 400){
                     deferred.resolve(response.data)
                 }
                 else{
