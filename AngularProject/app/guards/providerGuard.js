@@ -67,9 +67,9 @@ providerGuard.factory('providerGuard',['$http','$q','$window', '$route', functio
                             }
                             if(data.title === 'badStatus2'){
                                 alert("Wrong user login!")
-                                localStorage.setItem('JwtToken', null)
-                                localStorage.setItem('UserLogin', null)
-                                localStorage.setItem('UserRole', null)
+                                localStorage.removeItem('JwtToken')
+                                localStorage.removeItem('UserLogin')
+                                localStorage.removeItem('UserRole')
                                 $window.location.href = '#!/login'
                             }
                         }

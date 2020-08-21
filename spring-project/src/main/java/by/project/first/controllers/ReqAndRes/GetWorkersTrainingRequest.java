@@ -4,6 +4,10 @@ public class GetWorkersTrainingRequest {
     private Long id;
     private String login;
 
+    public GetWorkersTrainingRequest(Long id) {
+        this.id = id;
+    }
+
     public GetWorkersTrainingRequest(Long id, String login) {
         this.id = id;
         this.login = login;

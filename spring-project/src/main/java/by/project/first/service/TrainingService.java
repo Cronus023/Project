@@ -38,7 +38,7 @@ public class TrainingService {
         return ResponseEntity.ok(new Message("ok"));
     }
 
-    public ResponseEntity findByIdAndUserLogin (GetWorkersTrainingRequest request){
+    public ResponseEntity<Iterable<WorkerModel>> findByIdAndUserLogin (GetWorkersTrainingRequest request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         UserModel user = userRepo.findByLogin(request.getLogin());
 
@@ -62,7 +62,7 @@ public class TrainingService {
         return null;
     }
 
-    public ResponseEntity registerWorkers (RegWorkersToTraining request){
+    public ResponseEntity<Message> registerWorkers (RegWorkersToTraining request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         Date date = new Date();
         if(date.compareTo(training.get().getDateOfEnd()) > 0){
@@ -116,11 +116,14 @@ public class TrainingService {
 
     public Set<WorkerModel> workersOfProvider (Iterable<OfficeModel> offices, UserModel user){
         Set<WorkerModel> workers = new HashSet<>();
-        offices.forEach(office->{
-            if(office.getLeaderID().contains(user)){
-                workers.addAll(office.getWorkerId());
+        for(OfficeModel office: offices){
+            for(UserModel provider: office.getLeaderID()){
+                if(provider.equals(user)){
+                    workers.addAll(office.getWorkerId());
+                    break;
+                }
             }
-        });
+        }
         return workers;
     }
 
@@ -132,12 +135,9 @@ public class TrainingService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity delete_workers(RegWorkersToTraining request){
-        Optional<TrainingModel> training= trainingRepo.findById(request.getId());
-        request.getNewWorkers().forEach(worker->{
-            Optional<WorkerModel> deletedWorker = workerRepo.findById(worker.getId());
-            training.get().getWorkerID().remove(deletedWorker.get());
-        });
+    public ResponseEntity<Message> delete_workers(RegWorkersToTraining request){
+        Optional<TrainingModel> training = trainingRepo.findById(request.getId());
+        training.get().getWorkerID().removeAll(request.getNewWorkers());
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
     }

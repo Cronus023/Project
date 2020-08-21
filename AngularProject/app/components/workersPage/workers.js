@@ -5,7 +5,7 @@ angular.module('myApp.workers', [])
         $scope.id = $routeParams["officeName"]
 
         workersService.get_workers($scope.id).then(function(value){
-            $scope.data = value
+            $scope.data = angular.copy(value)
         })
 
         $scope.selectedWorkers = []
@@ -44,12 +44,14 @@ angular.module('myApp.workers', [])
         }
 
         $scope.delete = function(){
-            $scope.selected.map(function(item){
+            console.log("loloko")
+            $scope.selectedWorkers.map(function(item){
                 const index = $scope.data.indexOf(item)
                 $scope.data.splice(index, 1)
             })
+            console.log( $scope.selectedWorkers)
             workersService.delete($scope.data, $scope.id, $scope.selectedWorkers)
-            $window.location.reload()
+          //  $window.location.reload()
         }
 
         $scope.edit = function(item){

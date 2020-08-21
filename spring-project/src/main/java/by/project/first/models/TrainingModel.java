@@ -50,6 +50,15 @@ public class TrainingModel {
     public TrainingModel() {
     }
 
+    public TrainingModel(Date date) {
+        this.date = date;
+    }
+
+    public TrainingModel(Date dateOfEnd, Integer numberOfSeats) {
+        this.dateOfEnd = dateOfEnd;
+        this.numberOfSeats = numberOfSeats;
+    }
+
     public TrainingModel(Date date, Date dateOfEnd, Set<WorkerModel> workerID, Set<WorkerModel> trainingVisitorsID, Set<WorkerModel> trainingPassedID, UserModel trainerID, String type, Integer numberOfSeats) {
         this.date = date;
         this.dateOfEnd = dateOfEnd;
@@ -59,6 +68,91 @@ public class TrainingModel {
         this.trainerID = trainerID;
         this.type = type;
         this.numberOfSeats = numberOfSeats;
+    }
+
+    @Override
+    public boolean equals (Object o){
+        if(o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+        TrainingModel training = (TrainingModel) o;
+        return training.getId().equals(this.getId());
+    }
+
+
+    public boolean equalsVisitors (Set<WorkerModel> workers){
+        if(this.getTrainingVisitorsID().size() != workers.size()){
+            return false;
+        }
+        if(this.getTrainingVisitorsID() == workers){
+            return true;
+        }
+        if(this.getTrainingVisitorsID().containsAll(workers)){
+            return true;
+        }
+        boolean check = false;
+        for(WorkerModel worker: this.getTrainingVisitorsID()){
+            boolean flag = false;
+            for(WorkerModel workerC: workers){
+                if(worker.equals(workerC)){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) break;
+            else check = true;
+        }
+        return check;
+    }
+
+    public boolean equalsWorkers (Set<WorkerModel> workers){
+        if(this.getWorkerID().size() != workers.size()){
+            return false;
+        }
+        if(this.getWorkerID() == workers){
+            return true;
+        }
+        if(this.getWorkerID().containsAll(workers)){
+            return true;
+        }
+        boolean check = false;
+        for(WorkerModel worker: this.getWorkerID()){
+            boolean flag = false;
+            for(WorkerModel workerC: workers){
+                if(worker.equals(workerC)){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) break;
+            else check = true;
+        }
+        return check;
+    }
+
+    public boolean equalsPassed (Set<WorkerModel> workers){
+        if(this.getTrainingPassedID().size() != workers.size()){
+            return false;
+        }
+        if(this.getTrainingPassedID() == workers){
+            return true;
+        }
+        if(this.getTrainingPassedID().containsAll(workers)){
+            return true;
+        }
+        boolean check = false;
+        for(WorkerModel worker: this.getTrainingPassedID()){
+            boolean flag = false;
+            for(WorkerModel workerC: workers){
+                if(worker.equals(workerC)){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) break;
+            else check = true;
+        }
+        return check;
     }
 
     public Long getId() {

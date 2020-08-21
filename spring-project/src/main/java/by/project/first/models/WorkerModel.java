@@ -15,6 +15,10 @@ public class WorkerModel {
     public WorkerModel() {
     }
 
+    public WorkerModel(String name) {
+        this.name = name;
+    }
+
     public WorkerModel(String education, String email, String name) {
         this.education = education;
         this.email = email;
