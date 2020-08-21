@@ -102,12 +102,12 @@ class TrainingServiceTest {
         assertEquals("Select fewer workers for registration!", responseBadWorkers.getBody().getTitle());
 
 
-        trainingRepo.delete(testTraining);
-        trainingRepo.delete(testTraining1);
-        trainingRepo.delete(testTraining2);
+        trainingRepo.deleteById(testTraining.getId());
+        trainingRepo.deleteById(testTraining1.getId());
+        trainingRepo.deleteById(testTraining2.getId());
 
-        workerRepo.delete(testWorker1);
-        workerRepo.delete(testWorker2);
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
@@ -125,7 +125,7 @@ class TrainingServiceTest {
         Optional<TrainingModel> trainingAfterEdit = trainingRepo.findById(testTraining.getId());
 
         assertEquals(1, testDate.compareTo(trainingAfterEdit.get().getDate()));
-        trainingRepo.delete(trainingAfterEdit.get());
+        trainingRepo.deleteById(trainingAfterEdit.get().getId());
     }
 
     @Test
@@ -148,14 +148,13 @@ class TrainingServiceTest {
         assertTrue(trainingAfterAddPassed.get().equalsPassed(passed));
 
         trainingService.delete_training(testTraining.getId());
-        workerRepo.delete(testWorker1);
-        workerRepo.delete(testWorker2);
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
     void delete_training() {
                                                   //TEST WORKING GOOD!!!!!!
-
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
         TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
@@ -182,8 +181,8 @@ class TrainingServiceTest {
         assertTrue(testTraining.equalsWorkers(response.getBody().getTrainingWorkers()));
 
         trainingService.delete_training(testTraining.getId());
-        workerRepo.delete(testWorker1);
-        workerRepo.delete(testWorker2);
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
@@ -206,9 +205,9 @@ class TrainingServiceTest {
 
         assertTrue(office.equalsWorkers(providerWorkers));
 
-        officeRepo.delete(office);
-        workerRepo.delete(testWorker1);
-        workerRepo.delete(testWorker2);
+        officeRepo.deleteById(office.getId());
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
@@ -231,8 +230,8 @@ class TrainingServiceTest {
         assertTrue(trainingAfterAddVisitors.get().equalsVisitors(visitors));
 
         trainingService.delete_training(testTraining.getId());
-        workerRepo.delete(testWorker1);
-        workerRepo.delete(testWorker2);
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
     }
 
 }

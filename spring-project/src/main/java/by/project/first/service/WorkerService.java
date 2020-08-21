@@ -25,17 +25,17 @@ public class WorkerService {
     @Autowired
     private OfficeRepo officeRepo;
 
-    public ResponseEntity get_workers(String name){
+    public ResponseEntity<Set<WorkerModel>> get_workers(String name){
         OfficeModel office = officeRepo.findByName(name);
         return ResponseEntity.ok(office.getWorkerId());
     }
 
-    public ResponseEntity get_worker_by_id(Long id){
+    public ResponseEntity<WorkerModel> get_worker_by_id(Long id){
         Optional<WorkerModel> worker = workerRepo.findById(id);
-        return ResponseEntity.ok(worker);
+        return ResponseEntity.ok(worker.get());
     }
 
-    public ResponseEntity saveWorker(AddWorkerRequest request) {
+    public ResponseEntity<Message> saveWorker(AddWorkerRequest request) {
         WorkerModel worker = request.getWorker();
         WorkerModel newWorker = workerRepo.save(worker);
 
@@ -46,20 +46,21 @@ public class WorkerService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity view_trainings(Long id) {
+    public ResponseEntity<Iterable<TrainingModel>> view_trainings(Long id) {
         Optional<WorkerModel> worker = workerRepo.findById(id);
         Iterable<TrainingModel> workerTrainings = trainingRepo.findAllByTrainingPassedID(worker.get());
         return ResponseEntity.ok(workerTrainings);
     }
 
 
-    public ResponseEntity deleteWorker (DeleteWorkerRequest request) {
+    public ResponseEntity<Message> deleteWorker (DeleteWorkerRequest request) {
         Set<WorkerModel> workers =  request.getNewWorkers();
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
         office.setWorkerId(workers);
 
         Iterable<TrainingModel> trainings = trainingRepo.findAll();
+
         trainings.forEach(training->{
             request.getDeletedWorkers().forEach(deletedWorker->{
                 Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
@@ -74,16 +75,13 @@ public class WorkerService {
             });
         });
         Iterable<WorkerModel> deletedWorkers = request.getDeletedWorkers();
-        deletedWorkers.forEach(worker -> workerRepo.delete(worker));
+        workerRepo.deleteAll(deletedWorkers);
 
         officeRepo.save(office);
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity editWorker (WorkerModel worker) {
-        if(workerRepo.findById(worker.getId()).isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Worker does not exist!"));
-        }
+    public ResponseEntity<Message> editWorker (WorkerModel worker) {
         workerRepo.save(worker);
         return ResponseEntity.ok(new Message("ok!"));
     }

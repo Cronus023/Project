@@ -44,7 +44,6 @@ angular.module('myApp.workers', [])
         }
 
         $scope.delete = function(){
-            console.log("loloko")
             $scope.selectedWorkers.map(function(item){
                 const index = $scope.data.indexOf(item)
                 $scope.data.splice(index, 1)
