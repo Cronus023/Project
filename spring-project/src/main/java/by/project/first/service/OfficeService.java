@@ -26,13 +26,13 @@ public class OfficeService {
     @Autowired
     private UserRepo userRepo;
 
-    public ResponseEntity get_offices_by_login (String login){
+    public ResponseEntity<Iterable<OfficeModel>> get_offices_by_login (String login){
         UserModel provider = userRepo.findByLogin(login);
-        Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(provider);
+        Set<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(provider);
         return ResponseEntity.ok(providerOffices);
     }
 
-    public ResponseEntity become_provider (BecomeRequest request){
+    public ResponseEntity<Message> become_provider (BecomeRequest request){
         UserModel user = userRepo.findByLogin(request.getLogin());
         OfficeModel office = request.getOffice();
         office.getLeaderID().add(user);
@@ -40,7 +40,7 @@ public class OfficeService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity create_office (OfficeModel office){
+    public ResponseEntity<Message> create_office (OfficeModel office){
         OfficeModel newOffice = officeRepo.findByName(office.getName());
         if(newOffice == null){
             officeRepo.save(office);
@@ -78,7 +78,7 @@ public class OfficeService {
 
         return false;
     }
-    public ResponseEntity get_office(){
+    public ResponseEntity<Iterable<OfficeModel>> get_office(){
         Iterable<OfficeModel> offices = officeRepo.findAll();
         return ResponseEntity.ok(offices);
     }
@@ -86,10 +86,6 @@ public class OfficeService {
 
     public ResponseEntity get_office_by_name (String name ){
         OfficeModel office = officeRepo.findByName(name);
-        if(office == null){
-            return ResponseEntity.status(400).body(new Message("Can not find office"));
-        }
-
         ApplicationModel lastApplication = office.getLastApplication();
 
         if(!checkOfficeApplications(lastApplication)){

@@ -41,6 +41,9 @@ class UserServiceTest {
         UserModel userBad = userRepo.findByLogin("root");
         ResponseEntity<Message> responseBad = userService.register(userBad);
         Assertions.assertEquals(400, responseBad.getStatusCode().value());
+
+        //test user with good parameters
+
         /*UserModel userOk = new UserModel("test", "test");
 
         ResponseEntity responseOk = userService.register(userOk);

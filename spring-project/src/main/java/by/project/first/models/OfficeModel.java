@@ -49,6 +49,9 @@ public class OfficeModel {
     public OfficeModel() {
     }
 
+    public OfficeModel(String name) {
+        this.name = name;
+    }
 
     public OfficeModel(String location, String name, Date dateOfLastPermission, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId, Set<ApplicationModel> officeApplications) {
         this.location = location;
@@ -59,7 +62,33 @@ public class OfficeModel {
         this.photo = photo;
         this.workerId = workerId;
         this.officeApplications = officeApplications;
+    }
+    @Override
+    public boolean equals (Object o){
+        if(o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+        OfficeModel office = (OfficeModel) o;
+        return office.getId().equals(this.getId());
+    }
 
+    public boolean equalsWorkers (Set<WorkerModel> workers){
+        if(this.getWorkerId().size() != workers.size()){
+            return false;
+        }
+        boolean check = false;
+        for(WorkerModel worker: this.getWorkerId()){
+            boolean flag = false;
+            for(WorkerModel workerC: workers){
+                if(worker.equals(workerC)){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) break;
+            else check = true;
+        }
+        return check;
     }
 
     public ApplicationModel getLastApplication() {

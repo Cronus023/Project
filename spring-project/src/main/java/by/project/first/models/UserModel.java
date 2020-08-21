@@ -1,5 +1,7 @@
 package by.project.first.models;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +33,7 @@ public class UserModel {
             name = "provider_offices",
             joinColumns = @JoinColumn(name = "provider_id")
     )
-    private Set<OfficeModel> officeID;
+    private Set<OfficeModel> officeID = new HashSet<>();
 
     public UserModel() {
     }
@@ -54,7 +56,14 @@ public class UserModel {
         this.roles = roles;
         this.officeID = officeID;
     }
-
+    @Override
+    public boolean equals (Object o){
+        if(o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+        UserModel user = (UserModel) o;
+        return user.getId().equals(this.getId());
+    }
     public Long getId() {
         return id;
     }

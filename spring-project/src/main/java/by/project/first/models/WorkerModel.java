@@ -21,6 +21,15 @@ public class WorkerModel {
         this.name = name;
     }
 
+    @Override
+    public boolean equals (Object o){
+        if(o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+        WorkerModel worker = (WorkerModel) o;
+        return worker.getId().equals(this.getId());
+    }
+
     public Long getId() {
         return id;
     }
