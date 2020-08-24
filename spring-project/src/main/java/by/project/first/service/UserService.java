@@ -36,6 +36,8 @@ public class UserService {
     public ResponseEntity login (UserModel user){
         UserModel authUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if(authUser != null){
+            authUser.setActive(true);
+            userRepo.save(authUser);
             String token = jwtProvider.generateToken(authUser.getLogin());
             return ResponseEntity.ok(new LoginResponse(token, authUser.getRoles()));
         }
@@ -48,6 +50,7 @@ public class UserService {
         UserModel user = userRepo.findByLogin(login);
         return ResponseEntity.ok(user.getRoles());
     }
+
     public ResponseEntity<Message> logout (String login){
         UserModel user = userRepo.findByLogin(login);
         if(user == null){
