@@ -16,12 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.security.RunAs;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
@@ -43,39 +43,56 @@ class TrainingServiceTest {
     @Autowired
     private WorkerRepo workerRepo;
 
-    @Autowired
-    private WorkerService workerService;
-
     @Test
     void saveTraining() {
-
-                                                      //TEST WORKING GOOD!!!!!!
-
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
 
         TrainingModel testTraining = new TrainingModel(testDate);
 
-        UserModel testTrainer = userRepo.save(new UserModel("test", "test"));
+        UserModel testTrainer = userRepo.save(new UserModel("testTrainer", "testTrainer"));
 
-        trainingService.saveTraining(new AddTrainingRequest(testTraining, testTrainer.getLogin()));
+        trainingService.saveTraining(new AddTrainingRequest(testTraining, "testTrainer"));
 
-        TrainingModel training = trainingRepo.findByTrainerID(testTrainer);
+        assertNotNull(testTraining.getId());
+        assertEquals(testTrainer, testTraining.getTrainerID());
 
-        assertNotNull(training);
-        assertEquals(testTrainer, training.getTrainerID());
-
-
-        trainingRepo.delete(training);
-        userRepo.delete(testTrainer);
-
-
+        trainingRepo.deleteById(testTraining.getId());
+        userRepo.deleteById(testTrainer.getId());
     }
 
     @Test
-    void registerWorkers() {
-                                                 //TEST WORKING GOOD!!!!!!
+    void registerWorkersOkDate() {
+        Date testDate = new Date();
+        testDate.setYear(testDate.getYear() + 3);
 
+        Set<WorkerModel> newWorkers = new HashSet<>();
+        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
+        newWorkers.add(testWorker1);
+        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
+        newWorkers.add(testWorker2);
+
+
+        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 10));
+
+        trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
+
+        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
+        assertNotNull(testTrainingAfterUpdate.get());
+
+        assertEquals(testTrainingAfterUpdate.get().getNumberOfSeats(), 8);
+
+        boolean checkWorkers = checkWorkers(newWorkers, testTrainingAfterUpdate.get().getWorkerID());
+        assertFalse(checkWorkers);
+
+
+        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
+    }
+
+    @Test
+    void registerWorkersBadDate() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
 
@@ -88,50 +105,70 @@ class TrainingServiceTest {
 
         TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 10));
 
-        ResponseEntity<Message> responseBadDate = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
-        assertEquals("Registration for this training is not possible", responseBadDate.getBody().getTitle());
+        ResponseEntity<Message> response = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
+        assertNotNull(response.getBody());
+        assertEquals("Registration for this training is not possible", response.getBody().getTitle());
 
 
-        testDate.setYear(testDate.getYear() + 10);
-        TrainingModel testTraining1 = trainingRepo.save( new TrainingModel(testDate, 0));
-        ResponseEntity<Message> responseBadSeats = trainingService.registerWorkers(new RegWorkersToTraining(testTraining1.getId(), newWorkers));
-        assertEquals("The number of seats for registration - 0!", responseBadSeats.getBody().getTitle());
+        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
+        assertNotNull(testTrainingAfterUpdate.get());
 
-        TrainingModel testTraining2 = trainingRepo.save( new TrainingModel(testDate, 1));
-        ResponseEntity<Message> responseBadWorkers = trainingService.registerWorkers(new RegWorkersToTraining(testTraining2.getId(), newWorkers));
-        assertEquals("Select fewer workers for registration!", responseBadWorkers.getBody().getTitle());
-
-
-        trainingRepo.deleteById(testTraining.getId());
-        trainingRepo.deleteById(testTraining1.getId());
-        trainingRepo.deleteById(testTraining2.getId());
-
+        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
         workerRepo.deleteById(testWorker1.getId());
         workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
-    void edit_training() {
-                                                  //TEST WORKING GOOD!!!!!!
+    void registerWorkersBadSeats() {
         Date testDate = new Date();
-        testDate.setYear(testDate.getYear() - 1);
+        testDate.setYear(testDate.getYear() + 3);
 
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
+        Set<WorkerModel> newWorkers = new HashSet<>();
+        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
+        newWorkers.add(testWorker1);
+        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
+        newWorkers.add(testWorker2);
 
-        testDate.setYear(testDate.getYear() +10);
-        testTraining.setDate(testDate);
+        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 1));
 
-        trainingService.edit_training(testTraining);
-        Optional<TrainingModel> trainingAfterEdit = trainingRepo.findById(testTraining.getId());
+        ResponseEntity<Message> response = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
+        assertNotNull(response.getBody());
+        assertEquals("Select fewer workers for registration!", response.getBody().getTitle());
 
-        assertEquals(1, testDate.compareTo(trainingAfterEdit.get().getDate()));
-        trainingRepo.deleteById(trainingAfterEdit.get().getId());
+        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
+        assertNotNull(testTrainingAfterUpdate.get());
+
+        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
+        workerRepo.deleteById(testWorker1.getId());
+        workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
-    void addPassedWorkers() {
-                           //TEST WORKING GOOD!!!!!!
+    void registerWorkersZeroSeats() {
+        Date testDate = new Date();
+        testDate.setYear(testDate.getYear() + 3);
 
+        Set<WorkerModel> newWorkers = new HashSet<>();
+        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
+        newWorkers.add(testWorker1);
+
+        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 0));
+
+        ResponseEntity<Message> response = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
+        assertNotNull(response.getBody());
+        assertEquals("The number of seats for registration - 0!", response.getBody().getTitle());
+
+        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
+        assertNotNull(testTrainingAfterUpdate.get());
+
+        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
+        workerRepo.deleteById(testWorker1.getId());
+    }
+
+
+
+    @Test
+    void addPassedWorkers() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
         TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
@@ -145,7 +182,8 @@ class TrainingServiceTest {
         trainingService.addPassedWorkers(new RegWorkersToTraining(testTraining.getId(), passed));
         Optional<TrainingModel> trainingAfterAddPassed = trainingRepo.findById(testTraining.getId());
 
-        assertTrue(trainingAfterAddPassed.get().equalsPassed(passed));
+        boolean checkWorkers = checkWorkers(passed, trainingAfterAddPassed.get().getTrainingPassedID());
+        assertFalse(checkWorkers);
 
         trainingService.delete_training(testTraining.getId());
         workerRepo.deleteById(testWorker1.getId());
@@ -154,16 +192,15 @@ class TrainingServiceTest {
 
     @Test
     void delete_training() {
-                                                  //TEST WORKING GOOD!!!!!!
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
+        TrainingModel testTraining = trainingRepo.save(new TrainingModel(testDate));
         trainingService.delete_training(testTraining.getId());
         assertTrue(trainingRepo.findById(testTraining.getId()).isEmpty());
     }
+
     @Test
     void findTrainingWorkers() {
-                                                                //TEST WORKING GOOD!!!!!!
         Date date = new Date();
         date.setYear(date.getYear() - 1);
         TrainingModel testTraining = new TrainingModel(date);
@@ -173,22 +210,26 @@ class TrainingServiceTest {
         workers.add(testWorker1);
         WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
         workers.add(testWorker2);
-        testTraining.getWorkerID().addAll(workers);
 
+        testTraining.getWorkerID().addAll(workers);
         trainingRepo.save(testTraining);
 
         ResponseEntity<FindTrainingWorkersResponse> response = trainingService.findTrainingWorkers(new GetWorkersTrainingRequest(testTraining.getId(), "trener"));
-        assertTrue(testTraining.equalsWorkers(response.getBody().getTrainingWorkers()));
+
+        assertNotNull(response.getBody());
+
+        boolean checkWorkers = checkWorkers(workers, response.getBody().getTrainingWorkers());
+        assertFalse(checkWorkers);
+
 
         trainingService.delete_training(testTraining.getId());
+
         workerRepo.deleteById(testWorker1.getId());
         workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
     void workersOfProvider() {
-                                 //TEST WORKING GOOD!!!!!!
-
         OfficeModel office = new OfficeModel();
         Set<WorkerModel> workers = new HashSet<>();
         WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
@@ -201,19 +242,22 @@ class TrainingServiceTest {
         office.getLeaderID().add(userRepo.save(new UserModel("TestProvider", "TestProvider")));
         officeRepo.save(office);
 
+
         Set<WorkerModel> providerWorkers = trainingService.workersOfProvider(officeRepo.findAll(), userRepo.findByLogin("TestProvider"));
 
-        assertTrue(office.equalsWorkers(providerWorkers));
+        boolean checkWorkers = checkWorkers(workers, providerWorkers);
+        assertFalse(checkWorkers);
+
+        UserModel provider = userRepo.findByLogin("TestProvider");
 
         officeRepo.deleteById(office.getId());
+        userRepo.deleteById(provider.getId());
         workerRepo.deleteById(testWorker1.getId());
         workerRepo.deleteById(testWorker2.getId());
     }
 
     @Test
     void addVisitors() {
-                                              //TEST WORKING GOOD!!!!!!
-
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
         TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
@@ -227,11 +271,30 @@ class TrainingServiceTest {
         trainingService.addVisitors(new RegWorkersToTraining(testTraining.getId(), visitors));
         Optional<TrainingModel> trainingAfterAddVisitors = trainingRepo.findById(testTraining.getId());
 
-        assertTrue(trainingAfterAddVisitors.get().equalsVisitors(visitors));
+        boolean checkWorkers = checkWorkers(visitors, trainingAfterAddVisitors.get().getTrainingVisitorsID());
+        assertFalse(checkWorkers);
 
         trainingService.delete_training(testTraining.getId());
         workerRepo.deleteById(testWorker1.getId());
         workerRepo.deleteById(testWorker2.getId());
     }
 
+
+    public boolean checkWorkers(Set<WorkerModel> workersBeforeMethod,Set<WorkerModel> workersAfterMethod ){
+        boolean checkWorkers = false;
+        for(WorkerModel worker : workersBeforeMethod){
+            boolean checkWorker = false;
+            for(WorkerModel visitedWorker: workersAfterMethod){
+                if(worker.equals(visitedWorker)){
+                    checkWorker = true;
+                    break;
+                }
+            }
+            if(!checkWorker){
+                checkWorkers = true;
+                break;
+            }
+        }
+        return checkWorkers;
+    }
 }
