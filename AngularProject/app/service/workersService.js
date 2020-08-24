@@ -26,7 +26,7 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
                 officeName:officeName,
                 deletedWorkers: deletedWorkers,
             }
-            $http.post('http://localhost:8080/workers/delete',requestBody).
+            $http.post('http://localhost:8080/workers/delete_worker',requestBody).
             then(function (response) {
                 if(response.status === 400){
                     alert(response.data.title)
@@ -39,7 +39,7 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
                 worker: worker,
                 officeName:officeId,
             }
-            $http.post('http://localhost:8080/workers/add', requestBody).
+            $http.post('http://localhost:8080/workers/add_worker', requestBody).
             then(function (response) {
                 if(response.status === 400){
                     alert(response.data.title)
@@ -48,7 +48,7 @@ worker.factory('workersService',['$http','$q','$window', function($http,  $q, $w
             })
         },
         edit: function(worker, officeName){
-            $http.post('http://localhost:8080/workers/edit', worker).
+            $http.post('http://localhost:8080/workers/edit_worker', worker).
             then(function (response) {
                 if(response.status == 400){
                     alert(response.data.title)

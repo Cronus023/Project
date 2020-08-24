@@ -77,7 +77,7 @@ public class ApplicationService {
         return ResponseEntity.ok(notAnsweredApplications);
     }
 
-    public ResponseEntity get_educational_program(Long id, String login){
+    public ResponseEntity<RegularReviewerResponse> get_educational_program(Long id, String login){
         RegularReviewerResponse response = get_responses_and_application(login, id);
         return ResponseEntity.ok(response);
     }
@@ -126,7 +126,7 @@ public class ApplicationService {
         return ResponseEntity.ok(providerApplications);
     }
 
-    public ResponseEntity final_decision(Long id, String decision){
+    public ResponseEntity<Message> final_decision(Long id, String decision){
         Optional<ApplicationModel> application = applicationRepo.findById(id);
         OfficeModel office = officeRepo.findByLastApplication(application);
 

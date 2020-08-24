@@ -9,5 +9,4 @@ import java.util.Set;
 
 public interface TrainingRepo extends CrudRepository<TrainingModel, Long> {
     Set<TrainingModel> findAllByTrainingPassedID(WorkerModel workerModel);
-    TrainingModel findByTrainerID(UserModel testTrainer);
 }

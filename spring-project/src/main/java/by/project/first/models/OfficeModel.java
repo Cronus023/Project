@@ -72,25 +72,6 @@ public class OfficeModel {
         return office.getId().equals(this.getId());
     }
 
-    public boolean equalsWorkers (Set<WorkerModel> workers){
-        if(this.getWorkerId().size() != workers.size()){
-            return false;
-        }
-        boolean check = false;
-        for(WorkerModel worker: this.getWorkerId()){
-            boolean flag = false;
-            for(WorkerModel workerC: workers){
-                if(worker.equals(workerC)){
-                    flag = true;
-                    break;
-                }
-            }
-            if(!flag) break;
-            else check = true;
-        }
-        return check;
-    }
-
     public ApplicationModel getLastApplication() {
         return lastApplication;
     }

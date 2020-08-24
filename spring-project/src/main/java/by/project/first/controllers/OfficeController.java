@@ -1,6 +1,7 @@
 package by.project.first.controllers;
 
 import by.project.first.controllers.ReqAndRes.BecomeRequest;
+import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +15,18 @@ public class OfficeController {
     @Autowired
     private OfficeService officeService;
 
-    @PostMapping("/create")
-    public ResponseEntity create(@RequestBody OfficeModel office){
+    @PostMapping("/create_office")
+    public ResponseEntity<Message> create_office(@RequestBody OfficeModel office){
         return officeService.create_office(office);
     }
 
     @GetMapping("/get_office")
-    public ResponseEntity main(){
+    public ResponseEntity<Iterable<OfficeModel>> get_office(){
         return officeService.get_office();
     }
 
     @GetMapping("/get_office_by_login")
-    public ResponseEntity get_office_by_login (@RequestParam String login){
+    public ResponseEntity<Iterable<OfficeModel>> get_office_by_login (@RequestParam String login){
         return officeService.get_offices_by_login(login);
     }
 
@@ -34,8 +35,8 @@ public class OfficeController {
         return officeService.get_office_by_name(name);
     }
 
-    @PostMapping("/become")
-    public ResponseEntity become(@RequestBody BecomeRequest request){
+    @PostMapping("/become_provider")
+    public ResponseEntity<Message> become_provider(@RequestBody BecomeRequest request){
         return officeService.become_provider(request);
     }
 }

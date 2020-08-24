@@ -6,7 +6,7 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
                 login: localStorage.getItem('UserLogin'),
                 office:office
             }
-            $http.post('http://localhost:8080/become',becomeRequest).
+            $http.post('http://localhost:8080/become_provider',becomeRequest).
             then(function (response) {
                 $window.location.reload()
             })
@@ -38,7 +38,7 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
         create: function(officeBody){
             const deferred = $q.defer()
 
-            $http.post('http://localhost:8080/create',officeBody).
+            $http.post('http://localhost:8080/create_office',officeBody).
             then(function (response) {
                 if(response.status === 400){
                     deferred.resolve(response.data)

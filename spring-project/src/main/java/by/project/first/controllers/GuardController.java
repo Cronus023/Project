@@ -1,5 +1,6 @@
 package by.project.first.controllers;
 
+import by.project.first.models.Message;
 import by.project.first.service.GuardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +17,22 @@ public class GuardController {
     private GuardService guardService;
 
     @GetMapping("/guards/check_provider_office")
-    public ResponseEntity check_provider_office(@RequestParam String login, @RequestParam String officeName) {
+    public ResponseEntity<Message> check_provider_office(@RequestParam String login, @RequestParam String officeName) {
         return guardService.check_provider_office(login, officeName);
     }
+
     @GetMapping("/guards/check_worker_id")
-    public ResponseEntity check_worker_id(@RequestParam Long id) {
+    public ResponseEntity<Message> check_worker_id(@RequestParam Long id) {
         return guardService.check_worker_id(id);
     }
+
     @GetMapping("/guards/check_training_control")
-    public ResponseEntity check_training_control(@RequestParam Long id, @RequestParam String login) {
+    public ResponseEntity<Message> check_training_control(@RequestParam Long id, @RequestParam String login) {
         return guardService.check_training_control(id, login);
     }
+
     @GetMapping("/guards/check_application")
-    public ResponseEntity check_application(@RequestParam Long id) {
+    public ResponseEntity<Message> check_application(@RequestParam Long id) {
         return guardService.check_application(id);
     }
 }

@@ -12,8 +12,6 @@ import java.util.Set;
 
 public interface OfficeRepo extends CrudRepository<OfficeModel, Long> {
     OfficeModel findByName(String name);
-
     Set<OfficeModel> findAllByLeaderID(UserModel user);
-
     OfficeModel findByLastApplication(Optional<ApplicationModel> application);
 }

@@ -1,5 +1,5 @@
 const authGuard = angular.module('myApp.guards.auth', [])
-authGuard.factory('authGuard',['$http','$q','$window', function($http,  $q, $window){
+authGuard.factory('authGuard',['$http','$q','$window', '$route','authService', function($http,  $q, $window, authService){
     return{
         checkLogin: function(){
             const token = localStorage.getItem('JwtToken')
@@ -10,5 +10,23 @@ authGuard.factory('authGuard',['$http','$q','$window', function($http,  $q, $win
                 }
             })
         },
+        checkRedirect: function(){
+            const token = localStorage.getItem('JwtToken')
+            if(token != null){
+                const role = localStorage.getItem('UserRole')
+                if(role === 'PROVIDER'){
+                    $window.location.href = '#!/main'
+                    $window.location.reload()
+                }
+                if(role === 'CURRICULUM_REVIEWER' || role === 'REGULAR_REVIEWER' ||  role === 'SUPERVISION' ){
+                    $window.location.href = '#!/application/reviewers/view'
+                    $window.location.reload()
+                }
+                if(role === 'TRAINING_OPERATOR'){
+                    $window.location.href = '#!/trainings'
+                    $window.location.reload()
+                }
+            }
+        }
     }
 }] )

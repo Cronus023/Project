@@ -29,7 +29,7 @@ public class GuardService {
     private ApplicationRepo applicationRepo;
 
 
-    public ResponseEntity check_provider_office (String login, String officeName){
+    public ResponseEntity<Message> check_provider_office (String login, String officeName){
         OfficeModel office = officeRepo.findByName(officeName);
         if(office == null){
             return ResponseEntity.status(400).body(new Message("badStatus1"));
@@ -47,7 +47,7 @@ public class GuardService {
         return  ResponseEntity.ok(new Message("bad!"));
     }
 
-    public ResponseEntity check_worker_id (Long id){
+    public ResponseEntity<Message> check_worker_id (Long id){
         Optional<WorkerModel> worker = workerRepo.findById(id);
         if(worker.isEmpty()){
             return ResponseEntity.status(400).body(new Message("Wrong worker id!"));
@@ -55,7 +55,7 @@ public class GuardService {
         return  ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity check_training_control (Long id, String Login){
+    public ResponseEntity<Message> check_training_control (Long id, String Login){
         Optional<TrainingModel> training = trainingRepo.findById(id);
         if(training.isEmpty()){
             return ResponseEntity.status(400).body(new Message("badStatus1"));
@@ -70,7 +70,7 @@ public class GuardService {
         }
         return ResponseEntity.ok(new Message("ok!"));
     }
-    public ResponseEntity check_application (Long id){
+    public ResponseEntity<Message> check_application (Long id){
         Optional<ApplicationModel> application = applicationRepo.findById(id);
         if(application.isEmpty()){
             return ResponseEntity.status(400).body(new Message("Application does not exist!"));

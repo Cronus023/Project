@@ -30,7 +30,7 @@ public class TrainingService {
     private OfficeRepo officeRepo;
 
 
-    public ResponseEntity saveTraining (AddTrainingRequest request){
+    public ResponseEntity<Message> saveTraining (AddTrainingRequest request){
         TrainingModel training = request.getTraining();
         UserModel user = userRepo.findByLogin(request.getUserLogin());
         training.setTrainerID(user);
@@ -38,7 +38,7 @@ public class TrainingService {
         return ResponseEntity.ok(new Message("ok"));
     }
 
-    public ResponseEntity<Iterable<WorkerModel>> findByIdAndUserLogin (GetWorkersTrainingRequest request){
+    public ResponseEntity<Iterable<WorkerModel>> findWorkersByIdAndUserLogin (GetWorkersTrainingRequest request){
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         UserModel user = userRepo.findByLogin(request.getLogin());
 
@@ -82,7 +82,7 @@ public class TrainingService {
 
     }
 
-    public ResponseEntity edit_training(TrainingModel request){
+    public ResponseEntity<Message> edit_training(TrainingModel request){
         trainingRepo.save(request);
         return ResponseEntity.ok(new Message("ok!"));
     }
@@ -127,7 +127,7 @@ public class TrainingService {
         return workers;
     }
 
-    public ResponseEntity addPassedWorkers (RegWorkersToTraining request){
+    public ResponseEntity<Message> addPassedWorkers (RegWorkersToTraining request){
         Set<WorkerModel> passedWorkers = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         training.get().getTrainingPassedID().addAll(passedWorkers);
@@ -142,12 +142,12 @@ public class TrainingService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity delete_training(Long id){
+    public ResponseEntity<Message> delete_training(Long id){
         trainingRepo.deleteById(id);
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity addVisitors (RegWorkersToTraining request){
+    public ResponseEntity<Message> addVisitors (RegWorkersToTraining request){
         Set<WorkerModel> visitors = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         training.get().getTrainingVisitorsID().addAll(visitors);

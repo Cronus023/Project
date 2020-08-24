@@ -48,6 +48,11 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when('/login', {
     templateUrl: 'components/loginPage/login.html',
     controller: 'LoginCtrl',
+    resolve:{
+      check:function($window, authGuard){
+        authGuard.checkRedirect()
+      }
+    },
   })
 
   $routeProvider.when('/main', {
@@ -74,6 +79,11 @@ config(['$locationProvider', '$routeProvider', '$httpProvider', function($locati
   $routeProvider.when('/register', {
     templateUrl: 'components/registerPage/register.html',
     controller: 'RegisterCtrl',
+    resolve:{
+      check:function($window, authGuard){
+        authGuard.checkRedirect()
+      }
+    },
   })
 
   $routeProvider.when('/office', {
