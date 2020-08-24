@@ -54,7 +54,7 @@ public class WorkerService {
 
 
     public ResponseEntity<Message> deleteWorker (DeleteWorkerRequest request) {
-        Set<WorkerModel> workers =  request.getNewWorkers();
+        Set<WorkerModel> workers = request.getNewWorkers();
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
         office.setWorkerId(workers);
@@ -74,10 +74,11 @@ public class WorkerService {
                 trainingRepo.save(training);
             });
         });
+        officeRepo.save(office);
+
         Iterable<WorkerModel> deletedWorkers = request.getDeletedWorkers();
         workerRepo.deleteAll(deletedWorkers);
 
-        officeRepo.save(office);
         return ResponseEntity.ok(new Message("ok!"));
     }
 

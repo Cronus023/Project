@@ -46,7 +46,11 @@ public class WorkerServiceTest {
         officeRepo.save(testOffice);
 
         ResponseEntity<Set<WorkerModel>> response = workerService.get_workers("testOffice");
-        assertTrue(testOffice.equalsWorkers(Objects.requireNonNull(response.getBody())));
+
+        assertNotNull(response.getBody());
+
+        boolean checkWorkers = checkWorkers(newWorkers, response.getBody());
+        assertFalse(checkWorkers);
 
         officeRepo.deleteById(testOffice.getId());
         workerRepo.deleteById(testWorker1.getId());
@@ -55,15 +59,36 @@ public class WorkerServiceTest {
 
     @Test
     public void get_worker_by_id() {
-
         WorkerModel testWorker1 = new WorkerModel("testWorker1");
         workerRepo.save(testWorker1);
         ResponseEntity<WorkerModel> worker = workerService.get_worker_by_id(testWorker1.getId());
         assertEquals(worker.getBody(), testWorker1);
-
         workerRepo.deleteById(testWorker1.getId());
     }
+    @Test
+    public void deleteWorker() {
+        Set<WorkerModel> deletedWorkers = new HashSet<>();
+        Set<WorkerModel> newWorkers = new HashSet<>();
 
+        WorkerModel testWorker1 = new WorkerModel("testWorker1");
+        workerRepo.save(testWorker1);
+        deletedWorkers.add(testWorker1);
+        WorkerModel testWorker2 = new WorkerModel("testWorker1");
+        workerRepo.save(testWorker2);
+        deletedWorkers.add(testWorker2);
+
+        OfficeModel testOffice = new OfficeModel("testOffice");
+        testOffice.setWorkerId(deletedWorkers);
+        officeRepo.save(testOffice);
+
+        workerService.deleteWorker(new DeleteWorkerRequest(newWorkers, deletedWorkers, "testOffice"));
+
+        assertTrue(workerRepo.findById(testWorker1.getId()).isEmpty());
+        assertTrue(workerRepo.findById(testWorker2.getId()).isEmpty());
+
+        OfficeModel officeAfterDelete = officeRepo.findByName("testOffice");
+        officeRepo.deleteById(officeAfterDelete.getId());
+    }
     @Test
     public void saveWorker() {
         WorkerModel testWorker1 = new WorkerModel("testWorker1");
@@ -72,6 +97,7 @@ public class WorkerServiceTest {
         Set<WorkerModel> newWorkers = new HashSet<>();
         newWorkers.add(testWorker1);
 
+
         OfficeModel testOffice = new OfficeModel("testOffice");
         officeRepo.save(testOffice);
 
@@ -79,10 +105,30 @@ public class WorkerServiceTest {
 
         OfficeModel officeAfterSaveWorker = officeRepo.findByName("testOffice");
 
-        assertTrue(officeAfterSaveWorker.equalsWorkers(newWorkers));
+        boolean checkWorkers = checkWorkers(newWorkers, officeAfterSaveWorker.getWorkerId());
+        assertFalse(checkWorkers);
 
         officeRepo.deleteById(testOffice.getId());
         workerRepo.deleteById(testWorker1.getId());
+    }
+
+
+    public boolean checkWorkers(Set<WorkerModel> workersBeforeMethod,Set<WorkerModel> workersAfterMethod ){
+        boolean checkWorkers = false;
+        for(WorkerModel worker : workersBeforeMethod){
+            boolean checkWorker = false;
+            for(WorkerModel visitedWorker: workersAfterMethod){
+                if(worker.equals(visitedWorker)){
+                    checkWorker = true;
+                    break;
+                }
+            }
+            if(!checkWorker){
+                checkWorkers = true;
+                break;
+            }
+        }
+        return checkWorkers;
     }
 
 }
