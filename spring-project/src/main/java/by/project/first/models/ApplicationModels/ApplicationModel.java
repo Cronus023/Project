@@ -47,6 +47,15 @@ public class ApplicationModel {
         this.officeLocation = officeLocation;
     }
 
+    @Override
+    public boolean equals (Object o){
+        if(o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+        ApplicationModel application = (ApplicationModel) o;
+        return application.getId().equals(this.getId());
+    }
+
     public String getOfficeLocation() {
         return officeLocation;
     }

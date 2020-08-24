@@ -42,7 +42,7 @@ public class ApplicationService {
     @Autowired
     private GroupRepo groupRepo;
 
-    public ResponseEntity create_application(ApplicationCreateRequest request){
+    public ResponseEntity<Message> create_application(ApplicationCreateRequest request){
         OfficeModel office = officeRepo.findByName(request.getOffice().getName());
 
         if(office == null){
@@ -66,7 +66,7 @@ public class ApplicationService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity get_applications(){
+    public ResponseEntity<Set<ApplicationModel>> get_applications(){
         Iterable<ApplicationModel> applications = applicationRepo.findAll();
         Set<ApplicationModel> notAnsweredApplications = new HashSet<>();
         applications.forEach(application->{
@@ -79,9 +79,6 @@ public class ApplicationService {
 
     public ResponseEntity get_educational_program(Long id, String login){
         RegularReviewerResponse response = get_responses_and_application(login, id);
-        if(response.getApplication() == null || response.getResponses() == null){
-            return ResponseEntity.status(400).body(new Message("Wrong data!"));
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -92,12 +89,8 @@ public class ApplicationService {
         return new RegularReviewerResponse(application.get(), responsesOfCurrentUser);
     }
 
-    public ResponseEntity get_application(Long id, String login){
+    public ResponseEntity<RegularReviewerResponse> get_application(Long id, String login){
         RegularReviewerResponse response = get_responses_and_application(login, id);
-        if(response.getApplication() == null || response.getResponses() == null){
-            return ResponseEntity.status(400).body(new Message("Wrong data!"));
-        }
-
         Set<WorkerModelForResponse> workers = new HashSet<>();
         response.getApplication().getReasons().forEach(reason->{
             Optional<WorkerModel> worker = workerRepo.findById(reason.getWorkerID());
@@ -106,24 +99,21 @@ public class ApplicationService {
         return ResponseEntity.ok(new RegularReviewerResponse(workers, response.getApplication(), response.getResponses()));
     }
 
-    public ResponseEntity reject_accept(RejectAndAcceptRequest request){
+    public ResponseEntity<Message> reject_accept(RejectAndAcceptRequest request){
         UserModel user = userRepo.findByLogin(request.getLogin());
-        if(user == null){
-            return ResponseEntity.status(400).body(new Message("Can not find user by login"));
-        }
         Date date = new Date();
         ResponseToApplicationModel response = new ResponseToApplicationModel(request.getStatus(), request.getTypeOfSection(), user, request.getApplication(), date);
         responseToApplicationRepo.save(response);
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity get_history(Long id){
+    public ResponseEntity<Iterable<ResponseToApplicationModel>> get_history(Long id){
         Optional<ApplicationModel> application = applicationRepo.findById(id);
         Iterable<ResponseToApplicationModel> responsesOfApplication = responseToApplicationRepo.findAllByApplicationID(application.get());
         return ResponseEntity.ok(responsesOfApplication);
     }
 
-    public ResponseEntity get_provider_applications(String login){
+    public ResponseEntity<Set<ApplicationModel>> get_provider_applications(String login){
         UserModel user = userRepo.findByLogin(login);
         Set<ApplicationModel> providerApplications = new HashSet<>();
         Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(user);
