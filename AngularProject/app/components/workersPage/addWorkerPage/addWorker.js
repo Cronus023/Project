@@ -1,26 +1,26 @@
 angular.module('myApp.workers.addWorker', [])
-    .controller('AddWorkerCtrl', function($scope, workersService, $routeParams,$window) {
+    .controller('AddWorkerCtrl', function ($scope, workersService, $routeParams, $window) {
         $scope.message = ''
         $scope.checkAll = false
         $scope.id = $routeParams["officeName"]
 
-        $scope.add = function(workerForm){
-            if(workerForm.$valid){
+        $scope.add = function (workerForm) {
+            if (workerForm.$valid) {
                 const worker = {
-                    name : $scope.nameOfWorker,
+                    name: $scope.nameOfWorker,
                     education: $scope.education,
                     email: $scope.email,
                 }
-                workersService.add(worker,$scope.id)
+                workersService.add(worker, $scope.id)
                 $scope.message = 'Worker successfully added!'
 
-                setTimeout(function(){
+                setTimeout(function () {
                     $scope.message = ''
                 }, 1000)
             }
         }
 
-        $scope.back = function(){
+        $scope.back = function () {
             $window.location.href = `#!/workers/${$scope.id}`
             $window.location.reload()
         }

@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ResponseToApplicationRepo extends CrudRepository<ResponseToApplicationModel, Long> {
     Iterable<ResponseToApplicationModel> findAllByUser(UserModel user);
+
     Iterable<ResponseToApplicationModel> findAllByApplicationID(ApplicationModel applicationModel);
 }

@@ -1,7 +1,7 @@
-<div class = "d-flex justify-content-center">
-    <div class="signin card" style="width: 60rem;" >
+<div class="d-flex justify-content-center">
+    <div class="signin card" style="width: 60rem;">
         <h1 class="text-center card-header">Curriculum review</h1>
-        <div ng-if ="!curriculumStatus" class="form-application ">
+        <div ng-if="!curriculumStatus" class="form-application ">
             <label>Educational program: </label><br>
             <p>
                 {{applicationData.educationalProgram}}
@@ -9,8 +9,8 @@
             <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
             <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
         </div>
-        <div ng-if ="curriculumStatus">
-            <label class = "sign_in_up-error">You have already answered this section </label><br>
+        <div ng-if="curriculumStatus">
+            <label class="sign_in_up-error">You have already answered this section </label><br>
         </div>
 
     </div>

@@ -1,21 +1,19 @@
 'use strict'
 angular.module('myApp.register', ['ngRoute'])
-    .controller('RegisterCtrl', function($scope, authService, $window) {
+    .controller('RegisterCtrl', function ($scope, authService, $window) {
         $scope.typesOfRoles = [
-            { key: 1, value: "PROVIDER"},
-            { key: 2, value: "CURRICULUM_REVIEWER" },
-            { key: 3, value: "REGULAR_REVIEWER"},
-            { key: 4, value: "SUPERVISION" },
-            { key: 5, value: "TRAINING_OPERATOR"},
+            {key: 1, value: "PROVIDER"},
+            {key: 2, value: "CURRICULUM_REVIEWER"},
+            {key: 3, value: "REGULAR_REVIEWER"},
+            {key: 4, value: "SUPERVISION"},
+            {key: 5, value: "TRAINING_OPERATOR"},
         ]
         $scope.message = ''
-        $scope.registration = function(registerForm)
-        {
-            if(registerForm.$valid){
-                if(!$scope.role){
+        $scope.registration = function (registerForm) {
+            if (registerForm.$valid) {
+                if (!$scope.role) {
                     $scope.message = "Choose your role!"
-                }
-                else{
+                } else {
                     const registerBody = {
                         login: $scope.login,
                         password: $scope.password,
@@ -28,9 +26,9 @@ angular.module('myApp.register', ['ngRoute'])
                         roles: [$scope.role]
                     }
                     const response = authService.registration(registerBody)
-                    response.then(function(value){
+                    response.then(function (value) {
                         $scope.message = value
-                        if(value === ""){
+                        if (value === "") {
                             $window.location.href = '#!/login'
                         }
                     })

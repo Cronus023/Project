@@ -33,43 +33,40 @@ public class UserService {
         userRepo.save(userModel);
     }
 
-    public ResponseEntity login (UserModel user){
+    public ResponseEntity login(UserModel user) {
         UserModel authUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
-        if(authUser != null){
+        if (authUser != null) {
             authUser.setActive(true);
             userRepo.save(authUser);
             String token = jwtProvider.generateToken(authUser.getLogin());
             return ResponseEntity.ok(new LoginResponse(token, authUser.getRoles()));
-        }
-        else{
+        } else {
             return ResponseEntity.status(400).body(new Message("Please, check your date"));
         }
     }
 
-    public ResponseEntity<Set<RoleModel>> get_roles (String login){
+    public ResponseEntity<Set<RoleModel>> get_roles(String login) {
         UserModel user = userRepo.findByLogin(login);
         return ResponseEntity.ok(user.getRoles());
     }
 
-    public ResponseEntity<Message> logout (String login){
+    public ResponseEntity<Message> logout(String login) {
         UserModel user = userRepo.findByLogin(login);
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.status(400).body(new Message("error"));
-        }
-        else{
+        } else {
             user.setActive(false);
             userRepo.save(user);
             return ResponseEntity.ok(new Message("ok"));
         }
     }
 
-    public ResponseEntity<Message> register (UserModel user){
+    public ResponseEntity<Message> register(UserModel user) {
         UserModel newUser = userRepo.findByLogin(user.getLogin());
-        if(newUser == null){
+        if (newUser == null) {
             userService.saveUser(user);
             return ResponseEntity.ok(new Message(""));
-        }
-        else{
+        } else {
             return ResponseEntity.status(400).body(new Message("Such user already exist!"));
         }
     }
@@ -86,9 +83,8 @@ public class UserService {
 
     public ResponseEntity<Message> checkAuth(String token) {
         boolean check = jwtProvider.validateToken(token);
-        if(check){
+        if (check) {
             return ResponseEntity.ok(new Message("ok!"));
-        }
-        else return ResponseEntity.status(400).body(new Message("bad token!"));
+        } else return ResponseEntity.status(400).body(new Message("bad token!"));
     }
 }

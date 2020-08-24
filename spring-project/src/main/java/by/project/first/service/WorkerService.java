@@ -2,7 +2,10 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
-import by.project.first.models.*;
+import by.project.first.models.Message;
+import by.project.first.models.OfficeModel;
+import by.project.first.models.TrainingModel;
+import by.project.first.models.WorkerModel;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
@@ -25,12 +28,12 @@ public class WorkerService {
     @Autowired
     private OfficeRepo officeRepo;
 
-    public ResponseEntity<Set<WorkerModel>> get_workers(String name){
+    public ResponseEntity<Set<WorkerModel>> get_workers(String name) {
         OfficeModel office = officeRepo.findByName(name);
         return ResponseEntity.ok(office.getWorkerId());
     }
 
-    public ResponseEntity<WorkerModel> get_worker_by_id(Long id){
+    public ResponseEntity<WorkerModel> get_worker_by_id(Long id) {
         Optional<WorkerModel> worker = workerRepo.findById(id);
         return ResponseEntity.ok(worker.get());
     }
@@ -53,7 +56,7 @@ public class WorkerService {
     }
 
 
-    public ResponseEntity<Message> deleteWorker (DeleteWorkerRequest request) {
+    public ResponseEntity<Message> deleteWorker(DeleteWorkerRequest request) {
         Set<WorkerModel> workers = request.getNewWorkers();
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
@@ -61,11 +64,11 @@ public class WorkerService {
 
         Iterable<TrainingModel> trainings = trainingRepo.findAll();
 
-        trainings.forEach(training->{
-            request.getDeletedWorkers().forEach(deletedWorker->{
+        trainings.forEach(training -> {
+            request.getDeletedWorkers().forEach(deletedWorker -> {
                 Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
-                if(training.getWorkerID().contains(w.get())){
-                    Integer newSeats = training.getNumberOfSeats() + +1 ;
+                if (training.getWorkerID().contains(w.get())) {
+                    Integer newSeats = training.getNumberOfSeats() + +1;
                     training.getWorkerID().remove(w.get());
                     training.getTrainingPassedID().remove(w.get());
                     training.getTrainingVisitorsID().remove(w.get());
@@ -82,7 +85,7 @@ public class WorkerService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity<Message> editWorker (WorkerModel worker) {
+    public ResponseEntity<Message> editWorker(WorkerModel worker) {
         workerRepo.save(worker);
         return ResponseEntity.ok(new Message("ok!"));
     }

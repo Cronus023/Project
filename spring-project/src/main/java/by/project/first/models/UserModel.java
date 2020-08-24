@@ -1,7 +1,5 @@
 package by.project.first.models;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -56,14 +54,16 @@ public class UserModel {
         this.roles = roles;
         this.officeID = officeID;
     }
+
     @Override
-    public boolean equals (Object o){
-        if(o == null || this.getClass() != o.getClass()){
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         UserModel user = (UserModel) o;
         return user.getId().equals(this.getId());
     }
+
     public Long getId() {
         return id;
     }

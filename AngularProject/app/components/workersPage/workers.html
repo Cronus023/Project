@@ -1,7 +1,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col"><input type = "checkbox" ng-model = "checkAll" ng-click="selectAll()"> Select/Deselect all</th>
+        <th scope="col"><input type="checkbox" ng-model="checkAll" ng-click="selectAll()"> Select/Deselect all</th>
         <th scope="col">id</th>
         <th scope="col">Name</th>
         <th scope="col">Education</th>
@@ -11,28 +11,30 @@
     </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="item in data">
-            <div>
-                <td><input type = "checkbox" ng-model = "selectedWorkers" ng-checked="existWorker(item)" ng-click="selectWorker(item)"></td>
-                <th scope="row" >{{item.id}}</th>
-                <td> {{item.name}}</td>
-                <td>{{item.education}}</td>
-                <td>{{item.email}}</td>
-                <td>
-                    <button type="button" class="btn btn-primary" ng-click="viewTrainings(item.id)">View passed trainings</button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-primary" ng-click="edit(item)">Edit</button>
-                </td>
-            </div>
-        </tr>
+    <tr ng-repeat="item in data">
+        <div>
+            <td><input type="checkbox" ng-model="selectedWorkers" ng-checked="existWorker(item)"
+                       ng-click="selectWorker(item)"></td>
+            <th scope="row">{{item.id}}</th>
+            <td> {{item.name}}</td>
+            <td>{{item.education}}</td>
+            <td>{{item.email}}</td>
+            <td>
+                <button type="button" class="btn btn-primary" ng-click="viewTrainings(item.id)">View passed trainings
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" ng-click="edit(item)">Edit</button>
+            </td>
+        </div>
+    </tr>
     </tbody>
 </table>
-<div class = "row">
-    <p class = "ml-3" ng-if = "selected.length != 0">
+<div class="row">
+    <p class="ml-3" ng-if="selected.length != 0">
         <button type="button" class="btn btn-danger" ng-click="delete()">Delete</button>
     </p>
-    <div class = "ml-3">
-        <button type="button" class="btn btn-success" ng-click ="add()">Add worker</button>
+    <div class="ml-3">
+        <button type="button" class="btn btn-success" ng-click="add()">Add worker</button>
     </div>
 </div>

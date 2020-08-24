@@ -26,8 +26,8 @@ public class WorkerModel {
     }
 
     @Override
-    public boolean equals (Object o){
-        if(o == null || this.getClass() != o.getClass()){
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         WorkerModel worker = (WorkerModel) o;

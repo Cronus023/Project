@@ -1,4 +1,4 @@
-<div class = "d-flex justify-content-center">
+<div class="d-flex justify-content-center">
     <div class="signin card" style="width: 40rem;" ng-form="trainingForm">
         <h1 class="text-center card-header">Training control</h1>
         <div class="form-signin ">
@@ -15,14 +15,19 @@
                 </select><br><br>
 
                 <label for="inputNumber" class="sr-only">Number of seats</label>
-                <input type="number" ng-model="data.numberOfSeats" id="inputNumber" class="form-control" placeholder="Number of seats" required><br><br>
+                <input type="number" ng-model="data.numberOfSeats" id="inputNumber" class="form-control"
+                       placeholder="Number of seats" required><br><br>
 
-                <label ng-if="message!='' && message != 'ok!'"><p class = "sign_in_up-error">{{message}}</p></label><br>
-                <label ng-if="message!='' && message == 'ok!'"><p class = "add_worker_ok">Training successfully edited!</p></label><br>
+                <label ng-if="message!='' && message != 'ok!'"><p class="sign_in_up-error">{{message}}</p></label><br>
+                <label ng-if="message!='' && message == 'ok!'"><p class="add_worker_ok">Training successfully
+                    edited!</p></label><br>
 
-                <button class="btn btn-lg btn-block btn-info " ng-click = "editTraining(trainingForm)">Edit training</button>
-                <button class="btn btn-lg btn-block btn-danger " ng-click = "deleteTraining()">Delete training</button>
-                <button class="btn btn-lg btn-block btn-primary " ng-click = "workersControl()">Management of registered workers </button>
+                <button class="btn btn-lg btn-block btn-info " ng-click="editTraining(trainingForm)">Edit training
+                </button>
+                <button class="btn btn-lg btn-block btn-danger " ng-click="deleteTraining()">Delete training</button>
+                <button class="btn btn-lg btn-block btn-primary " ng-click="workersControl()">Management of registered
+                    workers
+                </button>
 
             </form>
 

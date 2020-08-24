@@ -1,49 +1,43 @@
 const office = angular.module('office', [])
-office.factory('officeService',['$http','$q','$window', function($http,  $q, $window){
-    return{
-        become: function(office){
-            const becomeRequest ={
+office.factory('officeService', ['$http', '$q', '$window', function ($http, $q, $window) {
+    return {
+        become: function (office) {
+            const becomeRequest = {
                 login: localStorage.getItem('UserLogin'),
-                office:office
+                office: office
             }
-            $http.post('http://localhost:8080/become_provider',becomeRequest).
-            then(function (response) {
+            $http.post('http://localhost:8080/become_provider', becomeRequest).then(function (response) {
                 $window.location.reload()
             })
         },
-        get_office_by_provider_login: function(login){
+        get_office_by_provider_login: function (login) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/get_office_by_login?login=${login}`).
-            then(function (response) {
+            $http.get(`http://localhost:8080/get_office_by_login?login=${login}`).then(function (response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        get_office_by_name: function(name){
+        get_office_by_name: function (name) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/get_office_by_name?name=${name}`).
-            then(function (response) {
+            $http.get(`http://localhost:8080/get_office_by_name?name=${name}`).then(function (response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        get_office: function(){
+        get_office: function () {
             const deferred = $q.defer()
-            $http.get('http://localhost:8080/get_office').
-            then(function (response) {
+            $http.get('http://localhost:8080/get_office').then(function (response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        create: function(officeBody){
+        create: function (officeBody) {
             const deferred = $q.defer()
 
-            $http.post('http://localhost:8080/create_office',officeBody).
-            then(function (response) {
-                if(response.status === 400){
+            $http.post('http://localhost:8080/create_office', officeBody).then(function (response) {
+                if (response.status === 400) {
                     deferred.resolve(response.data)
-                }
-                else{
+                } else {
                     $window.location.href = '#!/main'
                     $window.location.reload()
                 }
@@ -51,4 +45,4 @@ office.factory('officeService',['$http','$q','$window', function($http,  $q, $wi
             return deferred.promise
         }
     }
-}] )
+}])

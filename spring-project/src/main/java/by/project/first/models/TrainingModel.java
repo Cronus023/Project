@@ -71,8 +71,8 @@ public class TrainingModel {
     }
 
     @Override
-    public boolean equals (Object o){
-        if(o == null || this.getClass() != o.getClass()){
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         TrainingModel training = (TrainingModel) o;

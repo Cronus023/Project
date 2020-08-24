@@ -3,18 +3,18 @@
 
     <h5 class="my-0 mr-md-auto font-weight-normal">Itransition</h5>
 
-    <nav ng-if = "token == null">
+    <nav ng-if="token == null">
         <a class="btn btn-outline-primary" href="#!/login">Sign in</a>
         <a class="btn btn-outline-primary ml-1" href="#!/register">Sign up</a>
     </nav>
 
 
-
-    <div ng-if = "token != null">
+    <div ng-if="token != null">
 
         <nav ng-if="role == 'PROVIDER'">
             <div class="btn-group mr-4">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                     {{role}} MENU
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -34,7 +34,8 @@
         <nav ng-if="role == 'CURRICULUM_REVIEWER'">
 
             <div class="btn-group mr-4">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                     {{role}} MENU
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -50,7 +51,8 @@
         <nav ng-if="role == 'REGULAR_REVIEWER'">
 
             <div class="btn-group mr-4">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                     {{role}} MENU
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -66,7 +68,8 @@
         <nav ng-if="role == 'SUPERVISION'">
 
             <div class="btn-group mr-4">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                     {{role}} MENU
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" weigth="">
@@ -82,7 +85,8 @@
         <nav ng-if="role == 'TRAINING_OPERATOR'">
 
             <div class="btn-group mr-4">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                     {{role}} MENU
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" weigth="">

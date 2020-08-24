@@ -1,6 +1,5 @@
 package by.project.first.models.ApplicationModels;
 
-import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
 
 import javax.persistence.*;
@@ -45,8 +44,8 @@ public class ResponseToApplicationModel {
     }
 
     @Override
-    public boolean equals (Object o){
-        if(o == null || this.getClass() != o.getClass()){
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         ResponseToApplicationModel response = (ResponseToApplicationModel) o;

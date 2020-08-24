@@ -1,7 +1,5 @@
 package by.project.first.models.ApplicationModels;
 
-import by.project.first.models.OfficeModel;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -48,8 +46,8 @@ public class ApplicationModel {
     }
 
     @Override
-    public boolean equals (Object o){
-        if(o == null || this.getClass() != o.getClass()){
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         ApplicationModel application = (ApplicationModel) o;

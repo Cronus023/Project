@@ -11,34 +11,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins="http://localhost:8000")
+@CrossOrigin(origins = "http://localhost:8000")
 public class AuthController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserModel user){
+    public ResponseEntity login(@RequestBody UserModel user) {
         return userService.login(user);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Message> register( @RequestBody UserModel user){
+    public ResponseEntity<Message> register(@RequestBody UserModel user) {
         return userService.register(user);
     }
 
     @GetMapping("/authLogout")
-    public ResponseEntity<Message> authLogout(@RequestParam String login){
+    public ResponseEntity<Message> authLogout(@RequestParam String login) {
         return userService.logout(login);
     }
 
     @GetMapping("/get_roles")
-    public ResponseEntity<Set<RoleModel>> get_user_roles(@RequestParam String login){
+    public ResponseEntity<Set<RoleModel>> get_user_roles(@RequestParam String login) {
         return userService.get_roles(login);
     }
 
     @GetMapping("/auth/check")
-    public ResponseEntity<Message> checkAuth(@RequestParam String token){
+    public ResponseEntity<Message> checkAuth(@RequestParam String token) {
         return userService.checkAuth(token);
     }
 }

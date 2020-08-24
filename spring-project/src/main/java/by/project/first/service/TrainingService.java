@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TrainingService {
@@ -30,7 +33,7 @@ public class TrainingService {
     private OfficeRepo officeRepo;
 
 
-    public ResponseEntity<Message> saveTraining (AddTrainingRequest request){
+    public ResponseEntity<Message> saveTraining(AddTrainingRequest request) {
         TrainingModel training = request.getTraining();
         UserModel user = userRepo.findByLogin(request.getUserLogin());
         training.setTrainerID(user);
@@ -38,22 +41,22 @@ public class TrainingService {
         return ResponseEntity.ok(new Message("ok"));
     }
 
-    public ResponseEntity<Iterable<WorkerModel>> findWorkersByIdAndUserLogin (GetWorkersTrainingRequest request){
+    public ResponseEntity<Iterable<WorkerModel>> findWorkersByIdAndUserLogin(GetWorkersTrainingRequest request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         UserModel user = userRepo.findByLogin(request.getLogin());
 
-        if(user.getRoles().contains(RoleModel.PROVIDER)){
+        if (user.getRoles().contains(RoleModel.PROVIDER)) {
             Iterable<OfficeModel> offices = officeRepo.findAll();
             Set<WorkerModel> workers = workersOfProvider(offices, user);
             workers.removeAll(training.get().getWorkerID());
             return ResponseEntity.ok(workers);
         }
 
-        if(user.getRoles().contains(RoleModel.TRAINING_OPERATOR)){
+        if (user.getRoles().contains(RoleModel.TRAINING_OPERATOR)) {
             Iterable<WorkerModel> allWorkers = workerRepo.findAll();
             Set<WorkerModel> workers = new HashSet<>();
-            allWorkers.forEach(worker->{
-                if(!training.get().getWorkerID().contains(worker)){
+            allWorkers.forEach(worker -> {
+                if (!training.get().getWorkerID().contains(worker)) {
                     workers.add(worker);
                 }
             });
@@ -62,19 +65,19 @@ public class TrainingService {
         return null;
     }
 
-    public ResponseEntity<Message> registerWorkers (RegWorkersToTraining request){
+    public ResponseEntity<Message> registerWorkers(RegWorkersToTraining request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         Date date = new Date();
-        if(date.compareTo(training.get().getDateOfEnd()) > 0){
+        if (date.compareTo(training.get().getDateOfEnd()) > 0) {
             return ResponseEntity.ok(new Message("Registration for this training is not possible"));
         }
-        if(training.get().getNumberOfSeats() <= 0){
+        if (training.get().getNumberOfSeats() <= 0) {
             return ResponseEntity.ok(new Message("The number of seats for registration - 0!"));
         }
-        request.getNewWorkers().forEach(worker-> training.get().getWorkerID().add(worker));
-        Integer seats = training.get().getNumberOfSeats()- request.getNewWorkers().size();
+        request.getNewWorkers().forEach(worker -> training.get().getWorkerID().add(worker));
+        Integer seats = training.get().getNumberOfSeats() - request.getNewWorkers().size();
         training.get().setNumberOfSeats(seats);
-        if(training.get().getNumberOfSeats() < 0){
+        if (training.get().getNumberOfSeats() < 0) {
             return ResponseEntity.ok(new Message("Select fewer workers for registration!"));
         }
         trainingRepo.save(training.get());
@@ -82,30 +85,30 @@ public class TrainingService {
 
     }
 
-    public ResponseEntity<Message> edit_training(TrainingModel request){
+    public ResponseEntity<Message> edit_training(TrainingModel request) {
         trainingRepo.save(request);
         return ResponseEntity.ok(new Message("ok!"));
     }
 
 
-    public ResponseEntity findTrainingWorkers (GetWorkersTrainingRequest request){
+    public ResponseEntity findTrainingWorkers(GetWorkersTrainingRequest request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
 
         Date date = new Date();
 
-        if(date.compareTo(training.get().getDate()) <= 0){
-            return ResponseEntity.status(400).body( new Message("It's too early"));
+        if (date.compareTo(training.get().getDate()) <= 0) {
+            return ResponseEntity.status(400).body(new Message("It's too early"));
         }
 
         UserModel user = userRepo.findByLogin(request.getLogin());
 
-        if(user.getRoles().contains(RoleModel.PROVIDER)){
+        if (user.getRoles().contains(RoleModel.PROVIDER)) {
             Iterable<OfficeModel> offices = officeRepo.findAll();
             Set<WorkerModel> workersOfProvider = workersOfProvider(offices, user);
             Set<WorkerModel> workersOfTraining = new HashSet<>();
 
-            workersOfProvider.forEach(worker->{
-                if(training.get().getWorkerID().contains(worker)){
+            workersOfProvider.forEach(worker -> {
+                if (training.get().getWorkerID().contains(worker)) {
                     workersOfTraining.add(worker);
                 }
             });
@@ -114,11 +117,11 @@ public class TrainingService {
         return ResponseEntity.ok(new FindTrainingWorkersResponse(training.get().getWorkerID(), training.get()));
     }
 
-    public Set<WorkerModel> workersOfProvider (Iterable<OfficeModel> offices, UserModel user){
+    public Set<WorkerModel> workersOfProvider(Iterable<OfficeModel> offices, UserModel user) {
         Set<WorkerModel> workers = new HashSet<>();
-        for(OfficeModel office: offices){
-            for(UserModel provider: office.getLeaderID()){
-                if(provider.equals(user)){
+        for (OfficeModel office : offices) {
+            for (UserModel provider : office.getLeaderID()) {
+                if (provider.equals(user)) {
                     workers.addAll(office.getWorkerId());
                     break;
                 }
@@ -127,7 +130,7 @@ public class TrainingService {
         return workers;
     }
 
-    public ResponseEntity<Message> addPassedWorkers (RegWorkersToTraining request){
+    public ResponseEntity<Message> addPassedWorkers(RegWorkersToTraining request) {
         Set<WorkerModel> passedWorkers = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         training.get().getTrainingPassedID().addAll(passedWorkers);
@@ -135,19 +138,19 @@ public class TrainingService {
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity<Message> delete_workers(RegWorkersToTraining request){
+    public ResponseEntity<Message> delete_workers(RegWorkersToTraining request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         training.get().getWorkerID().removeAll(request.getNewWorkers());
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity<Message> delete_training(Long id){
+    public ResponseEntity<Message> delete_training(Long id) {
         trainingRepo.deleteById(id);
         return ResponseEntity.ok(new Message("ok!"));
     }
 
-    public ResponseEntity<Message> addVisitors (RegWorkersToTraining request){
+    public ResponseEntity<Message> addVisitors(RegWorkersToTraining request) {
         Set<WorkerModel> visitors = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         training.get().getTrainingVisitorsID().addAll(visitors);

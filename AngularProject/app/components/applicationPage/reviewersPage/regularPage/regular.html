@@ -1,5 +1,5 @@
-<div class = "d-flex justify-content-center">
-    <div class="signin card" style="width: 60rem;" >
+<div class="d-flex justify-content-center">
+    <div class="signin card" style="width: 60rem;">
         <h1 class="text-center card-header">Regular review</h1>
         <div class="form-application ">
             <ul class="nav nav-tabs card-header-tabs">
@@ -9,8 +9,9 @@
                 <li class="nav-item">
                     <button style="color:#28c143" class="btn ml-1" ng-click="selectWorkers()">Workers section</button>
                 </li>
-            </ul><br>
-            <div ng-if ="section.number==1 && !section.groupStatus">
+            </ul>
+            <br>
+            <div ng-if="section.number==1 && !section.groupStatus">
                 <label>Groups information: </label><br>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item ml-5">
@@ -23,7 +24,7 @@
                     </li>
                     <li class="list-group-item ml-5">
                         <label>{{applicationData.groups[1].name}}</label><br>
-                        <label>Number of classes:  {{applicationData.groups[1].numberOfClasses}} </label>
+                        <label>Number of classes: {{applicationData.groups[1].numberOfClasses}} </label>
                         <p>
                             5 activities: {{applicationData.groups[1].activities}}
                         </p>
@@ -50,10 +51,10 @@
                 <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
                 <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
             </div>
-            <div ng-if ="section.number==1 && section.groupStatus">
-                <label class = "sign_in_up-error">You have already answered this section </label><br>
+            <div ng-if="section.number==1 && section.groupStatus">
+                <label class="sign_in_up-error">You have already answered this section </label><br>
             </div>
-            <div ng-if ="section.number==2 && !section.workersStatus">
+            <div ng-if="section.number==2 && !section.workersStatus">
                 <label>Workers information: </label><br>
                 <table class="table">
                     <thead>
@@ -78,8 +79,8 @@
                 <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
                 <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
             </div>
-            <div ng-if ="section.number==2 && section.workersStatus">
-                <label class = "sign_in_up-error">You have already answered this section </label><br>
+            <div ng-if="section.number==2 && section.workersStatus">
+                <label class="sign_in_up-error">You have already answered this section </label><br>
             </div>
 
         </div>

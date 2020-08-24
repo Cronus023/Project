@@ -1,7 +1,7 @@
 <h1>Trainings</h1>
 <div class="row">
     <div class="col-sm-3" ng-repeat="training in trainings">
-        <div class="card" style="width: 20rem;" >
+        <div class="card" style="width: 20rem;">
             <div class="card-body">
                 <h5 class="card-title">Trainer : {{training.trainerID.login}}</h5>
                 <label>Date of training : </label>
@@ -15,10 +15,15 @@
                 <p class="card-text">{{training.numberOfSeats}}</p>
 
                 <div>
-                    <button ng-if="checkControl(training)" class="btn btn-success" ng-click="control(training.id)">Training control</button>
-                    <button ng-if="checkRegister(training)" class="btn btn-info " ng-click = "register(training.id)">Registration</button>
+                    <button ng-if="checkControl(training)" class="btn btn-success" ng-click="control(training.id)">
+                        Training control
+                    </button>
+                    <button ng-if="checkRegister(training)" class="btn btn-info " ng-click="register(training.id)">
+                        Registration
+                    </button>
 
-                    <button class="btn btn-primary mt-1" ng-click = "visit(training.id)">To acknowledge the presence</button>
+                    <button class="btn btn-primary mt-1" ng-click="visit(training.id)">To acknowledge the presence
+                    </button>
                 </div>
 
             </div>

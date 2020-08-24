@@ -1,16 +1,15 @@
 angular.module('myApp.application.reviewers.regular', [])
-    .controller('RegularReviewersApplicationCtrl', function($scope, $routeParams,$window, applicationService) {
-        applicationService.get_application_by_id($routeParams["applicationID"]).then(function(value){
+    .controller('RegularReviewersApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
+        applicationService.get_application_by_id($routeParams["applicationID"]).then(function (value) {
             $scope.applicationData = value.application
             $scope.workers = value.workers
             $scope.responses = value.responses
-            $scope.responses.map(function(item){
+            $scope.responses.map(function (item) {
                 const applicationId = item.applicationID.id.toString()
 
-                if(item.typeOfSection === 'GROUPS' && applicationId === $routeParams["applicationID"]){
+                if (item.typeOfSection === 'GROUPS' && applicationId === $routeParams["applicationID"]) {
                     $scope.section.groupStatus = true
-                }
-                else if(item.typeOfSection === 'WORKERS' && applicationId === $routeParams["applicationID"]){
+                } else if (item.typeOfSection === 'WORKERS' && applicationId === $routeParams["applicationID"]) {
                     $scope.section.workersStatus = true
                 }
             })
@@ -20,22 +19,22 @@ angular.module('myApp.application.reviewers.regular', [])
             groupStatus: false,
             workersStatus: false,
         }
-        $scope.selectGroups = function(){
+        $scope.selectGroups = function () {
             $scope.section.number = 1
         }
-        $scope.selectWorkers = function(){
+        $scope.selectWorkers = function () {
             $scope.section.number = 2
         }
-        $scope.rejectAndAccept = function(status){
+        $scope.rejectAndAccept = function (status) {
             let section = ""
-            if($scope.section.number === 1){
+            if ($scope.section.number === 1) {
                 section = 'GROUPS'
             }
-            if($scope.section.number === 2){
+            if ($scope.section.number === 2) {
                 section = 'WORKERS'
             }
-            applicationService.reject_accept_application($routeParams["applicationID"],$scope.applicationData, status, section).then(function(value){
-                if(value.title !== 'ok!'){
+            applicationService.reject_accept_application($routeParams["applicationID"], $scope.applicationData, status, section).then(function (value) {
+                if (value.title !== 'ok!') {
                     alert(value.title)
                     $window.location.href = '#!/application/reviewers/view'
                 }

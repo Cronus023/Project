@@ -63,9 +63,10 @@ public class OfficeModel {
         this.workerId = workerId;
         this.officeApplications = officeApplications;
     }
+
     @Override
-    public boolean equals (Object o){
-        if(o == null || this.getClass() != o.getClass()){
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
         OfficeModel office = (OfficeModel) o;

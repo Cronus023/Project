@@ -2,7 +2,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col"><input type = "checkbox" ng-model = "checkAll" ng-click="selectAll()"> Select/Deselect all</th>
+        <th scope="col"><input type="checkbox" ng-model="checkAll" ng-click="selectAll()"> Select/Deselect all</th>
         <th scope="col">id</th>
         <th scope="col">Name</th>
         <th scope="col">Education</th>
@@ -12,8 +12,8 @@
     <tbody>
     <tr ng-repeat="item in data">
         <div>
-            <td><input type = "checkbox" ng-model = "selected" ng-checked="exist(item)" ng-click="select(item)"></td>
-            <th scope="row" >{{item.id}}</th>
+            <td><input type="checkbox" ng-model="selected" ng-checked="exist(item)" ng-click="select(item)"></td>
+            <th scope="row">{{item.id}}</th>
             <td> {{item.name}}</td>
             <td>{{item.education}}</td>
             <td>{{item.email}}</td>
@@ -22,11 +22,12 @@
     </tbody>
 </table>
 <div>
-    <label ng-if="message!='' && message != 'ok!'"><p class = "sign_in_up-error">{{message}}</p></label><br>
-    <label ng-if="message!='' && message == 'ok!'"><p class = "add_worker_ok">Workers successfully deleted!</p></label><br>
+    <label ng-if="message!='' && message != 'ok!'"><p class="sign_in_up-error">{{message}}</p></label><br>
+    <label ng-if="message!='' && message == 'ok!'"><p class="add_worker_ok">Workers successfully deleted!</p>
+    </label><br>
 </div>
-<div class = "row">
-    <p class = "ml-3" ng-if = "selected.length != 0">
+<div class="row">
+    <p class="ml-3" ng-if="selected.length != 0">
         <button type="button" class="btn btn-danger" ng-click="delete()">Delete from training</button>
     </p>
 </div>
