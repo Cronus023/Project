@@ -43,7 +43,7 @@ class OfficeServiceTest {
     @Autowired
     private WorkerRepo workerRepo;
 
-    @Test
+    /*@Test
     void become_provider() {
         OfficeModel testOffice = new OfficeModel("testOffice");
         officeRepo.save(testOffice);
@@ -218,6 +218,6 @@ class OfficeServiceTest {
         officeRepo.deleteById(testOffice.getId());
         workerRepo.deleteById(testWorker1.getId());
         workerRepo.deleteById(testWorker2.getId());
-    }
+    }*/
 
 }

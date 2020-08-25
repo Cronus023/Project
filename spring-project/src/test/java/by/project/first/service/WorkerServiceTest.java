@@ -33,7 +33,7 @@ public class WorkerServiceTest {
     @Autowired
     private WorkerService workerService;
 
-    @Test
+   /* @Test
     public void get_workers() {
         OfficeModel testOffice = new OfficeModel("testOffice");
         Set<WorkerModel> newWorkers = new HashSet<>();
@@ -129,6 +129,6 @@ public class WorkerServiceTest {
             }
         }
         return checkWorkers;
-    }
+    }*/
 
 }

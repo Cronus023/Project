@@ -1,6 +1,6 @@
 angular.module('myApp.application.reviewers.curriculum', [])
     .controller('CurriculumReviewersApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
-        applicationService.get_educational_program_by_id($routeParams["applicationID"]).then(function (value) {
+        applicationService.getEducationalProgramById($routeParams["applicationID"]).then(function (value) {
             $scope.applicationData = value.application
             $scope.curriculumStatus = false
 
@@ -15,7 +15,7 @@ angular.module('myApp.application.reviewers.curriculum', [])
 
         $scope.rejectAndAccept = function (status) {
             const section = 'CURRICULUM'
-            applicationService.reject_accept_application($routeParams["applicationID"], $scope.applicationData, status, section).then(function (value) {
+            applicationService.rejectAndAccept($routeParams["applicationID"], $scope.applicationData, status, section).then(function (value) {
                 if (value.title !== 'ok!') {
                     alert(value.title)
                     $window.location.href = '#!/application/reviewers/view'

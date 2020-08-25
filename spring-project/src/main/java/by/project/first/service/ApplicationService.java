@@ -7,7 +7,6 @@ import by.project.first.models.ApplicationModels.*;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
-import by.project.first.models.WorkerModel;
 import by.project.first.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import java.util.Set;
 
 @Service
 public class ApplicationService {
-
     @Autowired
     private OfficeRepo officeRepo;
 
@@ -42,111 +40,105 @@ public class ApplicationService {
     @Autowired
     private GroupRepo groupRepo;
 
-    public ResponseEntity<Message> create_application(ApplicationCreateRequest request) {
+    public Message createApplication(ApplicationCreateRequest request) {
         OfficeModel office = officeRepo.findByName(request.getOffice().getName());
+        Set<ReasonsModel> reasons = request.getApplication().getReasons();
+        Set<GroupsModel> groups = request.getApplication().getGroups();
 
-        if (office == null) {
-            ResponseEntity.status(400).body(new Message("Can not find office"));
-        } else {
-            Set<ReasonsModel> reasons = new HashSet<>();
-            Set<GroupsModel> groups = new HashSet<>();
-            reasonRepo.saveAll(request.getApplication().getReasons());
-            groupRepo.saveAll(request.getApplication().getGroups());
+        reasonRepo.saveAll(reasons);
+        groupRepo.saveAll(groups);
+        saveOfficeAndApplication(office, reasons, groups, request);
 
-            ApplicationModel application = new ApplicationModel(reasons, groups, request.getApplication().getEducationalProgram(), request.getApplication().getAdditionalInfo(), office.getName(), office.getLocation());
-            ApplicationModel newApplication = applicationRepo.save(application);
-
-            office.setLastApplication(newApplication);
-            office.getOfficeApplications().add(newApplication);
-
-            officeRepo.save(office);
-            return ResponseEntity.ok(new Message("ok!"));
-        }
-        return ResponseEntity.ok(new Message("ok!"));
+        return new Message("ok!");
     }
 
-    public ResponseEntity<Set<ApplicationModel>> get_applications() {
-        Iterable<ApplicationModel> applications = applicationRepo.findAll();
+    public void saveOfficeAndApplication(OfficeModel office, Set<ReasonsModel> reasons, Set<GroupsModel> groups,
+                                         ApplicationCreateRequest request) {
+        ApplicationModel newApplication = applicationRepo.save(new ApplicationModel(reasons, groups,
+                request.getApplication().getEducationalProgram(), request.getApplication().getAdditionalInfo(),
+                office.getName(), office.getLocation())
+        );
+
+        office.setLastApplication(newApplication);
+        office.getOfficeApplications().add(newApplication);
+        officeRepo.save(office);
+    }
+
+    public Set<ApplicationModel> getApplications() {
         Set<ApplicationModel> notAnsweredApplications = new HashSet<>();
-        applications.forEach(application -> {
+        applicationRepo.findAll().forEach(application -> {
             if (application.getStatus().equals("WAIT_FOR_AN_ANSWER")) {
                 notAnsweredApplications.add(application);
             }
         });
-        return ResponseEntity.ok(notAnsweredApplications);
+        return notAnsweredApplications;
     }
 
-    public ResponseEntity<RegularReviewerResponse> get_educational_program(Long id, String login) {
-        RegularReviewerResponse response = get_responses_and_application(login, id);
-        return ResponseEntity.ok(response);
+    public RegularReviewerResponse getEducationalProgram(Long id, String login) {
+        return getResponsesAndApplication(login, id);
     }
 
-    public RegularReviewerResponse get_responses_and_application(String login, Long id) {
+    public RegularReviewerResponse getResponsesAndApplication(String login, Long id) {
         UserModel user = userRepo.findByLogin(login);
-        Optional<ApplicationModel> application = applicationRepo.findById(id);
-        Iterable<ResponseToApplicationModel> responsesOfCurrentUser = responseToApplicationRepo.findAllByUser(user);
-        return new RegularReviewerResponse(application.get(), responsesOfCurrentUser);
+        return new RegularReviewerResponse(applicationRepo.findById(id).get(),
+                responseToApplicationRepo.findAllByUser(user)
+        );
     }
 
-    public ResponseEntity<RegularReviewerResponse> get_application(Long id, String login) {
-        RegularReviewerResponse response = get_responses_and_application(login, id);
+    public RegularReviewerResponse getApplication(Long id, String login) {
+        RegularReviewerResponse response = getResponsesAndApplication(login, id);
         Set<WorkerModelForResponse> workers = new HashSet<>();
-        response.getApplication().getReasons().forEach(reason -> {
-            Optional<WorkerModel> worker = workerRepo.findById(reason.getWorkerID());
-            workers.add(new WorkerModelForResponse(worker.get(), reason.getReason()));
-        });
-        return ResponseEntity.ok(new RegularReviewerResponse(workers, response.getApplication(), response.getResponses()));
+        response.getApplication().getReasons().forEach(reason ->
+                workers.add(new WorkerModelForResponse(
+                        workerRepo.findById(reason.getWorkerID()).get(), reason.getReason()))
+        );
+        return new RegularReviewerResponse(workers, response.getApplication(), response.getResponses());
     }
 
-    public ResponseEntity<Message> reject_accept(RejectAndAcceptRequest request) {
+    public Message rejectAndAccept(RejectAndAcceptRequest request) {
         UserModel user = userRepo.findByLogin(request.getLogin());
-        Date date = new Date();
-        ResponseToApplicationModel response = new ResponseToApplicationModel(request.getStatus(), request.getTypeOfSection(), user, request.getApplication(), date);
+        ResponseToApplicationModel response = new ResponseToApplicationModel(request.getStatus(),
+                request.getTypeOfSection(), user, request.getApplication(), new Date()
+        );
         responseToApplicationRepo.save(response);
-        return ResponseEntity.ok(new Message("ok!"));
+        return new Message("ok!");
     }
 
-    public ResponseEntity<Iterable<ResponseToApplicationModel>> get_history(Long id) {
-        Optional<ApplicationModel> application = applicationRepo.findById(id);
-        Iterable<ResponseToApplicationModel> responsesOfApplication = responseToApplicationRepo.findAllByApplicationID(application.get());
-        return ResponseEntity.ok(responsesOfApplication);
+    public Iterable<ResponseToApplicationModel> getHistory(Long id) {
+        return responseToApplicationRepo.findAllByApplicationID(applicationRepo.findById(id).get());
     }
 
-    public ResponseEntity<Set<ApplicationModel>> get_provider_applications(String login) {
-        UserModel user = userRepo.findByLogin(login);
+    public Set<ApplicationModel> getProviderApplications(String login) {
         Set<ApplicationModel> providerApplications = new HashSet<>();
-        Iterable<OfficeModel> providerOffices = officeRepo.findAllByLeaderID(user);
-
-        providerOffices.forEach(office -> {
-            Set<ApplicationModel> officeApplications = office.getOfficeApplications();
-            providerApplications.addAll(officeApplications);
-        });
-
-        return ResponseEntity.ok(providerApplications);
+        officeRepo.findAllByLeaderID(userRepo.findByLogin(login)).forEach(office ->
+                providerApplications.addAll(office.getOfficeApplications())
+        );
+        return providerApplications;
     }
 
-    public ResponseEntity<Message> final_decision(Long id, String decision) {
+    public ResponseEntity<Message> finalDecision(Long id, String decision) {
         Optional<ApplicationModel> application = applicationRepo.findById(id);
         OfficeModel office = officeRepo.findByLastApplication(application);
 
-        if (office == null) {
-            return ResponseEntity.status(400).body(new Message("Can not find office!"));
-        }
+        if (office == null) return ResponseEntity.status(400).body(new Message("Can not find office!"));
+        if (decision.equals("ACCEPT")) return finalDecisionAccept(office, application.get(), decision);
+        if (decision.equals("REJECT")) return finalDecisionReject(application.get(), decision);
 
-        if (decision.equals("ACCEPT")) {
-            office.setDateOfLastPermission(new Date());
-            officeRepo.save(office);
-
-            application.get().setStatus(decision);
-            applicationRepo.save(application.get());
-            return ResponseEntity.ok(new Message("ok!"));
-        }
-        if (decision.equals("REJECT")) {
-            application.get().setStatus(decision);
-            applicationRepo.save(application.get());
-            return ResponseEntity.ok(new Message("ok!"));
-        }
         return ResponseEntity.status(400).body(new Message("Something wrong"));
+    }
+
+    public ResponseEntity<Message> finalDecisionAccept(OfficeModel office, ApplicationModel application, String decision) {
+        office.setDateOfLastPermission(new Date());
+        officeRepo.save(office);
+        application.setStatus(decision);
+        applicationRepo.save(application);
+        return ResponseEntity.ok(new Message("ok!"));
+    }
+
+    public ResponseEntity<Message> finalDecisionReject(ApplicationModel application, String decision) {
+        application.setStatus(decision);
+        applicationRepo.save(application);
+        return ResponseEntity.ok(new Message("ok!"));
     }
 }
 

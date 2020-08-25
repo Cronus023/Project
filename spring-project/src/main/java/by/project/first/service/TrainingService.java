@@ -32,122 +32,125 @@ public class TrainingService {
     @Autowired
     private OfficeRepo officeRepo;
 
-
-    public ResponseEntity<Message> saveTraining(AddTrainingRequest request) {
+    public Message saveTraining(AddTrainingRequest request) {
         TrainingModel training = request.getTraining();
         UserModel user = userRepo.findByLogin(request.getUserLogin());
         training.setTrainerID(user);
         trainingRepo.save(training);
-        return ResponseEntity.ok(new Message("ok"));
+        return new Message("ok");
     }
 
-    public ResponseEntity<Iterable<WorkerModel>> findWorkersByIdAndUserLogin(GetWorkersTrainingRequest request) {
+    public Iterable<WorkerModel> findWorkersByIdAndUserLogin(GetWorkersTrainingRequest request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
         UserModel user = userRepo.findByLogin(request.getLogin());
 
-        if (user.getRoles().contains(RoleModel.PROVIDER)) {
-            Iterable<OfficeModel> offices = officeRepo.findAll();
-            Set<WorkerModel> workers = workersOfProvider(offices, user);
-            workers.removeAll(training.get().getWorkerID());
-            return ResponseEntity.ok(workers);
-        }
+        if (user.getRoles().contains(RoleModel.PROVIDER))
+            return findWorkersByIdAndUserLoginProvider(user, training.get());
 
-        if (user.getRoles().contains(RoleModel.TRAINING_OPERATOR)) {
-            Iterable<WorkerModel> allWorkers = workerRepo.findAll();
-            Set<WorkerModel> workers = new HashSet<>();
-            allWorkers.forEach(worker -> {
-                if (!training.get().getWorkerID().contains(worker)) {
-                    workers.add(worker);
-                }
-            });
-            return ResponseEntity.ok(workers);
-        }
+        if (user.getRoles().contains(RoleModel.TRAINING_OPERATOR))
+            return findWorkersByIdAndUserLoginTrainingOperator(training.get());
         return null;
+    }
+
+    public Iterable<WorkerModel> findWorkersByIdAndUserLoginProvider(UserModel user, TrainingModel training) {
+        Set<WorkerModel> workers = workersOfProvider(user);
+        workers.removeAll(training.getWorkerID());
+        return workers;
+    }
+
+    public Iterable<WorkerModel> findWorkersByIdAndUserLoginTrainingOperator(TrainingModel training) {
+        Set<WorkerModel> workers = new HashSet<>();
+        workerRepo.findAll().forEach(worker -> {
+            if (!training.getWorkerID().contains(worker)) {
+                workers.add(worker);
+            }
+        });
+        return workers;
     }
 
     public ResponseEntity<Message> registerWorkers(RegWorkersToTraining request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        Date date = new Date();
-        if (date.compareTo(training.get().getDateOfEnd()) > 0) {
-            return ResponseEntity.ok(new Message("Registration for this training is not possible"));
-        }
-        if (training.get().getNumberOfSeats() <= 0) {
-            return ResponseEntity.ok(new Message("The number of seats for registration - 0!"));
-        }
-        request.getNewWorkers().forEach(worker -> training.get().getWorkerID().add(worker));
-        Integer seats = training.get().getNumberOfSeats() - request.getNewWorkers().size();
-        training.get().setNumberOfSeats(seats);
-        if (training.get().getNumberOfSeats() < 0) {
-            return ResponseEntity.ok(new Message("Select fewer workers for registration!"));
-        }
-        trainingRepo.save(training.get());
+
+        if (new Date().compareTo(training.get().getDateOfEnd()) > 0)
+            return ResponseEntity.status(400).body(new Message("Registration for this training is not possible"));
+
+        if (training.get().getNumberOfSeats() <= 0)
+            return ResponseEntity.status(400).body(new Message("The number of seats for registration - 0!"));
+
+        return updateTrainingAfterRegisterWorkers(request, training.get());
+    }
+
+    public ResponseEntity<Message> updateTrainingAfterRegisterWorkers(
+            RegWorkersToTraining request, TrainingModel training) {
+        request.getNewWorkers().forEach(worker -> training.getWorkerID().add(worker));
+        Integer seats = training.getNumberOfSeats() - request.getNewWorkers().size();
+        training.setNumberOfSeats(seats);
+
+        if (training.getNumberOfSeats() < 0)
+            return ResponseEntity.status(400).body(new Message("Select fewer workers for registration!"));
+
+        trainingRepo.save(training);
         return ResponseEntity.ok(new Message("ok"));
-
     }
 
-    public ResponseEntity<Message> edit_training(TrainingModel request) {
+    public Message editTraining(TrainingModel request) {
         trainingRepo.save(request);
-        return ResponseEntity.ok(new Message("ok!"));
+        return new Message("ok!");
     }
-
 
     public ResponseEntity findTrainingWorkers(GetWorkersTrainingRequest request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
 
-        Date date = new Date();
-
-        if (date.compareTo(training.get().getDate()) <= 0) {
+        if (new Date().compareTo(training.get().getDate()) <= 0)
             return ResponseEntity.status(400).body(new Message("It's too early"));
-        }
 
         UserModel user = userRepo.findByLogin(request.getLogin());
-
         if (user.getRoles().contains(RoleModel.PROVIDER)) {
-            Iterable<OfficeModel> offices = officeRepo.findAll();
-            Set<WorkerModel> workersOfProvider = workersOfProvider(offices, user);
-            Set<WorkerModel> workersOfTraining = new HashSet<>();
-
-            workersOfProvider.forEach(worker -> {
-                if (training.get().getWorkerID().contains(worker)) {
-                    workersOfTraining.add(worker);
-                }
-            });
-            return ResponseEntity.ok(new FindTrainingWorkersResponse(workersOfTraining, training.get()));
+            return findTrainingWorkersOfProvider(training.get(), user);
         }
         return ResponseEntity.ok(new FindTrainingWorkersResponse(training.get().getWorkerID(), training.get()));
     }
 
-    public Set<WorkerModel> workersOfProvider(Iterable<OfficeModel> offices, UserModel user) {
-        Set<WorkerModel> workers = new HashSet<>();
-        for (OfficeModel office : offices) {
-            for (UserModel provider : office.getLeaderID()) {
-                if (provider.equals(user)) {
-                    workers.addAll(office.getWorkerId());
-                    break;
-                }
+    public ResponseEntity<FindTrainingWorkersResponse> findTrainingWorkersOfProvider(
+            TrainingModel training, UserModel user) {
+        Set<WorkerModel> workersOfProvider = workersOfProvider(user);
+        Set<WorkerModel> workersOfTraining = new HashSet<>();
+
+        workersOfProvider.forEach(worker -> {
+            if (training.getWorkerID().contains(worker)) {
+                workersOfTraining.add(worker);
             }
-        }
+        });
+        return ResponseEntity.ok(new FindTrainingWorkersResponse(workersOfTraining, training));
+    }
+
+    public Set<WorkerModel> workersOfProvider(UserModel user) {
+        Set<WorkerModel> workers = new HashSet<>();
+        officeRepo.findAllByLeaderID(user).forEach(office -> {
+            workers.addAll(office.getWorkerId());
+        });
         return workers;
     }
 
-    public ResponseEntity<Message> addPassedWorkers(RegWorkersToTraining request) {
-        Set<WorkerModel> passedWorkers = request.getNewWorkers();
+    public Message addPassedWorkers(RegWorkersToTraining request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        training.get().getTrainingPassedID().addAll(passedWorkers);
+        training.get().getTrainingPassedID().addAll(request.getNewWorkers());
         trainingRepo.save(training.get());
-        return ResponseEntity.ok(new Message("ok!"));
+        return new Message("ok!");
     }
 
-    public ResponseEntity<Message> delete_workers(RegWorkersToTraining request) {
+    public Message deleteWorkersInTraining(RegWorkersToTraining request) {
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        training.get().getWorkerID().removeAll(request.getNewWorkers());
+        request.getNewWorkers().forEach(deletedWorker -> {
+            training.get().getWorkerID().remove(workerRepo.findById(deletedWorker.getId()).get());
+        });
         trainingRepo.save(training.get());
-        return ResponseEntity.ok(new Message("ok!"));
+        return new Message("ok!");
     }
 
-    public ResponseEntity<Message> delete_training(Long id) {
+    public Message deleteTraining(Long id) {
         trainingRepo.deleteById(id);
-        return ResponseEntity.ok(new Message("ok!"));
+        return new Message("ok!");
     }
 
     public ResponseEntity<Message> addVisitors(RegWorkersToTraining request) {
@@ -157,5 +160,4 @@ public class TrainingService {
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
     }
-
 }

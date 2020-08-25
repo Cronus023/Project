@@ -43,7 +43,7 @@ class TrainingServiceTest {
     @Autowired
     private WorkerRepo workerRepo;
 
-    @Test
+   /* @Test
     void saveTraining() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
@@ -296,5 +296,5 @@ class TrainingServiceTest {
             }
         }
         return checkWorkers;
-    }
+    }*/
 }

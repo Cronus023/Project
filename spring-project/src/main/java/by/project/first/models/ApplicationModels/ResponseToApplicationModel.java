@@ -1,12 +1,14 @@
 package by.project.first.models.ApplicationModels;
 
 import by.project.first.models.UserModel;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table
+@Data
 public class ResponseToApplicationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,10 +19,6 @@ public class ResponseToApplicationModel {
     private String typeOfSection;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "responses_owners",
-            joinColumns = @JoinColumn(name = "response_id")
-    )
     private UserModel user;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -52,51 +50,4 @@ public class ResponseToApplicationModel {
         return response.getId().equals(this.getId());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getResponseStatus() {
-        return responseStatus;
-    }
-
-    public void setResponseStatus(String responseStatus) {
-        this.responseStatus = responseStatus;
-    }
-
-    public String getTypeOfSection() {
-        return typeOfSection;
-    }
-
-    public void setTypeOfSection(String typeOfSection) {
-        this.typeOfSection = typeOfSection;
-    }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
-
-    public ApplicationModel getApplicationID() {
-        return applicationID;
-    }
-
-    public void setApplicationID(ApplicationModel applicationID) {
-        this.applicationID = applicationID;
-    }
-
-    public Date getDateOfResponse() {
-        return dateOfResponse;
-    }
-
-    public void setDateOfResponse(Date dateOfResponse) {
-        this.dateOfResponse = dateOfResponse;
-    }
 }

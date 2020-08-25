@@ -1,9 +1,8 @@
 const application = angular.module('application', [])
 application.factory('applicationService', ['$http', '$q', '$window', function ($http, $q, $window) {
     return {
-        create_application: function (application, reasons, office) {
+        createApplication: function (application, reasons, office) {
             const deferred = $q.defer()
-
             const requestBody = {
                 application: {
                     additionalInfo: application.additionalInfo,
@@ -13,31 +12,31 @@ application.factory('applicationService', ['$http', '$q', '$window', function ($
                 },
                 office: office
             }
-            $http.post('http://localhost:8080/application/create', requestBody).then(function success(response) {
+            $http.post('http://localhost:8080/application/createApplication', requestBody).then(function success(response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        get_applications: function () {
+        getApplications: function () {
             const deferred = $q.defer()
-            $http.get('http://localhost:8080/application/get_applications').then(function success(response) {
+            $http.get('http://localhost:8080/application/getApplications').then(function success(response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        get_provider_applications: function () {
+        getProviderApplications: function () {
             const deferred = $q.defer()
             const login = localStorage.getItem('UserLogin')
-            $http.get(`http://localhost:8080/application/get_provider_applications?login=${login}`).then(function success(response) {
+            $http.get(`http://localhost:8080/application/getProviderApplications?login=${login}`).then(function success(response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
 
-        get_educational_program_by_id: function (id) {
+        getEducationalProgramById: function (id) {
             const deferred = $q.defer()
             const login = localStorage.getItem('UserLogin')
-            $http.get(`http://localhost:8080/application/get_educational_program_by_id?id=${id}&login=${login}`).then(function success(response) {
+            $http.get(`http://localhost:8080/application/getEducationalProgramById?id=${id}&login=${login}`).then(function success(response) {
                 if (response.data.title) {
                     alert(response.data.title)
                     $window.location.href = '#!/application/reviewers/view'
@@ -46,10 +45,10 @@ application.factory('applicationService', ['$http', '$q', '$window', function ($
             })
             return deferred.promise
         },
-        get_application_by_id: function (id) {
+        getApplication: function (id) {
             const deferred = $q.defer()
             const login = localStorage.getItem('UserLogin')
-            $http.get(`http://localhost:8080/application/get_application?id=${id}&login=${login}`).then(function success(response) {
+            $http.get(`http://localhost:8080/application/getApplication?id=${id}&login=${login}`).then(function success(response) {
                 if (response.data.title) {
                     alert(response.data.title)
                     $window.location.href = '#!/application/reviewers/view'
@@ -58,21 +57,21 @@ application.factory('applicationService', ['$http', '$q', '$window', function ($
             })
             return deferred.promise
         },
-        get_history_of_application: function (id) {
+        getHistory: function (id) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/application/get_history?id=${id}`).then(function success(response) {
+            $http.get(`http://localhost:8080/application/getHistory?id=${id}`).then(function success(response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        make_final_decision: function (id, decision) {
+        finalDecision: function (id, decision) {
             const deferred = $q.defer()
-            $http.post(`http://localhost:8080/application/final_decision?id=${id}&decision=${decision}`).then(function success(response) {
+            $http.post(`http://localhost:8080/application/finalDecision?id=${id}&decision=${decision}`).then(function success(response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        reject_accept_application: function (id, application, status, section) {
+        rejectAndAccept: function (id, application, status, section) {
             const deferred = $q.defer()
             const requestBody = {
                 application: application,
@@ -80,7 +79,7 @@ application.factory('applicationService', ['$http', '$q', '$window', function ($
                 status: status,
                 typeOfSection: section
             }
-            $http.post(`http://localhost:8080/application/reject_accept`, requestBody).then(function success(response) {
+            $http.post(`http://localhost:8080/application/rejectAndAccept`, requestBody).then(function success(response) {
                 if (response.data.title !== 'ok!') {
                     alert(response.data.title)
                     $window.location.href = '#!/application/reviewers/view'

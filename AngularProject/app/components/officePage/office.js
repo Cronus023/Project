@@ -8,7 +8,7 @@ angular.module('myApp.office', ['ngRoute'])
                     location: $scope.location,
                     contact_details: $scope.contact,
                 }
-                officeService.create(officeBody).then(function (value) {
+                officeService.createOffice(officeBody).then(function (value) {
                     $scope.message = 'Such office already exist!'
                 })
             }

@@ -4,7 +4,7 @@ angular.module('myApp.workers.edit', [])
         $scope.message = ''
         $scope.id = $routeParams["workerID"]
         $scope.officeName = $routeParams["officeName"]
-        workersService.get_worker_by_id($scope.id).then(function (value) {
+        workersService.getWorkerById($scope.id).then(function (value) {
             $scope.name = value.name
             $scope.education = value.education
             $scope.email = value.email

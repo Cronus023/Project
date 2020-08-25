@@ -37,7 +37,7 @@ applicationGuard.factory('applicationGuard', ['$http', '$q', '$window', '$route'
         checkApplicationId: function () {
             const role = localStorage.getItem('UserRole')
             if (role === 'REGULAR_REVIEWER' || role === 'SUPERVISION' || role === 'CURRICULUM_REVIEWER') {
-                $http.get(`http://localhost:8080/guards/check_application?id=${$route.current.params.applicationID}`).then(function (response) {
+                $http.get(`http://localhost:8080/guards/checkApplication?id=${$route.current.params.applicationID}`).then(function (response) {
                     const data = response.data
                     if (data.title !== 'ok!') {
                         alert(data.title)

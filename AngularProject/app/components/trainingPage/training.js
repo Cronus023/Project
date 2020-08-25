@@ -2,7 +2,7 @@ angular.module('myApp.trainings', [])
     .controller('TrainingsCtrl', function ($scope, trainingService, $window, authService) {
         $scope.userLogin = localStorage.getItem('UserLogin')
 
-        trainingService.get_trainings().then(function (value) {
+        trainingService.getTrainings().then(function (value) {
             $scope.trainings = value
         })
         $scope.register = function (id) {

@@ -5,7 +5,7 @@ angular.module('myApp.trainings.visit', [])
         $scope.checkAllVisit = false
         $scope.checkAllPassing = false
 
-        trainingService.get_visit_and_passing($routeParams["trainingID"]).then(function (value) {
+        trainingService.findTrainingWorkers($routeParams["trainingID"]).then(function (value) {
             if (value.title) {
                 $scope.message = value.title
             } else {
@@ -73,7 +73,7 @@ angular.module('myApp.trainings.visit', [])
             $scope.checkAllPassage = !$scope.checkAllPassage
         }
         $scope.add_visitors = function () {
-            trainingService.add_visitors($routeParams["trainingID"], $scope.selectedForVisit).then(function (value) {
+            trainingService.addVisitors($routeParams["trainingID"], $scope.selectedForVisit).then(function (value) {
                 if (value.title === 'ok!') {
                     $scope.messageOfAdd = 'Workers successfully marked!'
                     setTimeout(function () {
@@ -88,7 +88,7 @@ angular.module('myApp.trainings.visit', [])
             })
         }
         $scope.add_passed = function () {
-            trainingService.add_passed($routeParams["trainingID"], $scope.selectedForPassing).then(function (value) {
+            trainingService.addPassedWorkers($routeParams["trainingID"], $scope.selectedForPassing).then(function (value) {
                 if (value.title === 'ok!') {
                     $scope.messageOfAdd = 'Workers successfully passed!'
                     setTimeout(function () {

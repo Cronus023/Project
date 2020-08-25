@@ -4,12 +4,12 @@ angular.module('myApp.main', ['ngRoute'])
     .controller('MainCtrl', function ($scope, officeService, $window, authService) {
         $scope.flag = false
 
-        officeService.get_office().then(function (value) {
+        officeService.getOffices().then(function (value) {
             $scope.offices = value
         })
 
         $scope.become = function (office) {
-            officeService.become(office)
+            officeService.becomeProvider(office)
         }
         $scope.check = function (office) {
             let flag = false

@@ -1,7 +1,7 @@
 angular.module('myApp.application.reviewers', [])
     .controller('ReviewersApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
         $scope.userRole = localStorage.getItem('UserRole')
-        applicationService.get_applications().then(function (value) {
+        applicationService.getApplications().then(function (value) {
             $scope.data = value
         })
 

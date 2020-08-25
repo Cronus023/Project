@@ -23,7 +23,7 @@ trainingGuard.factory('trainingGuard', ['$http', '$q', '$window', '$route', 'aut
             const role = localStorage.getItem('UserRole')
             if (role === 'TRAINING_OPERATOR') {
                 const login = localStorage.getItem('UserLogin')
-                $http.get(`http://localhost:8080/guards/check_training_control?login=${login}&id=${$route.current.params.trainingID}`).then(function (response) {
+                $http.get(`http://localhost:8080/guards/checkTrainingControl?login=${login}&id=${$route.current.params.trainingID}`).then(function (response) {
                     const data = response.data
                     if (data.title !== 'ok!') {
                         if (data.title === 'bad!') {

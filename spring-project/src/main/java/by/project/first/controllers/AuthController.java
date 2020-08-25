@@ -13,7 +13,6 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class AuthController {
-
     @Autowired
     private UserService userService;
 
@@ -32,9 +31,9 @@ public class AuthController {
         return userService.logout(login);
     }
 
-    @GetMapping("/get_roles")
-    public ResponseEntity<Set<RoleModel>> get_user_roles(@RequestParam String login) {
-        return userService.get_roles(login);
+    @GetMapping("/getRoles")
+    public Set<RoleModel> getRoles(@RequestParam String login) {
+        return userService.getRoles(login);
     }
 
     @GetMapping("/auth/check")

@@ -13,7 +13,7 @@ angular.module('myApp.login', ['ngRoute'])
                         localStorage.setItem('UserRole', value.roles[0])
                         localStorage.setItem('JwtToken', value.token)
                         localStorage.setItem('UserLogin', authBody.login)
-                        authService.user_navigation(value.roles[0])
+                        authService.userNavigation(value.roles[0])
                     }
                 })
             }

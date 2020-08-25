@@ -1,7 +1,8 @@
 angular.module('myApp.application.reviewers.regular', [])
     .controller('RegularReviewersApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
-        applicationService.get_application_by_id($routeParams["applicationID"]).then(function (value) {
+        applicationService.getApplication($routeParams["applicationID"]).then(function (value) {
             $scope.applicationData = value.application
+            console.log(value)
             $scope.workers = value.workers
             $scope.responses = value.responses
             $scope.responses.map(function (item) {
@@ -33,7 +34,7 @@ angular.module('myApp.application.reviewers.regular', [])
             if ($scope.section.number === 2) {
                 section = 'WORKERS'
             }
-            applicationService.reject_accept_application($routeParams["applicationID"], $scope.applicationData, status, section).then(function (value) {
+            applicationService.rejectAndAccept($routeParams["applicationID"], $scope.applicationData, status, section).then(function (value) {
                 if (value.title !== 'ok!') {
                     alert(value.title)
                     $window.location.href = '#!/application/reviewers/view'

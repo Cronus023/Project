@@ -38,7 +38,7 @@ angular.module('myApp.application.form', [])
                 },
             ]
         }
-        officeService.get_office_by_name($routeParams["officeName"]).then(function (value) {
+        officeService.getOfficeByName(routeParams["officeName"]).then(function (value) {
             if (value.title) {
                 $scope.messageFromBack = value.title
             }
@@ -68,7 +68,7 @@ angular.module('myApp.application.form', [])
                         reason: value.reason
                     })
                 })
-                applicationService.create_application($scope.application, $scope.notPassedReasons, $scope.office).then(function (value) {
+                applicationService.createApplication($scope.application, $scope.notPassedReasons, $scope.office).then(function (value) {
                     if (value.title !== 'ok!') {
                         alert(value.title)
                         $scope.return()

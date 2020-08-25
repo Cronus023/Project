@@ -1,7 +1,7 @@
 angular.module('myApp.trainings.control', [])
     .controller('ControlTrainingsCtrl', function ($scope, trainingService, $routeParams, $window) {
         $scope.message = ''
-        trainingService.get_training_by_id($routeParams["trainingID"]).then(function (value) {
+        trainingService.getTrainingById($routeParams["trainingID"]).then(function (value) {
             $scope.data = value
             $scope.data.date = new Date(value.date)
             $scope.data.dateOfEnd = new Date(value.dateOfEnd)
@@ -13,7 +13,7 @@ angular.module('myApp.trainings.control', [])
             {key: 4, value: "COMMUNICATION"},
         ]
         $scope.deleteTraining = function () {
-            trainingService.delete_training($routeParams["trainingID"]).then(function (value) {
+            trainingService.deleteTraining($routeParams["trainingID"]).then(function (value) {
                 if (value.title === 'ok!') {
                     $window.location.href = '#!/trainings'
                 } else {
@@ -29,7 +29,7 @@ angular.module('myApp.trainings.control', [])
                 } else if ($scope.data.dateOfEnd > $scope.data.date) {
                     $scope.message = "The training date must be later than the registration date "
                 } else {
-                    trainingService.edit_training($scope.data).then(function (value) {
+                    trainingService.editTraining($scope.data).then(function (value) {
                         $scope.message = value.title
                     })
                     setTimeout(function () {

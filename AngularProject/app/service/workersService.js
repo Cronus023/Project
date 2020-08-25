@@ -1,16 +1,16 @@
 const worker = angular.module('workers', [])
 worker.factory('workersService', ['$http', '$q', '$window', function ($http, $q, $window) {
     return {
-        get_workers: function (id) {
+        getWorkersInOffice: function (id) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/workers/get_workers?name=${id}`).then(function (response) {
+            $http.get(`http://localhost:8080/workers/getWorkersInOffice?name=${id}`).then(function (response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise
         },
-        get_worker_by_id: function (id) {
+        getWorkerById: function (id) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/workers/get_worker_by_id?id=${id}`).then(function (response) {
+            $http.get(`http://localhost:8080/workers/getWorkerById?id=${id}`).then(function (response) {
                 if (response.status != 400) {
                     deferred.resolve(response.data)
                 } else alert("Error!")
@@ -23,7 +23,7 @@ worker.factory('workersService', ['$http', '$q', '$window', function ($http, $q,
                 officeName: officeName,
                 deletedWorkers: deletedWorkers,
             }
-            $http.post('http://localhost:8080/workers/delete_worker', requestBody).then(function (response) {
+            $http.post('http://localhost:8080/workers/deleteWorker', requestBody).then(function (response) {
                 if (response.status === 400) {
                     alert(response.data.title)
                     $window.location.reload()
@@ -35,7 +35,7 @@ worker.factory('workersService', ['$http', '$q', '$window', function ($http, $q,
                 worker: worker,
                 officeName: officeId,
             }
-            $http.post('http://localhost:8080/workers/add_worker', requestBody).then(function (response) {
+            $http.post('http://localhost:8080/workers/addWorker', requestBody).then(function (response) {
                 if (response.status === 400) {
                     alert(response.data.title)
                     $window.location.reload()
@@ -43,8 +43,8 @@ worker.factory('workersService', ['$http', '$q', '$window', function ($http, $q,
             })
         },
         edit: function (worker, officeName) {
-            $http.post('http://localhost:8080/workers/edit_worker', worker).then(function (response) {
-                if (response.status == 400) {
+            $http.post('http://localhost:8080/workers/editWorker', worker).then(function (response) {
+                if (response.status === 400) {
                     alert(response.data.title)
                     $window.location.href = `#!/workers/${officeName}`
                 } else {
@@ -53,9 +53,9 @@ worker.factory('workersService', ['$http', '$q', '$window', function ($http, $q,
                 }
             })
         },
-        view_trainings: function (id) {
+        viewTrainings: function (id) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/workers/view_trainings?id=${id}`).then(function (response) {
+            $http.get(`http://localhost:8080/workers/viewTrainings?id=${id}`).then(function (response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise

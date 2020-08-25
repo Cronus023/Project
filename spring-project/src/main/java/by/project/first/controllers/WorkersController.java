@@ -7,7 +7,6 @@ import by.project.first.models.TrainingModel;
 import by.project.first.models.WorkerModel;
 import by.project.first.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -15,37 +14,36 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class WorkersController {
-
     @Autowired
     private WorkerService workerService;
 
-    @GetMapping("/workers/get_workers")
-    public ResponseEntity<Set<WorkerModel>> get_workers(@RequestParam String name) {
-        return workerService.get_workers(name);
+    @GetMapping("/workers/getWorkersInOffice")
+    public Set<WorkerModel> getWorkersInOffice(@RequestParam String name) {
+        return workerService.getWorkersInOffice(name);
     }
 
-    @GetMapping("/workers/view_trainings")
-    public ResponseEntity<Iterable<TrainingModel>> view_trainings(@RequestParam Long id) {
-        return workerService.view_trainings(id);
+    @GetMapping("/workers/viewTrainings")
+    public Iterable<TrainingModel> viewTrainings(@RequestParam Long id) {
+        return workerService.viewTrainings(id);
     }
 
-    @GetMapping("/workers/get_worker_by_id")
-    public ResponseEntity<WorkerModel> get_worker_by_id(@RequestParam Long id) {
-        return workerService.get_worker_by_id(id);
+    @GetMapping("/workers/getWorkerById")
+    public WorkerModel getWorkerById(@RequestParam Long id) {
+        return workerService.getWorkerById(id);
     }
 
-    @PostMapping("/workers/delete_worker")
-    public ResponseEntity<Message> delete_worker(@RequestBody DeleteWorkerRequest request) {
+    @PostMapping("/workers/deleteWorker")
+    public Message deleteWorker(@RequestBody DeleteWorkerRequest request) {
         return workerService.deleteWorker(request);
     }
 
-    @PostMapping("/workers/add_worker")
-    public ResponseEntity<Message> add_worker(@RequestBody AddWorkerRequest request) {
-        return workerService.saveWorker(request);
+    @PostMapping("/workers/addWorker")
+    public Message addWorker(@RequestBody AddWorkerRequest request) {
+        return workerService.addWorker(request);
     }
 
-    @PostMapping("/workers/edit_worker")
-    public ResponseEntity<Message> edit_worker(@RequestBody WorkerModel worker) {
+    @PostMapping("/workers/editWorker")
+    public Message editWorker(@RequestBody WorkerModel worker) {
         return workerService.editWorker(worker);
     }
 }

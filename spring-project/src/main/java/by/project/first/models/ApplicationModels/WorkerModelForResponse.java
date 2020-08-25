@@ -5,7 +5,6 @@ import by.project.first.models.WorkerModel;
 public class WorkerModelForResponse {
     private WorkerModel worker;
     private String reason;
-    private Iterable<ResponseToApplicationModel> responses;
 
     public WorkerModelForResponse(WorkerModel worker, String reason) {
         this.worker = worker;

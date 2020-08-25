@@ -11,32 +11,31 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class OfficeController {
-
     @Autowired
     private OfficeService officeService;
 
-    @PostMapping("/create_office")
-    public ResponseEntity<Message> create_office(@RequestBody OfficeModel office) {
-        return officeService.create_office(office);
+    @PostMapping("/createOffice")
+    public ResponseEntity<Message> createOffice(@RequestBody OfficeModel office) {
+        return officeService.createOffice(office);
     }
 
-    @GetMapping("/get_office")
-    public ResponseEntity<Iterable<OfficeModel>> get_office() {
-        return officeService.get_office();
+    @GetMapping("/getOffices")
+    public Iterable<OfficeModel> getOffices() {
+        return officeService.getOffices();
     }
 
-    @GetMapping("/get_office_by_login")
-    public ResponseEntity<Iterable<OfficeModel>> get_office_by_login(@RequestParam String login) {
-        return officeService.get_offices_by_login(login);
+    @GetMapping("/getOfficesByLogin")
+    public Iterable<OfficeModel> getOfficesByLogin(@RequestParam String login) {
+        return officeService.getOfficesByLogin(login);
     }
 
-    @GetMapping("/get_office_by_name")
-    public ResponseEntity get_office_by_name(@RequestParam String name) {
-        return officeService.get_office_by_name(name);
+    @GetMapping("/getOfficeByName")
+    public ResponseEntity getOfficeByName(@RequestParam String name) {
+        return officeService.getOfficeByName(name);
     }
 
-    @PostMapping("/become_provider")
-    public ResponseEntity<Message> become_provider(@RequestBody BecomeRequest request) {
-        return officeService.become_provider(request);
+    @PostMapping("/becomeProvider")
+    public Message becomeProvider(@RequestBody BecomeRequest request) {
+        return officeService.becomeProvider(request);
     }
 }

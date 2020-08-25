@@ -1,7 +1,7 @@
 const auth = angular.module('auth', [])
 auth.factory('authService', ['$http', '$q', '$window', function ($http, $q, $window) {
     return {
-        user_navigation: function (role) {
+        userNavigation: function (role) {
             if (role === 'PROVIDER') {
                 $window.location.href = '#!/main'
                 $window.location.reload()
@@ -24,9 +24,9 @@ auth.factory('authService', ['$http', '$q', '$window', function ($http, $q, $win
             } else dateString = dateFormat.getDate() + "-" + dateFormat.getMonth() + "-" + dateFormat.getFullYear() + ", " + dateFormat.getHours() + ":" + dateFormat.getMinutes()
             return dateString
         },
-        get_user_roles: function (login) {
+        getRoles: function (login) {
             const deferred = $q.defer()
-            $http.get(`http://localhost:8080/get_roles?login=${login}`).then(function success(response) {
+            $http.get(`http://localhost:8080/getRoles?login=${login}`).then(function success(response) {
                 deferred.resolve(response.data)
             })
             return deferred.promise

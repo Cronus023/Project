@@ -43,7 +43,7 @@ providerGuard.factory('providerGuard', ['$http', '$q', '$window', '$route', func
             const role = localStorage.getItem('UserRole')
             if (role === 'PROVIDER') {
                 const login = localStorage.getItem('UserLogin')
-                $http.get(`http://localhost:8080/guards/check_provider_office?login=${login}&officeName=${$route.current.params.officeName}`).then(function (response) {
+                $http.get(`http://localhost:8080/guards/checkProviderOffice?login=${login}&officeName=${$route.current.params.officeName}`).then(function (response) {
                     const data = response.data
                     if (data.title !== 'ok!') {
                         if (data.title === 'bad!') {
@@ -76,7 +76,7 @@ providerGuard.factory('providerGuard', ['$http', '$q', '$window', '$route', func
             }
         },
         checkWorkerId: function () {
-            $http.get(`http://localhost:8080/guards/check_worker_id?id=${$route.current.params.workerID}`).then(function (response) {
+            $http.get(`http://localhost:8080/guards/checkWorkerId?id=${$route.current.params.workerID}`).then(function (response) {
                 const data = response.data
                 if (response.status === 400) {
                     alert(data.title)

@@ -1,9 +1,12 @@
 package by.project.first.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table
+@Data
 public class WorkerModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,37 +35,5 @@ public class WorkerModel {
         }
         WorkerModel worker = (WorkerModel) o;
         return worker.getId().equals(this.getId());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public void setEducation(String education) {
-        this.education = education;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

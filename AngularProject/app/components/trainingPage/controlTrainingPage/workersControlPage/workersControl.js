@@ -3,9 +3,9 @@ angular.module('myApp.trainings.control.workers', [])
         $scope.checkAll = false
         $scope.message = ''
         $scope.id = $routeParams["trainingID"]
-        trainingService.get_training_by_id($scope.id).then(function (value) {
-            $scope.training = value
-            $scope.data = value.workerID
+        trainingService.getTrainingById($scope.id).then(function (value) {
+            $scope.training = angular.copy(value)
+            $scope.workers = $scope.training.workerID
         })
 
         $scope.selected = []
@@ -20,7 +20,7 @@ angular.module('myApp.trainings.control.workers', [])
         }
         $scope.selectAll = function () {
             if (!$scope.checkAll) {
-                $scope.data.map(function (item) {
+                $scope.workers.map(function (item) {
                     const index = $scope.selected.indexOf(item)
                     if (index >= 0) {
                         return true
@@ -33,7 +33,7 @@ angular.module('myApp.trainings.control.workers', [])
             }
         }
         $scope.delete = function () {
-            trainingService.delete_workers_in_training($scope.id, $scope.selected).then(function (value) {
+            trainingService.deleteWorkersInTraining($scope.id, angular.copy($scope.selected)).then(function (value) {
                 $scope.message = value.title
                 if ($scope.message === 'ok!') {
                     setTimeout(function () {
@@ -44,7 +44,6 @@ angular.module('myApp.trainings.control.workers', [])
                         $scope.message = ''
                     }, 1000)
                 }
-                console.log(value)
             })
         }
     })
