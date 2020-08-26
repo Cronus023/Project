@@ -2,26 +2,36 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.BecomeRequest;
 import by.project.first.controllers.ReqAndRes.FindNotPassedWorkersResponse;
+
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
 import by.project.first.models.WorkerModel;
-import by.project.first.repositories.ApplicationRepo;
+
 import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
-import by.project.first.repositories.WorkerRepo;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -29,195 +39,131 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class OfficeServiceTest {
 
     @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
     private OfficeService officeService;
 
-    @Autowired
+    @MockBean
+    private UserRepo userRepo;
+
+    @MockBean
     private OfficeRepo officeRepo;
 
-    @Autowired
-    private ApplicationRepo applicationRepo;
+    @MockBean
+    private TrainingRepo trainingRepo;
 
-    @Autowired
-    private WorkerRepo workerRepo;
-
-    /*@Test
-    void become_provider() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-        officeRepo.save(testOffice);
+    @Test
+    void becomeProviderTest() {
+        OfficeModel testOffice = new OfficeModel();
 
         UserModel testUser = new UserModel("testUser", "testUser");
-        userRepo.save(testUser);
 
-        officeService.become_provider(new BecomeRequest(testOffice, "testUser"));
-        OfficeModel testOfficeAfterUpdate = officeRepo.findByName("testOffice");
+        Mockito.doReturn(testUser)
+                .when(userRepo)
+                .findByLogin("testUser");
 
-        boolean result = false;
-        for(UserModel user: testOfficeAfterUpdate.getLeaderID()){
-            result = user.equals(testUser);
-            if(result){
-                break;
-            }
-        }
+        officeService.becomeProvider(new BecomeRequest(testOffice, "testUser"));
+
+        Mockito.verify(officeRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testOffice));
+
+        boolean result = testOffice.getLeaderID().contains(testUser);
         assertTrue(result);
-
-        officeRepo.deleteById(testOfficeAfterUpdate.getId());
-        userRepo.deleteById(testUser.getId());
     }
+
     @Test
-    void create_officeOK() {
+    void createOfficeTest() {
+        OfficeModel testOffice = new OfficeModel();
+
+        officeService.createOffice(testOffice);
+
+        Mockito.verify(officeRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testOffice));
+    }
+
+    @Test
+    void createOfficeFailTest() {
         OfficeModel testOffice = new OfficeModel("testOffice");
-        officeService.create_office(testOffice);
-        OfficeModel officeAfterCreate = officeRepo.findByName("testOffice");
-        assertNotNull(officeAfterCreate);
 
-        officeRepo.deleteById(officeAfterCreate.getId());
-    }
+        Mockito.doReturn(new OfficeModel())
+                .when(officeRepo)
+                .findByName("testOffice");
 
-    @Test
-    void create_officeBAD() {
-        OfficeModel officeBad = officeRepo.findByName("Talisman");
-        ResponseEntity<Message> responseBad= officeService.create_office(officeBad);
-        Assertions.assertEquals(400, responseBad.getStatusCode().value());
+        ResponseEntity<Message> response = officeService.createOffice(testOffice);
+        assertEquals(400, response.getStatusCode().value());
+
+        Mockito.verify(officeRepo, Mockito.times(0))
+                .save(ArgumentMatchers.any(OfficeModel.class));
     }
 
     @Test
     void checkOfficeApplicationsNull() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-        officeService.create_office(testOffice);
-
-        ApplicationModel lastApplicationNull = testOffice.getLastApplication();
-        boolean checkNull = officeService.checkOfficeApplications(lastApplicationNull);
+        OfficeModel testOffice = new OfficeModel();
+        boolean checkNull = officeService.checkOfficeApplications(testOffice.getLastApplication());
         assertTrue(checkNull);
-
-        officeRepo.deleteById(testOffice.getId());
     }
 
     @Test
     void checkOfficeApplicationsWait() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-
         ApplicationModel testApplication = new ApplicationModel();
-        applicationRepo.save(testApplication);
-
-        testOffice.setLastApplication(testApplication);
-        officeService.create_office(testOffice);
-
-        ApplicationModel lastApplicationWait = testOffice.getLastApplication();
-        boolean checkWait = officeService.checkOfficeApplications(lastApplicationWait);
+        boolean checkWait = officeService.checkOfficeApplications(testApplication);
         assertFalse(checkWait);
-
-        officeRepo.deleteById(testOffice.getId());
-        applicationRepo.deleteById(testApplication.getId());
     }
 
     @Test
     void checkOfficeApplicationsReject() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-
         ApplicationModel testApplication = new ApplicationModel();
         testApplication.setStatus("REJECT");
-        applicationRepo.save(testApplication);
 
-        testOffice.setLastApplication(testApplication);
-        officeService.create_office(testOffice);
-
-        ApplicationModel lastApplicationReject = testOffice.getLastApplication();
-        boolean checkReject = officeService.checkOfficeApplications(lastApplicationReject);
+        boolean checkReject = officeService.checkOfficeApplications(testApplication);
         assertTrue(checkReject);
-
-        officeRepo.deleteById(testOffice.getId());
-        applicationRepo.deleteById(testApplication.getId());
     }
 
     @Test
     void checkOfficeApplicationsAcceptFalse() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-
         ApplicationModel testApplication = new ApplicationModel();
         testApplication.setStatus("ACCEPT");
         testApplication.setDateOfApplication(new Date());
-        applicationRepo.save(testApplication);
 
-        testOffice.setLastApplication(testApplication);
-        officeService.create_office(testOffice);
-
-        ApplicationModel lastApplicationAcceptFalse = testOffice.getLastApplication();
-        boolean checkAccept = officeService.checkOfficeApplications(lastApplicationAcceptFalse);
+        boolean checkAccept = officeService.checkOfficeApplications(testApplication);
         assertFalse(checkAccept);
-
-        officeRepo.deleteById(testOffice.getId());
-        applicationRepo.deleteById(testApplication.getId());
     }
 
     @Test
     void checkOfficeApplicationsAcceptTrue() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-
         ApplicationModel testApplication = new ApplicationModel();
         testApplication.setStatus("ACCEPT");
         Date date = new Date();
         date.setYear(date.getYear() - 5);
         testApplication.setDateOfApplication(date);
-        applicationRepo.save(testApplication);
 
-        testOffice.setLastApplication(testApplication);
-        officeService.create_office(testOffice);
-
-        ApplicationModel lastApplicationAcceptTrue = testOffice.getLastApplication();
-        boolean checkAccept = officeService.checkOfficeApplications(lastApplicationAcceptTrue);
+        boolean checkAccept = officeService.checkOfficeApplications(testApplication);
         assertTrue(checkAccept);
-
-        officeRepo.deleteById(testOffice.getId());
-        applicationRepo.deleteById(testApplication.getId());
     }
 
-
     @Test
-    void get_office_by_name() {
+    void getOfficeByName() {
         OfficeModel testOffice = new OfficeModel("testOffice");
 
         WorkerModel testWorker1 = new WorkerModel("testWorker1");
-        workerRepo.save(testWorker1);
         WorkerModel testWorker2 = new WorkerModel("testWorker2");
-        workerRepo.save(testWorker2);
 
         Set<WorkerModel> officeWorkers = new HashSet<>();
         officeWorkers.add(testWorker1);
         officeWorkers.add(testWorker2);
+
         testOffice.setWorkerId(officeWorkers);
 
-        officeService.create_office(testOffice);
+        Mockito.doReturn(testOffice)
+                .when(officeRepo)
+                .findByName("testOffice");
 
-        ResponseEntity<FindNotPassedWorkersResponse> response = officeService.get_office_by_name("testOffice");
+        ResponseEntity<FindNotPassedWorkersResponse> response = officeService.getOfficeByName("testOffice");
 
         assertNotNull(response.getBody());
-        assertEquals(response.getBody().getOffice(), testOffice);
+        assertEquals(response.getBody().getOffice().getName(), testOffice.getName());
+        assertEquals(response.getBody().getNotPassedWorkers(), officeWorkers);
 
-
-
-        boolean checkWorkers = false;
-
-        for(WorkerModel worker: officeWorkers){
-            boolean checkWorker = false;
-            for(WorkerModel notPassedWorker : response.getBody().getNotPassedWorkers()){
-                if(notPassedWorker.equals(worker)){
-                    checkWorker = true;
-                    break;
-                }
-            }
-            if(!checkWorker){
-                checkWorkers = true;
-                break;
-            }
-        }
-        assertFalse(checkWorkers);
-
-        officeRepo.deleteById(testOffice.getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
-    }*/
+        Mockito.verify(trainingRepo, Mockito.times(2))
+                .findAllByTrainingPassedID(ArgumentMatchers.any(WorkerModel.class));
+    }
 
 }

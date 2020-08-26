@@ -25,9 +25,7 @@ import java.util.Set;
 public class OfficeService {
 
     private final OfficeRepo officeRepo;
-
     private final TrainingRepo trainingRepo;
-
     private final UserRepo userRepo;
 
     @Autowired

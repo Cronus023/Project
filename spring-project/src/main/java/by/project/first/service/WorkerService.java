@@ -58,7 +58,7 @@ public class WorkerService {
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
         office.setWorkerId(request.getNewWorkers());
 
-        updateTrainingsAfterDeleteWorkers(request);
+        updateTrainingsAfterDeleteWorkers(request.getDeletedWorkers());
         officeRepo.save(office);
 
         Iterable<WorkerModel> deletedWorkers = request.getDeletedWorkers();
@@ -66,17 +66,17 @@ public class WorkerService {
         return new Message("ok!");
     }
 
-    public void updateTrainingsAfterDeleteWorkers(DeleteWorkerRequest request) {
-        trainingRepo.findAll().forEach(training -> request.getDeletedWorkers().forEach(deletedWorker -> {
+    public void updateTrainingsAfterDeleteWorkers(Set<WorkerModel> deletedWorkers) {
+        trainingRepo.findAll().forEach(training -> deletedWorkers.forEach(deletedWorker -> {
             Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
-            if (training.getWorkerID().contains(w.get())) {
+            if (training.getWorkerID().contains(deletedWorker)) {
                 Integer newSeats = training.getNumberOfSeats() + 1;
-                training.getWorkerID().remove(w.get());
-                training.getTrainingPassedID().remove(w.get());
-                training.getTrainingVisitorsID().remove(w.get());
+                training.getWorkerID().remove(deletedWorker);
+                training.getTrainingPassedID().remove(deletedWorker);
+                training.getTrainingVisitorsID().remove(deletedWorker);
                 training.setNumberOfSeats(newSeats);
+                trainingRepo.save(training);
             }
-            trainingRepo.save(training);
         }));
     }
 

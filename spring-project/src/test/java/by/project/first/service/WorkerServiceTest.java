@@ -3,132 +3,110 @@ package by.project.first.service;
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
 import by.project.first.models.OfficeModel;
+import by.project.first.models.TrainingModel;
 import by.project.first.models.WorkerModel;
 import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class WorkerServiceTest {
 
     @Autowired
-    private OfficeRepo officeRepo;
-
-    @Autowired
-    private WorkerRepo workerRepo;
-
-    @Autowired
     private WorkerService workerService;
 
-   /* @Test
-    public void get_workers() {
-        OfficeModel testOffice = new OfficeModel("testOffice");
-        Set<WorkerModel> newWorkers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        newWorkers.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        newWorkers.add(testWorker2);
+    @MockBean
+    private OfficeRepo officeRepo;
 
-        testOffice.getWorkerId().addAll(newWorkers);
-        officeRepo.save(testOffice);
+    @MockBean
+    private WorkerRepo workerRepo;
 
-        ResponseEntity<Set<WorkerModel>> response = workerService.get_workers("testOffice");
-
-        assertNotNull(response.getBody());
-
-        boolean checkWorkers = checkWorkers(newWorkers, response.getBody());
-        assertFalse(checkWorkers);
-
-        officeRepo.deleteById(testOffice.getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
-    }
+    @MockBean
+    private TrainingRepo trainingRepo;
 
     @Test
-    public void get_worker_by_id() {
-        WorkerModel testWorker1 = new WorkerModel("testWorker1");
-        workerRepo.save(testWorker1);
-        ResponseEntity<WorkerModel> worker = workerService.get_worker_by_id(testWorker1.getId());
-        assertEquals(worker.getBody(), testWorker1);
-        workerRepo.deleteById(testWorker1.getId());
-    }
-    @Test
-    public void deleteWorker() {
-        Set<WorkerModel> deletedWorkers = new HashSet<>();
-        Set<WorkerModel> newWorkers = new HashSet<>();
-
-        WorkerModel testWorker1 = new WorkerModel("testWorker1");
-        workerRepo.save(testWorker1);
-        deletedWorkers.add(testWorker1);
-        WorkerModel testWorker2 = new WorkerModel("testWorker1");
-        workerRepo.save(testWorker2);
-        deletedWorkers.add(testWorker2);
-
+    public void deleteWorkerTest() {
         OfficeModel testOffice = new OfficeModel("testOffice");
-        testOffice.setWorkerId(deletedWorkers);
-        officeRepo.save(testOffice);
+
+        Set<WorkerModel> newWorkers = new HashSet<>();
+        Set<WorkerModel> deletedWorkers = deleteWorkerTestSetWorkers();
+
+        Mockito.doReturn(testOffice)
+                .when(officeRepo)
+                .findByName("testOffice");
 
         workerService.deleteWorker(new DeleteWorkerRequest(newWorkers, deletedWorkers, "testOffice"));
 
-        assertTrue(workerRepo.findById(testWorker1.getId()).isEmpty());
-        assertTrue(workerRepo.findById(testWorker2.getId()).isEmpty());
-
-        OfficeModel officeAfterDelete = officeRepo.findByName("testOffice");
-        officeRepo.deleteById(officeAfterDelete.getId());
+        assertEquals(testOffice.getWorkerId(), newWorkers);
+        deleteWorkerTestVerify(deletedWorkers, testOffice);
     }
-    @Test
-    public void saveWorker() {
+
+    Set<WorkerModel> deleteWorkerTestSetWorkers() {
+        Set<WorkerModel> deletedWorkers = new HashSet<>();
         WorkerModel testWorker1 = new WorkerModel("testWorker1");
-        workerRepo.save(testWorker1);
-
-        Set<WorkerModel> newWorkers = new HashSet<>();
-        newWorkers.add(testWorker1);
-
-
-        OfficeModel testOffice = new OfficeModel("testOffice");
-        officeRepo.save(testOffice);
-
-        workerService.saveWorker(new AddWorkerRequest(testWorker1, "testOffice"));
-
-        OfficeModel officeAfterSaveWorker = officeRepo.findByName("testOffice");
-
-        boolean checkWorkers = checkWorkers(newWorkers, officeAfterSaveWorker.getWorkerId());
-        assertFalse(checkWorkers);
-
-        officeRepo.deleteById(testOffice.getId());
-        workerRepo.deleteById(testWorker1.getId());
+        deletedWorkers.add(testWorker1);
+        WorkerModel testWorker2 = new WorkerModel("testWorker1");
+        deletedWorkers.add(testWorker2);
+        return deletedWorkers;
     }
 
+    void deleteWorkerTestVerify(Set<WorkerModel> deletedWorkers, OfficeModel testOffice) {
+        Mockito.verify(workerRepo, Mockito.times(1))
+                .deleteAll(ArgumentMatchers.eq(deletedWorkers));
 
-    public boolean checkWorkers(Set<WorkerModel> workersBeforeMethod,Set<WorkerModel> workersAfterMethod ){
-        boolean checkWorkers = false;
-        for(WorkerModel worker : workersBeforeMethod){
-            boolean checkWorker = false;
-            for(WorkerModel visitedWorker: workersAfterMethod){
-                if(worker.equals(visitedWorker)){
-                    checkWorker = true;
-                    break;
-                }
-            }
-            if(!checkWorker){
-                checkWorkers = true;
-                break;
-            }
-        }
-        return checkWorkers;
-    }*/
+        Mockito.verify(workerRepo, Mockito.times(1))
+                .deleteAll(ArgumentMatchers.eq(deletedWorkers));
+
+        Mockito.verify(officeRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testOffice));
+
+        Mockito.verify(trainingRepo, Mockito.times(1))
+                .findAll();
+
+        Mockito.verify(trainingRepo, Mockito.times(0))
+                .save(ArgumentMatchers.any(TrainingModel.class));
+    }
+
+    @Test
+    public void addWorkerTest() {
+        OfficeModel testOffice = new OfficeModel("testOffice");
+        WorkerModel testWorker1 = new WorkerModel("testWorker1");
+
+        Mockito.doReturn(testOffice)
+                .when(officeRepo)
+                .findByName("testOffice");
+
+        Mockito.doReturn(testWorker1)
+                .when(workerRepo)
+                .save(testWorker1);
+
+        workerService.addWorker(new AddWorkerRequest(testWorker1, "testOffice"));
+        addWorkerTestAfterResponse(testOffice, testWorker1);
+    }
+
+    void addWorkerTestAfterResponse(OfficeModel testOffice, WorkerModel testWorker1) {
+        assertTrue(testOffice.getWorkerId().contains(testWorker1));
+
+        Mockito.verify(workerRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testWorker1));
+
+        Mockito.verify(officeRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testOffice));
+    }
 
 }
