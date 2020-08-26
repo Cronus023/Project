@@ -20,14 +20,12 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepo userRepo;
-    private final UserService userService;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepo, UserService userService, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepo, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
-        this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;
     }
@@ -38,7 +36,7 @@ public class UserService {
     }
 
     public ResponseEntity login(UserModel user) {
-        UserModel authUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
+        UserModel authUser = findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (authUser != null) {
             authUser.setActive(true);
             userRepo.save(authUser);
@@ -64,7 +62,7 @@ public class UserService {
     public ResponseEntity<Message> register(UserModel user) {
         UserModel newUser = userRepo.findByLogin(user.getLogin());
         if (newUser == null) {
-            userService.saveUser(user);
+            saveUser(user);
             return ResponseEntity.ok(new Message(""));
         } else return ResponseEntity.status(400).body(new Message("Such user already exist!"));
     }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8000")
 public class ApplicationController {
 
     private final ApplicationService applicationService;
