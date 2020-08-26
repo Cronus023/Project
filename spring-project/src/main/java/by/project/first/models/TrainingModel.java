@@ -2,7 +2,17 @@ package by.project.first.models;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,9 +21,11 @@ import java.util.Set;
 @Table
 @Data
 public class TrainingModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private Date date;
     private Date dateOfEnd;
 
@@ -45,7 +57,6 @@ public class TrainingModel {
             joinColumns = @JoinColumn(name = "trainer_id")
     )
     private UserModel trainerID;
-
 
     private String type;
     private Integer numberOfSeats;
@@ -81,4 +92,5 @@ public class TrainingModel {
         TrainingModel training = (TrainingModel) o;
         return training.getId().equals(this.getId());
     }
+
 }

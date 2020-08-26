@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class GuardController {
+
+    private final GuardService guardService;
+
     @Autowired
-    private GuardService guardService;
+    public GuardController(GuardService guardService) {
+        this.guardService = guardService;
+    }
 
     @GetMapping("/guards/checkProviderOffice")
     public ResponseEntity<Message> checkProviderOffice(@RequestParam String login, @RequestParam String officeName) {
@@ -34,4 +39,5 @@ public class GuardController {
     public ResponseEntity<Message> checkApplication(@RequestParam Long id) {
         return guardService.checkApplication(id);
     }
+
 }

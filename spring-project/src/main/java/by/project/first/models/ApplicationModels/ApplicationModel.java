@@ -2,7 +2,16 @@ package by.project.first.models.ApplicationModels;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +20,7 @@ import java.util.Set;
 @Table
 @Data
 public class ApplicationModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -30,23 +40,18 @@ public class ApplicationModel {
     private Set<GroupsModel> groups = new HashSet<>();
 
     private String educationalProgram;
-
     private String additionalInfo;
-
     private Date dateOfApplication = new Date();
-
     private String status = "WAIT_FOR_AN_ANSWER";
-
     private String officeName;
-
     private String officeLocation;
 
     public ApplicationModel() {
     }
 
     public ApplicationModel(Set<ReasonsModel> reasons,
-                            Set<GroupsModel> groups, String educationalProgram, String additionalInfo, String officeName,
-                            String officeLocation) {
+                            Set<GroupsModel> groups, String educationalProgram, String additionalInfo,
+                            String officeName, String officeLocation) {
         this.reasons = reasons;
         this.groups = groups;
         this.educationalProgram = educationalProgram;
@@ -54,4 +59,5 @@ public class ApplicationModel {
         this.officeName = officeName;
         this.officeLocation = officeLocation;
     }
+
 }

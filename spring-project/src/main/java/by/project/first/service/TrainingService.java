@@ -4,11 +4,18 @@ import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
 import by.project.first.controllers.ReqAndRes.FindTrainingWorkersResponse;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
-import by.project.first.models.*;
+
+import by.project.first.models.Message;
+import by.project.first.models.RoleModel;
+import by.project.first.models.TrainingModel;
+import by.project.first.models.UserModel;
+import by.project.first.models.WorkerModel;
+
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,17 +27,19 @@ import java.util.Set;
 
 @Service
 public class TrainingService {
-    @Autowired
-    private UserRepo userRepo;
+
+    private final UserRepo userRepo;
+    private final TrainingRepo trainingRepo;
+    private final WorkerRepo workerRepo;
+    private final OfficeRepo officeRepo;
 
     @Autowired
-    private TrainingRepo trainingRepo;
-
-    @Autowired
-    private WorkerRepo workerRepo;
-
-    @Autowired
-    private OfficeRepo officeRepo;
+    public TrainingService(UserRepo userRepo, TrainingRepo trainingRepo, WorkerRepo workerRepo, OfficeRepo officeRepo) {
+        this.userRepo = userRepo;
+        this.trainingRepo = trainingRepo;
+        this.workerRepo = workerRepo;
+        this.officeRepo = officeRepo;
+    }
 
     public Message saveTraining(AddTrainingRequest request) {
         TrainingModel training = request.getTraining();
@@ -160,4 +169,5 @@ public class TrainingService {
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
     }
+
 }

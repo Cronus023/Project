@@ -3,6 +3,7 @@ package by.project.first.models.ApplicationModels;
 import by.project.first.models.WorkerModel;
 
 public class WorkerModelForResponse {
+
     private WorkerModel worker;
     private String reason;
 
@@ -26,4 +27,5 @@ public class WorkerModelForResponse {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
 }

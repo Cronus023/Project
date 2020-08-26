@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class OfficeController {
+
+    private final OfficeService officeService;
+
     @Autowired
-    private OfficeService officeService;
+    public OfficeController(OfficeService officeService) {
+        this.officeService = officeService;
+    }
 
     @PostMapping("/createOffice")
     public ResponseEntity<Message> createOffice(@RequestBody OfficeModel office) {
@@ -38,4 +43,5 @@ public class OfficeController {
     public Message becomeProvider(@RequestBody BecomeRequest request) {
         return officeService.becomeProvider(request);
     }
+
 }

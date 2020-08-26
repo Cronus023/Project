@@ -14,8 +14,13 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class WorkersController {
+
+    private final WorkerService workerService;
+
     @Autowired
-    private WorkerService workerService;
+    public WorkersController(WorkerService workerService) {
+        this.workerService = workerService;
+    }
 
     @GetMapping("/workers/getWorkersInOffice")
     public Set<WorkerModel> getWorkersInOffice(@RequestParam String name) {
@@ -46,4 +51,5 @@ public class WorkersController {
     public Message editWorker(@RequestBody WorkerModel worker) {
         return workerService.editWorker(worker);
     }
+
 }

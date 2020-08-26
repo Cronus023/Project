@@ -1,9 +1,21 @@
 package by.project.first.models;
 
 import by.project.first.models.ApplicationModels.ApplicationModel;
+
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,16 +24,14 @@ import java.util.Set;
 @Table
 @Data
 public class OfficeModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String location;
-
     private String name;
-
     private Date dateOfLastPermission;
-
     private String contact_details;
 
     @ManyToMany(fetch = FetchType.EAGER)

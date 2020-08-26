@@ -2,10 +2,13 @@ package by.project.first.service;
 
 import by.project.first.config.jwt.JwtProvider;
 import by.project.first.controllers.ReqAndRes.LoginResponse;
+
 import by.project.first.models.Message;
 import by.project.first.models.RoleModel;
 import by.project.first.models.UserModel;
+
 import by.project.first.repositories.UserRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,17 +18,19 @@ import java.util.Set;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepo userRepo;
+
+    private final UserRepo userRepo;
+    private final UserService userService;
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtProvider jwtProvider;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepo userRepo, UserService userService, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.userService = userService;
+        this.jwtProvider = jwtProvider;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void saveUser(UserModel user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -77,4 +82,5 @@ public class UserService {
         if (check) return ResponseEntity.ok(new Message("ok!"));
         else return ResponseEntity.status(400).body(new Message("bad token!"));
     }
+
 }

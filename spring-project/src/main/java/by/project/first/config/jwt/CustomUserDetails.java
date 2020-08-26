@@ -10,6 +10,7 @@ public class CustomUserDetails implements UserDetails {
 
     private String login;
     private String password;
+
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(UserModel user) {
@@ -53,4 +54,5 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

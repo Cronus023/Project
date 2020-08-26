@@ -16,9 +16,13 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class ApplicationController {
-    @Autowired
-    private ApplicationService applicationService;
 
+    private final ApplicationService applicationService;
+
+    @Autowired
+    public ApplicationController(ApplicationService applicationService) {
+        this.applicationService = applicationService;
+    }
 
     @PostMapping("/application/createApplication")
     public Message createApplication(@RequestBody ApplicationCreateRequest request) {
@@ -59,4 +63,5 @@ public class ApplicationController {
     public ResponseEntity<Message> finalDecision(@RequestParam Long id, @RequestParam String decision) {
         return applicationService.finalDecision(id, decision);
     }
+
 }

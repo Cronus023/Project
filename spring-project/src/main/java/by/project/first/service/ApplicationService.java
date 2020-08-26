@@ -3,11 +3,25 @@ package by.project.first.service;
 import by.project.first.controllers.ReqAndRes.ApplicationCreateRequest;
 import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
 import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
-import by.project.first.models.ApplicationModels.*;
+
+import by.project.first.models.ApplicationModels.ApplicationModel;
+import by.project.first.models.ApplicationModels.GroupsModel;
+import by.project.first.models.ApplicationModels.ReasonsModel;
+import by.project.first.models.ApplicationModels.ResponseToApplicationModel;
+import by.project.first.models.ApplicationModels.WorkerModelForResponse;
+
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
-import by.project.first.repositories.*;
+
+import by.project.first.repositories.ApplicationRepo;
+import by.project.first.repositories.GroupRepo;
+import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.ReasonRepo;
+import by.project.first.repositories.ResponseToApplicationRepo;
+import by.project.first.repositories.UserRepo;
+import by.project.first.repositories.WorkerRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,26 +33,27 @@ import java.util.Set;
 
 @Service
 public class ApplicationService {
-    @Autowired
-    private OfficeRepo officeRepo;
+
+    private final OfficeRepo officeRepo;
+    private final ApplicationRepo applicationRepo;
+    private final ResponseToApplicationRepo responseToApplicationRepo;
+    private final WorkerRepo workerRepo;
+    private final ReasonRepo reasonRepo;
+    private final UserRepo userRepo;
+    private final GroupRepo groupRepo;
 
     @Autowired
-    private ApplicationRepo applicationRepo;
-
-    @Autowired
-    private ResponseToApplicationRepo responseToApplicationRepo;
-
-    @Autowired
-    private WorkerRepo workerRepo;
-
-    @Autowired
-    private ReasonRepo reasonRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private GroupRepo groupRepo;
+    public ApplicationService(OfficeRepo officeRepo, ApplicationRepo applicationRepo, WorkerRepo workerRepo,
+                              ReasonRepo reasonRepo, UserRepo userRepo, GroupRepo groupRepo,
+                              ResponseToApplicationRepo responseToApplicationRepo) {
+        this.officeRepo = officeRepo;
+        this.applicationRepo = applicationRepo;
+        this.workerRepo = workerRepo;
+        this.reasonRepo = reasonRepo;
+        this.userRepo = userRepo;
+        this.groupRepo = groupRepo;
+        this.responseToApplicationRepo = responseToApplicationRepo;
+    }
 
     public Message createApplication(ApplicationCreateRequest request) {
         OfficeModel office = officeRepo.findByName(request.getOffice().getName());
@@ -140,6 +155,7 @@ public class ApplicationService {
         applicationRepo.save(application);
         return ResponseEntity.ok(new Message("ok!"));
     }
+
 }
 
 

@@ -13,8 +13,13 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class AuthController {
+
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody UserModel user) {
@@ -40,4 +45,5 @@ public class AuthController {
     public ResponseEntity<Message> checkAuth(@RequestParam String token) {
         return userService.checkAuth(token);
     }
+
 }

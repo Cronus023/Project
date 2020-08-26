@@ -18,11 +18,15 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "http://localhost:8000")
 public class TrainingController {
-    @Autowired
-    private TrainingRepo trainingRepo;
+
+    private final TrainingRepo trainingRepo;
+    private final TrainingService trainingService;
 
     @Autowired
-    private TrainingService trainingService;
+    public TrainingController(TrainingRepo trainingRepo, TrainingService trainingService) {
+        this.trainingRepo = trainingRepo;
+        this.trainingService = trainingService;
+    }
 
     @GetMapping("/training/getTrainings")
     public ResponseEntity<Iterable<TrainingModel>> getTrainings() {
@@ -74,9 +78,9 @@ public class TrainingController {
         return trainingService.addPassedWorkers(request);
     }
 
-
     @PostMapping("/training/add")
     public Message saveTraining(@RequestBody AddTrainingRequest request) {
         return trainingService.saveTraining(request);
     }
+
 }

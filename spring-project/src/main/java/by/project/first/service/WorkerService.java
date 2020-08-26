@@ -2,13 +2,16 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
+
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.TrainingModel;
 import by.project.first.models.WorkerModel;
+
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +20,17 @@ import java.util.Set;
 
 @Service
 public class WorkerService {
-    @Autowired
-    private WorkerRepo workerRepo;
+
+    private final WorkerRepo workerRepo;
+    private final TrainingRepo trainingRepo;
+    private final OfficeRepo officeRepo;
 
     @Autowired
-    private TrainingRepo trainingRepo;
-
-    @Autowired
-    private OfficeRepo officeRepo;
+    public WorkerService(WorkerRepo workerRepo, TrainingRepo trainingRepo, OfficeRepo officeRepo) {
+        this.workerRepo = workerRepo;
+        this.trainingRepo = trainingRepo;
+        this.officeRepo = officeRepo;
+    }
 
     public Set<WorkerModel> getWorkersInOffice(String name) {
         return officeRepo.findByName(name).getWorkerId();
@@ -78,4 +84,5 @@ public class WorkerService {
         workerRepo.save(worker);
         return new Message("ok!");
     }
+
 }

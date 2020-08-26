@@ -2,7 +2,20 @@ package by.project.first.models;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,26 +23,19 @@ import java.util.Set;
 @Table
 @Data
 public class UserModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String login;
-
     private String password;
-
     private String address;
-
     private String email;
-
     private String education;
-
     private String phone;
-
     private String name;
-
     private String surname;
-
     private boolean active;
 
     @ElementCollection(targetClass = RoleModel.class, fetch = FetchType.EAGER)
@@ -74,4 +80,5 @@ public class UserModel {
         UserModel user = (UserModel) o;
         return user.getId().equals(this.getId());
     }
+
 }
