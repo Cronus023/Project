@@ -2,13 +2,10 @@ package by.project.first.service;
 
 import by.project.first.config.jwt.JwtProvider;
 import by.project.first.controllers.ReqAndRes.LoginResponse;
-
 import by.project.first.models.Message;
 import by.project.first.models.RoleModel;
 import by.project.first.models.UserModel;
-
 import by.project.first.repositories.UserRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

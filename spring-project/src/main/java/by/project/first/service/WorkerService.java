@@ -2,16 +2,13 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
-
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.TrainingModel;
 import by.project.first.models.WorkerModel;
-
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

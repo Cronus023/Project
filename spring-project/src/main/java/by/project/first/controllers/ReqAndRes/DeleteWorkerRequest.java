@@ -1,10 +1,15 @@
 package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.WorkerModel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
+@Getter
+@Setter
 public class DeleteWorkerRequest {
+
     private Set<WorkerModel> newWorkers;
     private Set<WorkerModel> deletedWorkers;
     private String officeName;
@@ -15,27 +20,4 @@ public class DeleteWorkerRequest {
         this.officeName = officeName;
     }
 
-    public Set<WorkerModel> getNewWorkers() {
-        return newWorkers;
-    }
-
-    public void setNewWorkers(Set<WorkerModel> newWorkers) {
-        this.newWorkers = newWorkers;
-    }
-
-    public Set<WorkerModel> getDeletedWorkers() {
-        return deletedWorkers;
-    }
-
-    public void setDeletedWorkers(Set<WorkerModel> deletedWorkers) {
-        this.deletedWorkers = deletedWorkers;
-    }
-
-    public String getOfficeName() {
-        return officeName;
-    }
-
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
-    }
 }

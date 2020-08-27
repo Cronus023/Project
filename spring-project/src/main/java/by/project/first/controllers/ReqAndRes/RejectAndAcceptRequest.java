@@ -1,8 +1,13 @@
 package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.ApplicationModels.ApplicationModel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class RejectAndAcceptRequest {
+
     private String login;
     private ApplicationModel application;
     private String status;
@@ -15,35 +20,4 @@ public class RejectAndAcceptRequest {
         this.typeOfSection = typeOfSection;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public ApplicationModel getApplication() {
-        return application;
-    }
-
-    public void setApplication(ApplicationModel application) {
-        this.application = application;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTypeOfSection() {
-        return typeOfSection;
-    }
-
-    public void setTypeOfSection(String typeOfSection) {
-        this.typeOfSection = typeOfSection;
-    }
 }

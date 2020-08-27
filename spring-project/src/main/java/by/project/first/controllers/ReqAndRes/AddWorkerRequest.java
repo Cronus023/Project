@@ -1,8 +1,13 @@
 package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.WorkerModel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class AddWorkerRequest {
+
     private WorkerModel worker;
     private String officeName;
 
@@ -11,19 +16,4 @@ public class AddWorkerRequest {
         this.officeName = officeName;
     }
 
-    public WorkerModel getWorker() {
-        return worker;
-    }
-
-    public void setWorker(WorkerModel worker) {
-        this.worker = worker;
-    }
-
-    public String getOfficeName() {
-        return officeName;
-    }
-
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
-    }
 }

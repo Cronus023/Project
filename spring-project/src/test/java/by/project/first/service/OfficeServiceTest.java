@@ -2,23 +2,18 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.BecomeRequest;
 import by.project.first.controllers.ReqAndRes.FindNotPassedWorkersResponse;
-
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
 import by.project.first.models.WorkerModel;
-
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
-
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

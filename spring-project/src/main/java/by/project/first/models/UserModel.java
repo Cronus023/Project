@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +35,7 @@ public class UserModel {
     private String phone;
     private String name;
     private String surname;
+
     private boolean active;
 
     @ElementCollection(targetClass = RoleModel.class, fetch = FetchType.EAGER)

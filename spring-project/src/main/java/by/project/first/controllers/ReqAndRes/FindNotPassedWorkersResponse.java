@@ -2,10 +2,15 @@ package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.OfficeModel;
 import by.project.first.models.WorkerModel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
+@Getter
+@Setter
 public class FindNotPassedWorkersResponse {
+
     private OfficeModel office;
     private Set<WorkerModel> notPassedWorkers;
 
@@ -14,19 +19,4 @@ public class FindNotPassedWorkersResponse {
         this.notPassedWorkers = notPassedWorkers;
     }
 
-    public OfficeModel getOffice() {
-        return office;
-    }
-
-    public void setOffice(OfficeModel office) {
-        this.office = office;
-    }
-
-    public Set<WorkerModel> getNotPassedWorkers() {
-        return notPassedWorkers;
-    }
-
-    public void setNotPassedWorkers(Set<WorkerModel> notPassedWorkers) {
-        this.notPassedWorkers = notPassedWorkers;
-    }
 }

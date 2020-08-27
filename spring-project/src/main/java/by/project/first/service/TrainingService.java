@@ -4,18 +4,15 @@ import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
 import by.project.first.controllers.ReqAndRes.FindTrainingWorkersResponse;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
-
 import by.project.first.models.Message;
 import by.project.first.models.RoleModel;
 import by.project.first.models.TrainingModel;
 import by.project.first.models.UserModel;
 import by.project.first.models.WorkerModel;
-
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -163,9 +160,8 @@ public class TrainingService {
     }
 
     public ResponseEntity<Message> addVisitors(RegWorkersToTraining request) {
-        Set<WorkerModel> visitors = request.getNewWorkers();
         Optional<TrainingModel> training = trainingRepo.findById(request.getId());
-        training.get().getTrainingVisitorsID().addAll(visitors);
+        training.get().getTrainingVisitorsID().addAll(request.getNewWorkers());
         trainingRepo.save(training.get());
         return ResponseEntity.ok(new Message("ok!"));
     }

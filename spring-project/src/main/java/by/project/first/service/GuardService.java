@@ -5,13 +5,11 @@ import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.TrainingModel;
 import by.project.first.models.UserModel;
-
 import by.project.first.repositories.ApplicationRepo;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

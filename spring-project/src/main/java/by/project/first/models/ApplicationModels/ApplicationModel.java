@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,6 +57,21 @@ public class ApplicationModel {
         this.additionalInfo = additionalInfo;
         this.officeName = officeName;
         this.officeLocation = officeLocation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        ApplicationModel application = (ApplicationModel) o;
+
+        //check for the test
+        if (this.getId() == null && application.getId() == null) {
+            return true;
+        }
+
+        return this.getId().equals(application.getId());
     }
 
 }

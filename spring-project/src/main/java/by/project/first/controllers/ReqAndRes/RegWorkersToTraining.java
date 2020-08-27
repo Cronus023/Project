@@ -1,10 +1,15 @@
 package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.WorkerModel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
+@Getter
+@Setter
 public class RegWorkersToTraining {
+
     private Long id;
     private Set<WorkerModel> newWorkers;
 
@@ -13,19 +18,4 @@ public class RegWorkersToTraining {
         this.newWorkers = newWorkers;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Set<WorkerModel> getNewWorkers() {
-        return newWorkers;
-    }
-
-    public void setNewWorkers(Set<WorkerModel> newWorkers) {
-        this.newWorkers = newWorkers;
-    }
 }

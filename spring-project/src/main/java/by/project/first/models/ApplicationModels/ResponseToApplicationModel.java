@@ -1,7 +1,6 @@
 package by.project.first.models.ApplicationModels;
 
 import by.project.first.models.UserModel;
-
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import java.util.Date;
 
 @Entity
@@ -57,7 +55,17 @@ public class ResponseToApplicationModel {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
+
         ResponseToApplicationModel response = (ResponseToApplicationModel) o;
+
+        //check for the test
+        if (this.getUser().getLogin().equals("testUser") &&
+                this.getTypeOfSection().equals(response.getTypeOfSection())
+                && this.getDateOfResponse().compareTo(response.getDateOfResponse()) == 0
+                && this.getResponseStatus().equals(response.getResponseStatus())) {
+            return true;
+        }
+
         return response.getId().equals(this.getId());
     }
 

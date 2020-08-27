@@ -1,18 +1,21 @@
 package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
-import by.project.first.controllers.ReqAndRes.FindTrainingWorkersResponse;
-import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
-import by.project.first.models.*;
-import by.project.first.repositories.OfficeRepo;
+import by.project.first.models.Message;
+import by.project.first.models.TrainingModel;
+import by.project.first.models.UserModel;
+import by.project.first.models.WorkerModel;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,8 +24,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,91 +34,81 @@ class TrainingServiceTest {
     @Autowired
     private TrainingService trainingService;
 
-    @Autowired
+    @MockBean
     private TrainingRepo trainingRepo;
 
-    @Autowired
+    @MockBean
     private UserRepo userRepo;
 
-    @Autowired
-    private OfficeRepo officeRepo;
-
-    @Autowired
+    @MockBean
     private WorkerRepo workerRepo;
 
-   /* @Test
-    void saveTraining() {
+    @Test
+    void saveTrainingTest() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
 
         TrainingModel testTraining = new TrainingModel(testDate);
 
-        UserModel testTrainer = userRepo.save(new UserModel("testTrainer", "testTrainer"));
+        UserModel testTrainer = new UserModel("testTrainer", "testTrainer");
+
+        Mockito.doReturn(testTrainer)
+                .when(userRepo)
+                .findByLogin("testTrainer");
 
         trainingService.saveTraining(new AddTrainingRequest(testTraining, "testTrainer"));
 
-        assertNotNull(testTraining.getId());
-        assertEquals(testTrainer, testTraining.getTrainerID());
+        Mockito.verify(trainingRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testTraining));
 
-        trainingRepo.deleteById(testTraining.getId());
-        userRepo.deleteById(testTrainer.getId());
+        assertEquals(testTrainer.getLogin(), testTraining.getTrainerID().getLogin());
     }
 
     @Test
-    void registerWorkersOkDate() {
+    void registerWorkersTest() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() + 3);
 
-        Set<WorkerModel> newWorkers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        newWorkers.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        newWorkers.add(testWorker2);
-
-
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 10));
+        TrainingModel testTraining = new TrainingModel(testDate, 10);
+        Set<WorkerModel> newWorkers = registerWorkersTestConfig(testTraining);
 
         trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
 
-        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
-        assertNotNull(testTrainingAfterUpdate.get());
+        assertEquals(8, testTraining.getNumberOfSeats());
+        assertEquals(newWorkers, testTraining.getWorkerID());
 
-        assertEquals(testTrainingAfterUpdate.get().getNumberOfSeats(), 8);
+        Mockito.verify(trainingRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testTraining));
+    }
 
-        boolean checkWorkers = checkWorkers(newWorkers, testTrainingAfterUpdate.get().getWorkerID());
-        assertFalse(checkWorkers);
+    Set<WorkerModel> registerWorkersTestConfig(TrainingModel testTraining) {
+        Mockito.doReturn(Optional.of(testTraining))
+                .when(trainingRepo)
+                .findById(testTraining.getId());
 
+        Set<WorkerModel> newWorkers = new HashSet<>();
+        WorkerModel testWorker1 = new WorkerModel("testWorker1");
+        newWorkers.add(testWorker1);
+        WorkerModel testWorker2 = new WorkerModel("testWorker2");
+        newWorkers.add(testWorker2);
 
-        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
+        return newWorkers;
     }
 
     @Test
-    void registerWorkersBadDate() {
+    void registerWorkersTestBadDate() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
 
-        Set<WorkerModel> newWorkers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        newWorkers.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        newWorkers.add(testWorker2);
-
-
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 10));
+        TrainingModel testTraining = new TrainingModel(testDate, 10);
+        Set<WorkerModel> newWorkers = registerWorkersTestConfig(testTraining);
 
         ResponseEntity<Message> response = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
         assertNotNull(response.getBody());
         assertEquals("Registration for this training is not possible", response.getBody().getTitle());
 
-
-        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
-        assertNotNull(testTrainingAfterUpdate.get());
-
-        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
+        Mockito.verify(trainingRepo, Mockito.times(0))
+                .save(ArgumentMatchers.eq(testTraining));
     }
 
     @Test
@@ -123,24 +116,15 @@ class TrainingServiceTest {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() + 3);
 
-        Set<WorkerModel> newWorkers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        newWorkers.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        newWorkers.add(testWorker2);
-
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 1));
+        TrainingModel testTraining = new TrainingModel(testDate, 1);
+        Set<WorkerModel> newWorkers = registerWorkersTestConfig(testTraining);
 
         ResponseEntity<Message> response = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
         assertNotNull(response.getBody());
         assertEquals("Select fewer workers for registration!", response.getBody().getTitle());
 
-        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
-        assertNotNull(testTrainingAfterUpdate.get());
-
-        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
+        Mockito.verify(trainingRepo, Mockito.times(0))
+                .save(ArgumentMatchers.eq(testTraining));
     }
 
     @Test
@@ -148,153 +132,100 @@ class TrainingServiceTest {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() + 3);
 
-        Set<WorkerModel> newWorkers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        newWorkers.add(testWorker1);
-
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate, 0));
+        TrainingModel testTraining = new TrainingModel(testDate, 0);
+        Set<WorkerModel> newWorkers = registerWorkersTestConfig(testTraining);
 
         ResponseEntity<Message> response = trainingService.registerWorkers(new RegWorkersToTraining(testTraining.getId(), newWorkers));
         assertNotNull(response.getBody());
         assertEquals("The number of seats for registration - 0!", response.getBody().getTitle());
 
-        Optional<TrainingModel> testTrainingAfterUpdate = trainingRepo.findById(testTraining.getId());
-        assertNotNull(testTrainingAfterUpdate.get());
-
-        trainingRepo.deleteById(testTrainingAfterUpdate.get().getId());
-        workerRepo.deleteById(testWorker1.getId());
+        Mockito.verify(trainingRepo, Mockito.times(0))
+                .save(ArgumentMatchers.eq(testTraining));
     }
-
-
 
     @Test
     void addPassedWorkers() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
 
-        Set<WorkerModel> passed = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        passed.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        passed.add(testWorker2);
+        TrainingModel testTraining = new TrainingModel(testDate);
+        Set<WorkerModel> passed = registerWorkersTestConfig(testTraining);
 
         trainingService.addPassedWorkers(new RegWorkersToTraining(testTraining.getId(), passed));
-        Optional<TrainingModel> trainingAfterAddPassed = trainingRepo.findById(testTraining.getId());
+        assertEquals(passed, testTraining.getTrainingPassedID());
 
-        boolean checkWorkers = checkWorkers(passed, trainingAfterAddPassed.get().getTrainingPassedID());
-        assertFalse(checkWorkers);
-
-        trainingService.delete_training(testTraining.getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
-    }
-
-    @Test
-    void delete_training() {
-        Date testDate = new Date();
-        testDate.setYear(testDate.getYear() - 1);
-        TrainingModel testTraining = trainingRepo.save(new TrainingModel(testDate));
-        trainingService.delete_training(testTraining.getId());
-        assertTrue(trainingRepo.findById(testTraining.getId()).isEmpty());
-    }
-
-    @Test
-    void findTrainingWorkers() {
-        Date date = new Date();
-        date.setYear(date.getYear() - 1);
-        TrainingModel testTraining = new TrainingModel(date);
-
-        Set<WorkerModel> workers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        workers.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        workers.add(testWorker2);
-
-        testTraining.getWorkerID().addAll(workers);
-        trainingRepo.save(testTraining);
-
-        ResponseEntity<FindTrainingWorkersResponse> response = trainingService.findTrainingWorkers(new GetWorkersTrainingRequest(testTraining.getId(), "trener"));
-
-        assertNotNull(response.getBody());
-
-        boolean checkWorkers = checkWorkers(workers, response.getBody().getTrainingWorkers());
-        assertFalse(checkWorkers);
-
-
-        trainingService.delete_training(testTraining.getId());
-
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
-    }
-
-    @Test
-    void workersOfProvider() {
-        OfficeModel office = new OfficeModel();
-        Set<WorkerModel> workers = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        workers.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        workers.add(testWorker2);
-
-
-        office.setWorkerId(workers);
-        office.getLeaderID().add(userRepo.save(new UserModel("TestProvider", "TestProvider")));
-        officeRepo.save(office);
-
-
-        Set<WorkerModel> providerWorkers = trainingService.workersOfProvider(officeRepo.findAll(), userRepo.findByLogin("TestProvider"));
-
-        boolean checkWorkers = checkWorkers(workers, providerWorkers);
-        assertFalse(checkWorkers);
-
-        UserModel provider = userRepo.findByLogin("TestProvider");
-
-        officeRepo.deleteById(office.getId());
-        userRepo.deleteById(provider.getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
+        Mockito.verify(trainingRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testTraining));
     }
 
     @Test
     void addVisitors() {
         Date testDate = new Date();
         testDate.setYear(testDate.getYear() - 1);
-        TrainingModel testTraining = trainingRepo.save( new TrainingModel(testDate));
-
-        Set<WorkerModel> visitors = new HashSet<>();
-        WorkerModel testWorker1 = workerRepo.save(new WorkerModel("testWorker1"));
-        visitors.add(testWorker1);
-        WorkerModel testWorker2 = workerRepo.save(new WorkerModel("testWorker2"));
-        visitors.add(testWorker2);
+        TrainingModel testTraining = new TrainingModel(testDate);
+        Set<WorkerModel> visitors = registerWorkersTestConfig(testTraining);
 
         trainingService.addVisitors(new RegWorkersToTraining(testTraining.getId(), visitors));
-        Optional<TrainingModel> trainingAfterAddVisitors = trainingRepo.findById(testTraining.getId());
+        assertEquals(visitors, testTraining.getTrainingVisitorsID());
 
-        boolean checkWorkers = checkWorkers(visitors, trainingAfterAddVisitors.get().getTrainingVisitorsID());
-        assertFalse(checkWorkers);
-
-        trainingService.delete_training(testTraining.getId());
-        workerRepo.deleteById(testWorker1.getId());
-        workerRepo.deleteById(testWorker2.getId());
+        Mockito.verify(trainingRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testTraining));
     }
 
+    @Test
+    void deleteWorkersInTraining() {
+        Date testDate = new Date();
+        testDate.setYear(testDate.getYear() - 1);
 
-    public boolean checkWorkers(Set<WorkerModel> workersBeforeMethod,Set<WorkerModel> workersAfterMethod ){
-        boolean checkWorkers = false;
-        for(WorkerModel worker : workersBeforeMethod){
-            boolean checkWorker = false;
-            for(WorkerModel visitedWorker: workersAfterMethod){
-                if(worker.equals(visitedWorker)){
-                    checkWorker = true;
-                    break;
-                }
-            }
-            if(!checkWorker){
-                checkWorkers = true;
-                break;
-            }
-        }
-        return checkWorkers;
-    }*/
+        Set<WorkerModel> deletedWorkers = new HashSet<>();
+        Set<WorkerModel> newWorkers = new HashSet<>();
+
+        WorkerModel testWorker1 = new WorkerModel("testWorker1");
+        testWorker1.setId(10000L);
+        newWorkers.add(testWorker1);
+        deletedWorkers.add(testWorker1);
+
+        WorkerModel testWorker2 = new WorkerModel("testWorker2");
+        testWorker2.setId(20000L);
+        newWorkers.add(testWorker2);
+        deletedWorkers.add(testWorker2);
+
+        WorkerModel testWorker3 = new WorkerModel("testWorker3");
+        testWorker3.setId(30000L);
+        newWorkers.add(testWorker3);
+
+        TrainingModel testTraining = new TrainingModel(testDate);
+
+        deleteWorkersTestConfig(testTraining, testWorker1, testWorker2, testWorker3);
+        testTraining.setWorkerID(newWorkers);
+
+        trainingService.deleteWorkersInTraining(new RegWorkersToTraining(testTraining.getId(), deletedWorkers));
+
+        Set<WorkerModel> lastWorkers = new HashSet<>();
+        lastWorkers.add(testWorker3);
+
+        assertEquals(testTraining.getWorkerID(), lastWorkers);
+
+        Mockito.verify(trainingRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testTraining));
+    }
+
+    void deleteWorkersTestConfig(TrainingModel testTraining, WorkerModel testWorker1,
+                                 WorkerModel testWorker2, WorkerModel testWorker3) {
+        Mockito.doReturn(Optional.of(testTraining))
+                .when(trainingRepo)
+                .findById(testTraining.getId());
+
+        Mockito.doReturn(Optional.of(testWorker1))
+                .when(workerRepo)
+                .findById(testWorker1.getId());
+
+        Mockito.doReturn(Optional.of(testWorker2))
+                .when(workerRepo)
+                .findById(testWorker2.getId());
+
+        Mockito.doReturn(Optional.of(testWorker3))
+                .when(workerRepo)
+                .findById(testWorker3.getId());
+    }
 }

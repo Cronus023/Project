@@ -3,17 +3,14 @@ package by.project.first.service;
 import by.project.first.controllers.ReqAndRes.ApplicationCreateRequest;
 import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
 import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
-
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.ApplicationModels.GroupsModel;
 import by.project.first.models.ApplicationModels.ReasonsModel;
 import by.project.first.models.ApplicationModels.ResponseToApplicationModel;
 import by.project.first.models.ApplicationModels.WorkerModelForResponse;
-
 import by.project.first.models.Message;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
-
 import by.project.first.repositories.ApplicationRepo;
 import by.project.first.repositories.GroupRepo;
 import by.project.first.repositories.OfficeRepo;
@@ -21,7 +18,6 @@ import by.project.first.repositories.ReasonRepo;
 import by.project.first.repositories.ResponseToApplicationRepo;
 import by.project.first.repositories.UserRepo;
 import by.project.first.repositories.WorkerRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -62,16 +58,16 @@ public class ApplicationService {
 
         reasonRepo.saveAll(reasons);
         groupRepo.saveAll(groups);
-        saveOfficeAndApplication(office, reasons, groups, request);
+        saveOfficeAndApplication(office, reasons, groups,
+                request.getApplication().getAdditionalInfo(), request.getApplication().getEducationalProgram());
 
         return new Message("ok!");
     }
 
     public void saveOfficeAndApplication(OfficeModel office, Set<ReasonsModel> reasons, Set<GroupsModel> groups,
-                                         ApplicationCreateRequest request) {
+                                         String additionalInfo, String educationalProgram) {
         ApplicationModel newApplication = applicationRepo.save(new ApplicationModel(reasons, groups,
-                request.getApplication().getEducationalProgram(), request.getApplication().getAdditionalInfo(),
-                office.getName(), office.getLocation())
+                educationalProgram, additionalInfo, office.getName(), office.getLocation())
         );
 
         office.setLastApplication(newApplication);
@@ -133,7 +129,7 @@ public class ApplicationService {
 
     public ResponseEntity<Message> finalDecision(Long id, String decision) {
         Optional<ApplicationModel> application = applicationRepo.findById(id);
-        OfficeModel office = officeRepo.findByLastApplication(application);
+        OfficeModel office = officeRepo.findByLastApplication(application.get());
 
         if (office == null) return ResponseEntity.status(400).body(new Message("Can not find office!"));
         if (decision.equals("ACCEPT")) return finalDecisionAccept(office, application.get(), decision);
@@ -142,7 +138,8 @@ public class ApplicationService {
         return ResponseEntity.status(400).body(new Message("Something wrong"));
     }
 
-    public ResponseEntity<Message> finalDecisionAccept(OfficeModel office, ApplicationModel application, String decision) {
+    public ResponseEntity<Message> finalDecisionAccept(OfficeModel office,
+                                                       ApplicationModel application, String decision) {
         office.setDateOfLastPermission(new Date());
         officeRepo.save(office);
         application.setStatus(decision);

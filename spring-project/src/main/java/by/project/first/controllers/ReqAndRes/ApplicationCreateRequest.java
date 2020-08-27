@@ -2,8 +2,13 @@ package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.OfficeModel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ApplicationCreateRequest {
+
     private ApplicationModel application;
     private OfficeModel office;
 
@@ -12,19 +17,4 @@ public class ApplicationCreateRequest {
         this.office = office;
     }
 
-    public ApplicationModel getApplication() {
-        return application;
-    }
-
-    public void setApplication(ApplicationModel application) {
-        this.application = application;
-    }
-
-    public OfficeModel getOffice() {
-        return office;
-    }
-
-    public void setOffice(OfficeModel office) {
-        this.office = office;
-    }
 }

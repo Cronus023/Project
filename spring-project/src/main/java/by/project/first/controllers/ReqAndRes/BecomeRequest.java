@@ -1,8 +1,13 @@
 package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.OfficeModel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class BecomeRequest {
+
     private OfficeModel office;
     private String login;
 
@@ -11,19 +16,4 @@ public class BecomeRequest {
         this.login = login;
     }
 
-    public OfficeModel getOffice() {
-        return office;
-    }
-
-    public void setOffice(OfficeModel office) {
-        this.office = office;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 }

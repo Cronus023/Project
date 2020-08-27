@@ -1,6 +1,12 @@
 package by.project.first.controllers.ReqAndRes;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class GetWorkersTrainingRequest {
+
     private Long id;
     private String login;
 
@@ -13,19 +19,4 @@ public class GetWorkersTrainingRequest {
         this.login = login;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 }

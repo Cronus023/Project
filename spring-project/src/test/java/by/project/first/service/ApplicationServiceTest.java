@@ -1,286 +1,206 @@
 package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.ApplicationCreateRequest;
-import by.project.first.controllers.ReqAndRes.RegularReviewerResponse;
 import by.project.first.controllers.ReqAndRes.RejectAndAcceptRequest;
 import by.project.first.models.ApplicationModels.ApplicationModel;
 import by.project.first.models.ApplicationModels.ResponseToApplicationModel;
 import by.project.first.models.OfficeModel;
 import by.project.first.models.UserModel;
-import by.project.first.repositories.*;
+import by.project.first.repositories.ApplicationRepo;
+import by.project.first.repositories.GroupRepo;
+import by.project.first.repositories.OfficeRepo;
+import by.project.first.repositories.ReasonRepo;
+import by.project.first.repositories.ResponseToApplicationRepo;
+import by.project.first.repositories.UserRepo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApplicationServiceTest {
 
-    /*@Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private OfficeRepo officeRepo;
-
     @Autowired
     private ApplicationService applicationService;
 
-    @Autowired
+    @MockBean
+    private UserRepo userRepo;
+
+    @MockBean
+    private OfficeRepo officeRepo;
+
+    @MockBean
     private ApplicationRepo applicationRepo;
 
-    @Autowired
+    @MockBean
+    private ReasonRepo reasonRepo;
+
+    @MockBean
+    private GroupRepo groupRepo;
+
+    @MockBean
     private ResponseToApplicationRepo responseToApplicationRepo;
 
-    /*@Test
-    public void createApplication() {
+    @Test
+    public void createApplicationTest() {
         ApplicationModel testApplication = new ApplicationModel();
-        String officeName = "testOffice";
-        OfficeModel testOffice = new OfficeModel(officeName);
-        officeRepo.save(testOffice);
+
+        OfficeModel testOffice = new OfficeModel("testOffice");
+        testApplication.setOfficeName("testOffice");
+
+        createApplicationTestConfig(testOffice, "testOffice", testApplication);
 
         applicationService.createApplication(new ApplicationCreateRequest(testApplication, testOffice));
 
-        OfficeModel officeAfterUpdate = officeRepo.findByName(officeName);
+        assertEquals("WAIT_FOR_AN_ANSWER", testApplication.getStatus());
+        assertEquals(testApplication, testOffice.getLastApplication());
 
+        createApplicationTestVerify(testOffice, testApplication);
+    }
 
-        ApplicationModel applicationAfterSave = applicationRepo.findByOfficeName(officeName);
+    public void createApplicationTestConfig(OfficeModel testOffice,
+                                            String officeName, ApplicationModel testApplication) {
+        ApplicationModel app = new ApplicationModel(null, null,
+                null, null, officeName, null);
 
+        Mockito.doReturn(testOffice)
+                .when(officeRepo)
+                .findByName(officeName);
 
-        assertEquals("WAIT_FOR_AN_ANSWER", applicationAfterSave.getStatus());
-        assertEquals(applicationAfterSave, officeAfterUpdate.getLastApplication());
-        assertNotNull(applicationAfterSave);
-        assertNotNull(officeAfterUpdate.getLastApplication());
+        Mockito.doReturn(testApplication)
+                .when(applicationRepo)
+                .save(app);
+    }
 
-        officeRepo.deleteById(officeAfterUpdate.getId());
-        applicationRepo.deleteById(applicationAfterSave.getId());
+    public void createApplicationTestVerify(OfficeModel testOffice, ApplicationModel testApplication) {
+        Mockito.verify(reasonRepo, Mockito.times(1))
+                .saveAll(ArgumentMatchers.eq(testApplication.getReasons()));
+
+        Mockito.verify(groupRepo, Mockito.times(1))
+                .saveAll(ArgumentMatchers.eq(testApplication.getGroups()));
+
+        Mockito.verify(applicationRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testApplication));
+
+        Mockito.verify(officeRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testOffice));
     }
 
     @Test
     public void getApplications() {
-        Set<ApplicationModel> notAnsweredApplications = applicationService.getApplications();
-
-        if(notAnsweredApplications != null){
-            boolean check = false;
-            for(ApplicationModel application : notAnsweredApplications){
-                if(!application.getStatus().equals("WAIT_FOR_AN_ANSWER")){
-                    check = true;
-                    break;
-                }
-            }
-            assertFalse(check);
-            System.out.println(notAnsweredApplications);
-        }
-    }
-
-    @Test
-    public void get_responses_and_application() {
-        ApplicationModel testApplication = new ApplicationModel();
-        applicationRepo.save(testApplication);
-
-        UserModel testUser = new UserModel("testUser", "testUser");
-        userRepo.save(testUser);
-
-        ResponseToApplicationModel testResponse = new ResponseToApplicationModel();
-        testResponse.setApplicationID(testApplication);
-        testResponse.setUser(testUser);
-
-        responseToApplicationRepo.save(testResponse);
-
-
-
-        RegularReviewerResponse response = applicationService.get_responses_and_application("testUser", testApplication.getId());
-
-        boolean check = false;
-        for(ResponseToApplicationModel res : response.getResponses()){
-            if(!res.equals(testResponse)){
-                check = true;
-                break;
-            }
-        }
-        assertFalse(check);
-        assertEquals(response.getApplication(), testApplication);
-
-
-        responseToApplicationRepo.deleteById(testResponse.getId());
-        userRepo.deleteById(testUser.getId());
-        applicationRepo.deleteById(testApplication.getId());
-    }
-
-    @Test
-    public void reject_accept() {
-        ApplicationModel testApplication = new ApplicationModel();
-        applicationRepo.save(testApplication);
-
-        UserModel testUser = new UserModel("testUser", "testUser");
-        userRepo.save(testUser);
-
-
-        applicationService.reject_accept(new RejectAndAcceptRequest("testUser", testApplication, "REJECT", "CURRICULUM"));
-
-        Iterable<ResponseToApplicationModel> responses = responseToApplicationRepo.findAllByUser(testUser);
-
-        ResponseToApplicationModel newResponse = null;
-        for(ResponseToApplicationModel response: responses){
-            newResponse = response;
-            break;
-        }
-
-        assertNotNull(newResponse);
-        assertEquals("REJECT", newResponse.getResponseStatus());
-        assertEquals("CURRICULUM", newResponse.getTypeOfSection());
-        assertEquals(testApplication, newResponse.getApplicationID());
-
-
-        responseToApplicationRepo.deleteById(newResponse.getId());
-        userRepo.deleteById(testUser.getId());
-        applicationRepo.deleteById(testApplication.getId());
-    }
-
-    @Test
-    public void get_history() {
-        Set<ResponseToApplicationModel> testResponses = new HashSet<>();
-        ApplicationModel testApplication = new ApplicationModel();
-        applicationRepo.save(testApplication);
-
-        ResponseToApplicationModel testResponse = new ResponseToApplicationModel();
-        testResponse.setApplicationID(testApplication);
-        responseToApplicationRepo.save(testResponse);
-
-        ResponseToApplicationModel testResponse1 = new ResponseToApplicationModel();
-        testResponse1.setApplicationID(testApplication);
-        responseToApplicationRepo.save(testResponse1);
-
-        testResponses.add(testResponse1);
-        testResponses.add(testResponse);
-
-        ResponseEntity<Iterable<ResponseToApplicationModel>> response = applicationService.get_history(testApplication.getId());
-
-
-        assertNotNull(response.getBody());
-
-        boolean checkResponses = false;
-        for(ResponseToApplicationModel res: response.getBody()){
-            boolean checkResponse = false;
-            for(ResponseToApplicationModel testRes: testResponses){
-                if(res.equals(testRes)){
-                    checkResponse = true;
-                    break;
-                }
-            }
-            if(!checkResponse){
-                checkResponses = true;
-                break;
-            }
-        }
-
-        assertFalse(checkResponses);
-
-        responseToApplicationRepo.deleteById(testResponse.getId());
-        responseToApplicationRepo.deleteById(testResponse1.getId());
-        applicationRepo.deleteById(testApplication.getId());
-
-    }
-
-    @Test
-    public void get_provider_applications() {
-        ApplicationModel testApplication = new ApplicationModel();
         ApplicationModel testApplication1 = new ApplicationModel();
+        testApplication1.setStatus("WAIT_FOR_AN_ANSWER");
+
+        ApplicationModel testApplication2 = new ApplicationModel();
+        testApplication2.setStatus("WAIT_FOR_AN_ANSWER");
+
+        ApplicationModel testApplication3 = new ApplicationModel();
+        testApplication3.setStatus("ACCEPT");
+
+        Set<ApplicationModel> applications = new HashSet<>();
+        applications.add(testApplication1);
+        applications.add(testApplication2);
+        applications.add(testApplication3);
+
+        Set<ApplicationModel> notAnsweredApplications = new HashSet<>();
+        notAnsweredApplications.add(testApplication1);
+        notAnsweredApplications.add(testApplication2);
+
+
+        Mockito.doReturn(applications)
+                .when(applicationRepo)
+                .findAll();
+
+        Set<ApplicationModel> notAnsweredApplications1 = applicationService.getApplications();
+        assertEquals(notAnsweredApplications1, notAnsweredApplications);
+
+    }
+
+    @Test
+    public void rejectAndAcceptTest() {
+        ApplicationModel testApplication = new ApplicationModel();
 
         UserModel testUser = new UserModel("testUser", "testUser");
-        userRepo.save(testUser);
 
-        String officeName = "testOffice";
-        OfficeModel testOffice = new OfficeModel(officeName);
-        testOffice.getLeaderID().add(testUser);
-        officeRepo.save(testOffice);
+        Mockito.doReturn(testUser)
+                .when(userRepo)
+                .save(testUser);
 
-        applicationService.createApplication(new ApplicationCreateRequest(testApplication, testOffice));
-        applicationService.createApplication(new ApplicationCreateRequest(testApplication1, testOffice));
+        applicationService.rejectAndAccept(new RejectAndAcceptRequest(
+                "testUser", testApplication, "REJECT", "CURRICULUM")
+        );
 
-        OfficeModel officeAfterUpdate = officeRepo.findByName(officeName);
+        ResponseToApplicationModel response = new ResponseToApplicationModel("REJECT",
+                "CURRICULUM", testUser, testApplication, new Date()
+        );
 
-        Set<ApplicationModel> testApplications = applicationRepo.findAllByOfficeName(officeName);
-        ResponseEntity<Set<ApplicationModel>> response = applicationService.get_provider_applications("testUser");
-
-        assertNotNull(response.getBody());
-
-        boolean checkResponses = false;
-        for(ApplicationModel application: response.getBody()){
-            boolean checkResponse = false;
-            for(ApplicationModel test: testApplications){
-                if(application.equals(test)){
-                    checkResponse = true;
-                    break;
-                }
-            }
-            if(!checkResponse){
-                checkResponses = true;
-                break;
-            }
-        }
-        assertFalse(checkResponses);
-
-
-        officeRepo.deleteById(officeAfterUpdate.getId());
-        response.getBody().forEach(res->{
-            applicationRepo.deleteById(res.getId());
-        });
-        userRepo.deleteById(testUser.getId());
+        Mockito.verify(responseToApplicationRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(response));
     }
 
     @Test
-    public void final_decisionREJECT() {
+    public void finalDecisionAcceptTest() {
         ApplicationModel testApplication = new ApplicationModel();
+        OfficeModel testOffice = new OfficeModel();
 
-        String officeName = "testOffice";
+        applicationService.finalDecisionAccept(testOffice, testApplication, "ACCEPT");
 
-        OfficeModel testOffice = new OfficeModel(officeName);
-        officeRepo.save(testOffice);
+        assertEquals(testApplication.getStatus(), "ACCEPT");
 
-        applicationService.createApplication(new ApplicationCreateRequest(testApplication, testOffice));
+        Mockito.verify(applicationRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testApplication));
 
-        OfficeModel officeAfterUpdate = officeRepo.findByName(officeName);
-        ApplicationModel applicationAfterSave = applicationRepo.findByOfficeName(officeName);
-
-        applicationService.final_decision(applicationAfterSave.getId(), "REJECT");
-        ApplicationModel applicationAfterFinalDecision = applicationRepo.findByOfficeName(officeName);
-
-        assertEquals(applicationAfterFinalDecision.getStatus(), "REJECT");
-
-        officeRepo.deleteById(officeAfterUpdate.getId());
-        applicationRepo.deleteById(applicationAfterFinalDecision.getId());
+        Mockito.verify(officeRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testOffice));
     }
+
     @Test
-    public void final_decisionACCEPT() {
+    public void finalDecisionRejectTest() {
         ApplicationModel testApplication = new ApplicationModel();
 
-        String officeName = "testOffice";
+        applicationService.finalDecisionReject(testApplication, "REJECT");
 
-        OfficeModel testOffice = new OfficeModel(officeName);
-        officeRepo.save(testOffice);
+        assertEquals(testApplication.getStatus(), "REJECT");
 
-        applicationService.createApplication(new ApplicationCreateRequest(testApplication, testOffice));
+        Mockito.verify(applicationRepo, Mockito.times(1))
+                .save(ArgumentMatchers.eq(testApplication));
+    }
 
-        OfficeModel officeAfterUpdate = officeRepo.findByName(officeName);
-        ApplicationModel applicationAfterSave = applicationRepo.findByOfficeName(officeName);
+    @Test
+    public void finalDecisionFailTest() {
+        ApplicationModel testApplication = new ApplicationModel();
 
-        applicationService.final_decision(applicationAfterSave.getId(), "ACCEPT");
-        ApplicationModel applicationAfterFinalDecision = applicationRepo.findByOfficeName(officeName);
-        OfficeModel officeAfterFinalDecision = officeRepo.findByName(officeName);
+        OfficeModel testOffice = new OfficeModel("testOffice");
 
-        assertEquals(1, new Date().compareTo(officeAfterFinalDecision.getDateOfLastPermission()));
-        assertEquals(applicationAfterFinalDecision.getStatus(), "ACCEPT");
+        Mockito.doReturn(Optional.of(testApplication))
+                .when(applicationRepo)
+                .findById(10000L);
 
-        officeRepo.deleteById(officeAfterUpdate.getId());
-        applicationRepo.deleteById(applicationAfterFinalDecision.getId());
-    }*/
+        Mockito.doReturn(null)
+                .when(officeRepo)
+                .findByLastApplication(testApplication);
+
+        applicationService.finalDecision(10000L, "ACCEPT");
+
+        assertEquals("WAIT_FOR_AN_ANSWER", testApplication.getStatus());
+
+        Mockito.verify(applicationRepo, Mockito.times(0))
+                .save(ArgumentMatchers.eq(testApplication));
+
+        Mockito.verify(officeRepo, Mockito.times(0))
+                .save(ArgumentMatchers.eq(testOffice));
+    }
 
 }
