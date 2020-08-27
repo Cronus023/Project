@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center">
-    <div class="signin card" style="width: 60rem;">
+    <div class="small-form-card card" style="width: 60rem;">
         <h1 class="text-center card-header">Regular review</h1>
         <div class="form-application ">
             <ul class="nav nav-tabs card-header-tabs">
@@ -52,7 +52,7 @@
                 <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
             </div>
             <div ng-if="section.number==1 && section.groupStatus">
-                <label class="sign_in_up-error">You have already answered this section </label><br>
+                <label class="error-message">You have already answered this section </label><br>
             </div>
             <div ng-if="section.number==2 && !section.workersStatus">
                 <label>Workers information: </label><br>
@@ -80,7 +80,7 @@
                 <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
             </div>
             <div ng-if="section.number==2 && section.workersStatus">
-                <label class="sign_in_up-error">You have already answered this section </label><br>
+                <label class="error-message">You have already answered this section </label><br>
             </div>
 
         </div>

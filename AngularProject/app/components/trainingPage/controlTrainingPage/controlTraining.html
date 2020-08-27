@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
-    <div class="signin card" style="width: 40rem;" ng-form="trainingForm">
+    <div class="small-form-card card" style="width: 40rem;" ng-form="trainingForm">
         <h1 class="text-center card-header">Training control</h1>
-        <div class="form-signin ">
+        <div class="form-for-data ">
             <form>
                 <label>Date of training : </label>
                 <input type="datetime-local" ng-model="data.date" class="form-control" placeholder="Date" required><br>
@@ -18,8 +18,8 @@
                 <input type="number" ng-model="data.numberOfSeats" id="inputNumber" class="form-control"
                        placeholder="Number of seats" required><br><br>
 
-                <label ng-if="message!='' && message != 'ok!'"><p class="sign_in_up-error">{{message}}</p></label><br>
-                <label ng-if="message!='' && message == 'ok!'"><p class="add_worker_ok">Training successfully
+                <label ng-if="message!='' && message != 'ok!'"><p class="error-message">{{message}}</p></label><br>
+                <label ng-if="message!='' && message == 'ok!'"><p class="good-message">Training successfully
                     edited!</p></label><br>
 
                 <button class="btn btn-lg btn-block btn-info " ng-click="editTraining(trainingForm)">Edit training

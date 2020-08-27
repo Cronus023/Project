@@ -9,7 +9,7 @@
 </div>
 
 <div ng-if="messageFromBack==''" class="d-flex justify-content-center">
-    <div class="signin card" style="width: 60rem;" ng-form="applicationForm">
+    <div class="small-form-card card" style="width: 60rem;" ng-form="applicationForm">
         <h1 class="text-center card-header">Step {{navigation + 1}}</h1>
         <div class="form-application ">
             <form>
@@ -155,15 +155,15 @@
                         <input type="text" ng-model="application.additionalInfo" id="inputAdditionalInfo"
                                class="form-control" placeholder="Help needed when filling out" required><br>
                         <label ng-if="navigation == 3 && errorAdditionalInfo !=''"
-                               class="sign_in_up-error">{{errorAdditionalInfo}}</label><br><br>
+                               class="error-message">{{errorAdditionalInfo}}</label><br><br>
                         <label>Confirm data: </label>
                         <input ng-click="changeConfirm()" type="checkbox"><br><br>
                     </div>
                 </div>
             </form>
 
-            <label ng-if="navigation == 3 && !checkData() " class="sign_in_up-error">{{errorMessage}}</label><br><br>
-            <label ng-if="navigation == 3 && errorConfirm!=''" class="sign_in_up-error"> {{errorConfirm}} </label>
+            <label ng-if="navigation == 3 && !checkData() " class="error-message">{{errorMessage}}</label><br><br>
+            <label ng-if="navigation == 3 && errorConfirm!=''" class="error-message"> {{errorConfirm}} </label>
             <button ng-if="navigation < 3" class="btn btn-lg btn-primary btn-block mt-1" ng-click="next()">Next</button>
             <button ng-if="navigation > 0 " class="btn btn-lg btn-primary btn-block mt-1" ng-click="back()">Back
             </button>

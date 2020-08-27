@@ -30,7 +30,7 @@ worker.factory('workersService', ['$http', '$q', '$window', function ($http, $q,
                 }
             })
         },
-        add: function (worker, officeId) {
+        addWorker: function (worker, officeId) {
             const requestBody = {
                 worker: worker,
                 officeName: officeId,

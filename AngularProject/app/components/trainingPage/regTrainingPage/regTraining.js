@@ -1,20 +1,25 @@
 angular.module('myApp.trainings.reg', [])
     .controller('RegTrainingsCtrl', function ($scope, $routeParams, trainingService, $window) {
+
         $scope.message = ''
+
         trainingService.findWorkersByIdAndUserLogin($routeParams["trainingID"]).then(function (value) {
             $scope.data = value
         })
 
         $scope.selected = []
+
         $scope.exist = function (item) {
             return $scope.selected.indexOf(item) > -1
         }
+
         $scope.select = function (item) {
             const index = $scope.selected.indexOf(item)
             if (index > -1) {
                 $scope.selected.splice(index, 1)
             } else $scope.selected.push(item)
         }
+
         $scope.selectAll = function () {
             if (!$scope.checkAll) {
                 $scope.data.map(function (item) {
@@ -29,6 +34,7 @@ angular.module('myApp.trainings.reg', [])
                 $scope.selected = []
             }
         }
+
         $scope.register = function () {
             trainingService.registerWorkers($routeParams["trainingID"], $scope.selected).then(function (value) {
                 if (value.title === 'ok') {
@@ -44,4 +50,5 @@ angular.module('myApp.trainings.reg', [])
                 }, 1000)
             }
         }
+
     })

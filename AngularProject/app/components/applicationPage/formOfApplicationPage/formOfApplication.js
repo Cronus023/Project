@@ -1,17 +1,20 @@
 angular.module('myApp.application.form', [])
     .controller('FormApplicationCtrl', function ($scope, $routeParams, $window, applicationService, officeService) {
+
         $scope.navigation = 0;
         $scope.confirmData = false
         $scope.step2Status = true
         $scope.errorConfirm = ''
         $scope.messageFromBack = ''
         $scope.errorAdditionalInfo = ''
+
         $scope.typesOfReasons = [
             {key: 1, value: "DISEASE"},
             {key: 2, value: "MEDICAL_EXAMINATION"},
             {key: 3, value: "SALARY_DELAY"},
             {key: 4, value: "UNEXPECTED_BREAKDOWN"},
         ]
+
         $scope.application = {
             additionalInfo: "",
             educationalProgram: '',
@@ -38,29 +41,31 @@ angular.module('myApp.application.form', [])
                 },
             ]
         }
-        officeService.getOfficeByName(routeParams["officeName"]).then(function (value) {
-            if (value.title) {
-                $scope.messageFromBack = value.title
-            }
+
+        officeService.getOfficeByName($routeParams["officeName"]).then(function (value) {
+            if (value.title) $scope.messageFromBack = value.title
             $scope.office = value.office
             $scope.notPassedWorkers = value.notPassedWorkers
         })
+
         $scope.next = function () {
             $scope.navigation += 1;
         }
+
         $scope.changeConfirm = function () {
             $scope.confirmData = !$scope.confirmData
         }
+
         $scope.back = function () {
             $scope.navigation -= 1;
         }
 
         $scope.submit = function () {
-            if (!$scope.confirmData) {
+            if (!$scope.confirmData)
                 $scope.errorConfirm = "Confirm your data!"
-            } else if ($scope.application.additionalInfo === '') {
+            else if ($scope.application.additionalInfo === '')
                 $scope.errorAdditionalInfo = 'Enter additional info in step 4!'
-            } else {
+            else {
                 $scope.notPassedReasons = []
                 $scope.notPassedWorkers.map(function (value) {
                     $scope.notPassedReasons.push({
@@ -79,11 +84,12 @@ angular.module('myApp.application.form', [])
                 $scope.errorConfirm = ''
                 $scope.errorAdditionalInfo = ''
             }
-
         }
+
         $scope.return = function () {
             $window.location.href = '#!/main'
         }
+
         $scope.checkData = function () {
             let flag = true
             if ($scope.office.location === undefined) {
@@ -110,4 +116,5 @@ angular.module('myApp.application.form', [])
             }
             return flag
         }
+
     })

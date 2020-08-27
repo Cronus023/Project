@@ -150,6 +150,10 @@ public class TrainingService {
         request.getNewWorkers().forEach(deletedWorker -> {
             training.get().getWorkerID().remove(workerRepo.findById(deletedWorker.getId()).get());
         });
+
+        Integer seats = training.get().getNumberOfSeats() + request.getNewWorkers().size();
+        training.get().setNumberOfSeats(seats);
+
         trainingRepo.save(training.get());
         return new Message("ok!");
     }

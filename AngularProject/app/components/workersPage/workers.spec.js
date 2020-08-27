@@ -4,8 +4,8 @@ describe('myApp.workers module', function () {
     describe('workers controller', function () {
         it('should ....', inject(function ($controller) {
             //spec body
-            const LoginCtrl = $controller('WorkersCtrl')
-            expect(LoginCtrl).toBeDefined()
+            const WorkersCtrl = $controller('WorkersCtrl')
+            expect(WorkersCtrl).toBeDefined()
         }))
     })
 })

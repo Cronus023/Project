@@ -1,8 +1,8 @@
 angular.module('myApp.application.reviewers.regular', [])
     .controller('RegularReviewersApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
+
         applicationService.getApplication($routeParams["applicationID"]).then(function (value) {
             $scope.applicationData = value.application
-            console.log(value)
             $scope.workers = value.workers
             $scope.responses = value.responses
             $scope.responses.map(function (item) {
@@ -15,17 +15,21 @@ angular.module('myApp.application.reviewers.regular', [])
                 }
             })
         })
+
         $scope.section = {
             number: 1,
             groupStatus: false,
             workersStatus: false,
         }
+
         $scope.selectGroups = function () {
             $scope.section.number = 1
         }
+
         $scope.selectWorkers = function () {
             $scope.section.number = 2
         }
+
         $scope.rejectAndAccept = function (status) {
             let section = ""
             if ($scope.section.number === 1) {
@@ -42,4 +46,5 @@ angular.module('myApp.application.reviewers.regular', [])
                 $window.location.reload()
             })
         }
+
     })

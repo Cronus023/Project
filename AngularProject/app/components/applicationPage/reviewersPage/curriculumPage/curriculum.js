@@ -1,10 +1,11 @@
 angular.module('myApp.application.reviewers.curriculum', [])
     .controller('CurriculumReviewersApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
+
         applicationService.getEducationalProgramById($routeParams["applicationID"]).then(function (value) {
             $scope.applicationData = value.application
             $scope.curriculumStatus = false
-
             $scope.responses = value.responses
+
             $scope.responses.map(function (item) {
                 const applicationId = item.applicationID.id.toString()
                 if (item.typeOfSection === 'CURRICULUM' && applicationId === $routeParams["applicationID"]) {
@@ -23,4 +24,5 @@ angular.module('myApp.application.reviewers.curriculum', [])
                 $window.location.reload()
             })
         }
+
     })

@@ -195,6 +195,7 @@ class TrainingServiceTest {
         newWorkers.add(testWorker3);
 
         TrainingModel testTraining = new TrainingModel(testDate);
+        testTraining.setNumberOfSeats(10);
 
         deleteWorkersTestConfig(testTraining, testWorker1, testWorker2, testWorker3);
         testTraining.setWorkerID(newWorkers);
@@ -205,6 +206,7 @@ class TrainingServiceTest {
         lastWorkers.add(testWorker3);
 
         assertEquals(testTraining.getWorkerID(), lastWorkers);
+        assertEquals(12, testTraining.getNumberOfSeats());
 
         Mockito.verify(trainingRepo, Mockito.times(1))
                 .save(ArgumentMatchers.eq(testTraining));

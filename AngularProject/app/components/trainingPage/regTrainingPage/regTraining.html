@@ -21,8 +21,8 @@
     </tr>
     </tbody>
 </table>
-<label ng-if="message!='' && message != 'ok'"><p class="sign_in_up-error">{{message}}</p></label>
-<label ng-if="message=='ok'"><p class="add_worker_ok">Workers successfully register!</p></label>
+<label ng-if="message!='' && message != 'ok'"><p class="error-message">{{message}}</p></label>
+<label ng-if="message=='ok'"><p class="good-message">Workers successfully register!</p></label>
 <div class="row">
     <p class="ml-3" ng-if="selected.length != 0">
         <button type="button" class="btn btn-danger" ng-click="register()">Register</button>

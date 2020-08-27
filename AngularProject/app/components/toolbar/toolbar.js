@@ -8,6 +8,7 @@ angular.module('myApp.toolbar', [])
         }
     })
     .controller('toolbarCtrl', function ($scope, authService, $window) {
+
         $scope.token = localStorage.getItem('JwtToken')
         $scope.role = localStorage.getItem('UserRole')
         $scope.name = localStorage.getItem('UserLogin')
@@ -15,13 +16,16 @@ angular.module('myApp.toolbar', [])
         $scope.logout = function () {
             authService.logout()
         }
+
         $scope.addTraining = function () {
             $window.location.href = `#!/trainings/add/${$scope.name}`
         }
+
         $scope.application = function () {
             const login = localStorage.getItem('UserLogin')
             $window.location.href = `#!/application/${login}`
         }
+
         $scope.myApplications = function () {
             const login = localStorage.getItem('UserLogin')
             $window.location.href = `#!/application/my/${login}`
@@ -30,4 +34,5 @@ angular.module('myApp.toolbar', [])
         $scope.changeRole = function () {
             $window.location.href = '#!/changeRole'
         }
+
     })

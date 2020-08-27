@@ -1,5 +1,6 @@
 angular.module('myApp.application', [])
     .controller('ApplicationCtrl', function ($scope, $routeParams, $window, officeService) {
+
         officeService.getOfficesByLogin($routeParams["userLogin"]).then(function (value) {
             if (value.title) {
                 alert(value.title)
@@ -7,7 +8,9 @@ angular.module('myApp.application', [])
             }
             $scope.offices = value
         })
+
         $scope.makeApplication = function (officeName) {
             $window.location.href = `#!/application/form/${officeName}`
         }
+
     })

@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
-    <div class="signin card" style="width: 40rem;" ng-form="trainingForm">
+    <div class="small-form-card card" style="width: 40rem;" ng-form="trainingForm">
         <h1 class="text-center card-header">Add training</h1>
-        <div class="form-signin ">
+        <div class="form-for-data ">
             <form>
                 <label>Date of training : </label>
                 <input type="datetime-local" ng-model="dateOfTraining" class="form-control" placeholder="Date" required><br>
@@ -19,10 +19,9 @@
                 <input type="number" min="10" ng-model="numberOfSeats" id="inputNumber" class="form-control"
                        placeholder="Number of seats" required><br><br>
 
-                <label ng-if="message!=''"><p class="sign_in_up-error">{{message}}</p></label><br>
+                <label ng-if="message!=''"><p class="error-message">{{message}}</p></label><br>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="add(trainingForm)">Add</button>
-
             </form>
 
             <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>

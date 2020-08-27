@@ -1,5 +1,5 @@
 /* app css stylesheet */
-.form-signin {
+.form-for-data {
     width: 100%;
     max-width: 330px;
     padding: 15px;
@@ -13,7 +13,7 @@
     margin: auto;
 }
 
-.form-signin .form-control {
+.form-for-data .form-control {
     position: relative;
     box-sizing: border-box;
     height: auto;
@@ -21,7 +21,7 @@
     font-size: 16px;
 }
 
-.signin {
+.small-form-card {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
@@ -30,7 +30,7 @@
     padding-bottom: 40px;
 }
 
-.sign_in_up-error {
+.error-message {
     color: #ff0000bf;
     font-size: 1.5rem;
     border: 1px solid;
@@ -38,15 +38,7 @@
     border-radius: 10px
 }
 
-.main_check_message {
-    color: #113ecd;
-    border: 1px solid;
-    width: 230px;
-    border-radius: 10px
-
-}
-
-.add_worker_ok {
+.good-message {
     color: #509008;
     font-size: 1.5rem;
     border: 1px solid;

@@ -1,7 +1,9 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col"><input type="checkbox" ng-model="checkAll" ng-click="selectAll()"> Select/Deselect all</th>
+        <th scope="col"><input type="checkbox" ng-model="checkAllWorkers" ng-click="selectAllWorkers()">
+            Select/Deselect all
+        </th>
         <th scope="col">id</th>
         <th scope="col">Name</th>
         <th scope="col">Education</th>
@@ -11,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in data">
+    <tr ng-repeat="item in officeData">
         <div>
             <td><input type="checkbox" ng-model="selectedWorkers" ng-checked="existWorker(item)"
                        ng-click="selectWorker(item)"></td>
@@ -20,21 +22,22 @@
             <td>{{item.education}}</td>
             <td>{{item.email}}</td>
             <td>
-                <button type="button" class="btn btn-primary" ng-click="viewTrainings(item.id)">View passed trainings
+                <button type="button" class="btn btn-primary" ng-click="viewTrainings(item.id)">
+                    View passed trainings
                 </button>
             </td>
             <td>
-                <button type="button" class="btn btn-primary" ng-click="edit(item)">Edit</button>
+                <button type="button" class="btn btn-primary" ng-click="editWorker(item)">Edit</button>
             </td>
         </div>
     </tr>
     </tbody>
 </table>
 <div class="row">
-    <p class="ml-3" ng-if="selected.length != 0">
-        <button type="button" class="btn btn-danger" ng-click="delete()">Delete</button>
+    <p class="ml-3" ng-if="selectedWorkers.length != 0">
+        <button type="button" class="btn btn-danger" ng-click="deleteWorker()">Delete</button>
     </p>
     <div class="ml-3">
-        <button type="button" class="btn btn-success" ng-click="add()">Add worker</button>
+        <button type="button" class="btn btn-success" ng-click="addWorker()">Add worker</button>
     </div>
 </div>

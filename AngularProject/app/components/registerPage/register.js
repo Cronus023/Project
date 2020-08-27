@@ -1,6 +1,7 @@
 'use strict'
 angular.module('myApp.register', ['ngRoute'])
     .controller('RegisterCtrl', function ($scope, authService, $window) {
+
         $scope.typesOfRoles = [
             {key: 1, value: "PROVIDER"},
             {key: 2, value: "CURRICULUM_REVIEWER"},
@@ -8,11 +9,13 @@ angular.module('myApp.register', ['ngRoute'])
             {key: 4, value: "SUPERVISION"},
             {key: 5, value: "TRAINING_OPERATOR"},
         ]
-        $scope.message = ''
+
+        $scope.errorMessage = ''
+
         $scope.registration = function (registerForm) {
             if (registerForm.$valid) {
                 if (!$scope.role) {
-                    $scope.message = "Choose your role!"
+                    $scope.errorMessage = "Choose your role!"
                 } else {
                     const registerBody = {
                         login: $scope.login,
@@ -27,7 +30,7 @@ angular.module('myApp.register', ['ngRoute'])
                     }
                     const response = authService.registration(registerBody)
                     response.then(function (value) {
-                        $scope.message = value
+                        $scope.errorMessage = value
                         if (value === "") {
                             $window.location.href = '#!/login'
                         }
@@ -36,4 +39,5 @@ angular.module('myApp.register', ['ngRoute'])
                 }
             }
         }
+
     })

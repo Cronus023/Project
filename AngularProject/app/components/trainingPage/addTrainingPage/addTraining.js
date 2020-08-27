@@ -1,13 +1,17 @@
 angular.module('myApp.trainings.add', [])
-    .controller('AddTrainingsCtrl', function ($scope, trainingService, $routeParams, $window) {
+    .controller('AddTrainingsCtrl', function ($scope, trainingService, $routeParams) {
+
         $scope.message = ''
+
         $scope.typesOfTraining = [
             {key: 1, value: "PSYCHOLOGICAL"},
             {key: 2, value: "PHYSICAL"},
             {key: 3, value: "PERSONAL_GROWTH"},
             {key: 4, value: "COMMUNICATION"},
         ]
+
         $scope.userLogin = $routeParams["userLogin"]
+
         $scope.add = function (trainingForm) {
             if (trainingForm.$valid) {
                 const date = new Date()
@@ -28,4 +32,5 @@ angular.module('myApp.trainings.add', [])
                 }
             }
         }
+
     })

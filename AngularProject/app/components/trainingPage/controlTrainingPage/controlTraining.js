@@ -1,17 +1,21 @@
 angular.module('myApp.trainings.control', [])
     .controller('ControlTrainingsCtrl', function ($scope, trainingService, $routeParams, $window) {
+
         $scope.message = ''
+
         trainingService.getTrainingById($routeParams["trainingID"]).then(function (value) {
             $scope.data = value
             $scope.data.date = new Date(value.date)
             $scope.data.dateOfEnd = new Date(value.dateOfEnd)
         })
+
         $scope.typesOfTraining = [
             {key: 1, value: "PSYCHOLOGICAL"},
             {key: 2, value: "PHYSICAL"},
             {key: 3, value: "PERSONAL_GROWTH"},
             {key: 4, value: "COMMUNICATION"},
         ]
+
         $scope.deleteTraining = function () {
             trainingService.deleteTraining($routeParams["trainingID"]).then(function (value) {
                 if (value.title === 'ok!') {
@@ -21,6 +25,7 @@ angular.module('myApp.trainings.control', [])
                 }
             })
         }
+
         $scope.editTraining = function (trainingForm) {
             if (trainingForm.$valid) {
                 const date = new Date()
@@ -38,9 +43,11 @@ angular.module('myApp.trainings.control', [])
                 }
             }
         }
+
         $scope.workersControl = function () {
             $window.location.href = `#!/trainings/control/workers/${$routeParams["trainingID"]}`
         }
+
     })
 
 

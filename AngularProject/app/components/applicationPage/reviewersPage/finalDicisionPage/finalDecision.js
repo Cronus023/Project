@@ -1,5 +1,6 @@
 angular.module('myApp.application.finalDecision', [])
     .controller('FinalDecisionApplicationCtrl', function ($scope, $routeParams, $window, applicationService) {
+
         $scope.finalDecision = function (decision) {
             applicationService.finalDecision($routeParams["applicationID"], decision).then(function (value) {
                 if (value.title !== 'ok!') {
@@ -9,4 +10,5 @@ angular.module('myApp.application.finalDecision', [])
                 $window.location.href = '#!/application/reviewers/view'
             })
         }
+
     })
