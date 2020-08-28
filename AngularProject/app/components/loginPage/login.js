@@ -1,6 +1,6 @@
 angular.module('myApp.login', ['ngRoute'])
     .controller('LoginCtrl', function ($scope, authService) {
-
+        authService.loginPage()
         $scope.auth = function (loginForm) {
             if (loginForm.$valid) {
                 const authBody = {

@@ -1,6 +1,11 @@
 const auth = angular.module('auth', [])
 auth.factory('authService', ['$http', '$q', '$window', function ($http, $q, $window) {
     return {
+        loginPage: function(){
+            $http.get(`http://localhost:9000/login/getMessage`).then(function success(response) {
+                console.log(response)
+            })
+        },
         userNavigation: function (role) {
             if (role === 'PROVIDER') {
                 $window.location.href = '#!/main'
