@@ -1,21 +1,23 @@
-<div class = "d-flex justify-content-center">
-    <div class="signin card" style="width: 40rem;" ng-form="officeForm">
+<div class="d-flex justify-content-center">
+    <div class="small-form-card card" style="width: 40rem;" ng-form="officeForm">
         <h1 class="text-center card-header">Create office</h1>
-        <form class="form-signin ">
-
-            <img class = "mb-4" width = '80'  width = '100'  src ="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCy60gx9wntHXFeCY09eQpl1h2mq2vRZvURw&usqp=CAU">
+        <form class="form-for-data ">
+            <img class="mb-4" width='80' width='100'
+                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCy60gx9wntHXFeCY09eQpl1h2mq2vRZvURw&usqp=CAU">
             <label for="inputName" class="sr-only">Name</label>
             <input type="text" ng-model="nameOfOffice" id="inputName" class="form-control" placeholder="Name" required>
 
             <label for="inputLocation" class="sr-only">Location</label>
-            <input type="text" ng-model="location" id="inputLocation" class="form-control" placeholder="Location" required>
+            <input type="text" ng-model="location" id="inputLocation" class="form-control" placeholder="Location"
+                   required>
 
             <label for="inputContact" class="sr-only">Contact details</label>
-            <input type="text" ng-model="contact" id="inputContact" class="form-control" placeholder="Contact (phone number)" required><br><br>
+            <input type="text" ng-model="contact" id="inputContact" class="form-control"
+                   placeholder="Contact (phone number)" required><br><br>
 
-            <label ng-if="message!=''"><p class = "sign_in_up-error">{{message}}</p></label>
+            <label ng-if="errorMessage!=''"><p class="error-message">{{errorMessage}}</p></label>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click ="create(officeForm)">Creat</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="create(officeForm)">Creat</button>
             <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>
         </form>
     </div>

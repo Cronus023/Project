@@ -1,44 +1,47 @@
 /* app css stylesheet */
-.form-signin {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
-}
-.form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
+.form-for-data {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
 }
 
-.signin {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+.form-application {
+    width: 100%;
+    max-width: 700px;
+    padding: 15px;
+    margin: auto;
 }
-.sign_in_up-error{
-  color: #ff0000bf;
-  font-size: 1.5rem;
-  border: 1px solid;
-  padding: 1rem;
-  border-radius: 10px
-}
-.main_check_message{
-  color: #113ecd;
-  border: 1px solid;
-  width: 230px;
-  border-radius: 10px
 
+.form-for-data .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
 }
-.add_worker_ok{
-  color: #509008;
-  font-size: 1.5rem;
-  border: 1px solid;
-  padding: 1rem;
-  border-radius: 10px
+
+.small-form-card {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.error-message {
+    color: #ff0000bf;
+    font-size: 1.5rem;
+    border: 1px solid;
+    padding: 1rem;
+    border-radius: 10px
+}
+
+.good-message {
+    color: #509008;
+    font-size: 1.5rem;
+    border: 1px solid;
+    padding: 1rem;
+    border-radius: 10px
 }

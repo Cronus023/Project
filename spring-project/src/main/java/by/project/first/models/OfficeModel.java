@@ -1,17 +1,35 @@
 package by.project.first.models;
 
-import javax.persistence.*;
+import by.project.first.models.ApplicationModels.ApplicationModel;
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table
+@Data
 public class OfficeModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String location;
     private String name;
-
+    private Date dateOfLastPermission;
     private String contact_details;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -19,85 +37,41 @@ public class OfficeModel {
             name = "office_providers",
             joinColumns = @JoinColumn(name = "office_id")
     )
-    private Set<UserModel> leaderID;
+    private Set<UserModel> leaderID = new HashSet<>();
+
     private String photo;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "office_workers",
             joinColumns = @JoinColumn(name = "office_id")
     )
-    private Set<WorkerModel> workerId;
+    private Set<WorkerModel> workerId = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "office_applications",
+            joinColumns = @JoinColumn(name = "office_id")
+    )
+    private Set<ApplicationModel> officeApplications = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private ApplicationModel lastApplication;
 
     public OfficeModel() {
     }
 
-
-
-    public OfficeModel(Long id, String location, String name, String contact_details, Set<UserModel> leaderID, String photo, Set<WorkerModel> workerId) {
-        this.id = id;
-        this.location = location;
-        this.name = name;
-        this.contact_details = contact_details;
-        this.leaderID = leaderID;
-        this.photo = photo;
-        this.workerId = workerId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public OfficeModel(String name) {
         this.name = name;
     }
 
-    public String getContact_details() {
-        return contact_details;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        OfficeModel office = (OfficeModel) o;
+        return office.getId().equals(this.getId());
     }
 
-    public void setContact_details(String contact_details) {
-        this.contact_details = contact_details;
-    }
-
-    public Set<UserModel> getLeaderID() {
-        return leaderID;
-    }
-
-    public void setLeaderID(Set<UserModel> leaderID) {
-        this.leaderID = leaderID;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public Set<WorkerModel> getWorkerId() {
-        return workerId;
-    }
-
-    public void setWorkerId(Set<WorkerModel> workerId) {
-        this.workerId = workerId;
-    }
 }

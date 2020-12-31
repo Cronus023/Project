@@ -4,91 +4,86 @@ package by.project.first.controllers;
 import by.project.first.controllers.ReqAndRes.AddTrainingRequest;
 import by.project.first.controllers.ReqAndRes.GetWorkersTrainingRequest;
 import by.project.first.controllers.ReqAndRes.RegWorkersToTraining;
-import by.project.first.models.*;
-import by.project.first.repositories.OfficeRepo;
+import by.project.first.models.Message;
+import by.project.first.models.TrainingModel;
+import by.project.first.models.WorkerModel;
 import by.project.first.repositories.TrainingRepo;
-import by.project.first.repositories.UserRepo;
 import by.project.first.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins="http://localhost:8000")
 public class TrainingController {
 
-    @Autowired
-    private TrainingRepo trainingRepo;
+    private final TrainingRepo trainingRepo;
+    private final TrainingService trainingService;
 
     @Autowired
-    private TrainingService trainingService;
+    public TrainingController(TrainingRepo trainingRepo, TrainingService trainingService) {
+        this.trainingRepo = trainingRepo;
+        this.trainingService = trainingService;
+    }
 
-    @GetMapping("/training/get_trainings")
-    public ResponseEntity get_trainings(){
+    @GetMapping("/training/getTrainings")
+    public ResponseEntity<Iterable<TrainingModel>> getTrainings() {
         return ResponseEntity.ok(trainingRepo.findAll());
     }
 
-    @GetMapping("/training/get_training_by_id")
-    public ResponseEntity get_training_by_id(@RequestParam Long id){
+    @GetMapping("/training/getTrainingById")
+    public ResponseEntity<Optional<TrainingModel>> get_training_by_id(@RequestParam Long id) {
         return ResponseEntity.ok(trainingRepo.findById(id));
     }
-    @PostMapping("/training/get_workers")
-    public ResponseEntity get_workers(@RequestBody GetWorkersTrainingRequest request){
-        Iterable<WorkerModel> workers= trainingService.findByIdAndUserLogin(request);
-        return ResponseEntity.ok(workers);
-    }
-    @PostMapping("/training/edit_training")
-    public ResponseEntity edit_training(@RequestBody TrainingModel request){
-        Long id = request.getId();
-        Optional<TrainingModel> training = trainingRepo.findById(id);
-        if(training.isEmpty()){
-            ResponseEntity.status(400).body(new Message("This training does not exist!"));
-        }
-        trainingRepo.save(request);
-        return ResponseEntity.ok(new Message("ok!"));
+
+    @PostMapping("/training/findWorkersByIdAndUserLogin")
+    public Iterable<WorkerModel> findWorkersByIdAndUserLogin(@RequestBody GetWorkersTrainingRequest request) {
+        return trainingService.findWorkersByIdAndUserLogin(request);
     }
 
-    @PostMapping("/training/delete_training")
-    public ResponseEntity delete_training(@RequestParam Long id){
-        Optional<TrainingModel> training= trainingRepo.findById(id);
-        if(training.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find training"));
-        }
-        else trainingRepo.deleteById(id);
-        return ResponseEntity.ok(new Message("ok!"));
+    @PostMapping("/training/editTraining")
+    public Message editTraining(@RequestBody TrainingModel request) {
+        return trainingService.editTraining(request);
     }
 
-    @PostMapping("/training/get_visit_and_passing")
-    public ResponseEntity get_visit_and_passing(@RequestBody GetWorkersTrainingRequest request){
-        ResponseEntity response= trainingService.findTrainingWorkers(request);
-        return ResponseEntity.ok(response);
+    @PostMapping("/training/deleteWorkersInTraining")
+    public Message deleteWorkersInTraining(@RequestBody RegWorkersToTraining request) {
+        return trainingService.deleteWorkersInTraining(request);
     }
 
-
-    @PostMapping("/training/register_workers")
-    public ResponseEntity register_workers(@RequestBody RegWorkersToTraining request){
-        Message message = trainingService.registerWorkers(request);
-        return ResponseEntity.ok(message);
+    @PostMapping("/training/deleteTraining")
+    public Message deleteTraining(@RequestParam Long id) {
+        return trainingService.deleteTraining(id);
     }
 
-    @PostMapping("/training/add_visitors")
-    public ResponseEntity add_visitors(@RequestBody RegWorkersToTraining request){
-        ResponseEntity message = trainingService.addVisitors(request);
-        return ResponseEntity.ok(message);
+    @PostMapping("/training/findTrainingWorkers")
+    public ResponseEntity findTrainingWorkers(@RequestBody GetWorkersTrainingRequest request) {
+        return trainingService.findTrainingWorkers(request);
     }
 
-    @PostMapping("/training/add_passed")
-    public ResponseEntity add_passed(@RequestBody RegWorkersToTraining request){
-        ResponseEntity message = trainingService.addPassedWorkers(request);
-        return ResponseEntity.ok(message);
+    @PostMapping("/training/registerWorkers")
+    public ResponseEntity<Message> registerWorkers(@RequestBody RegWorkersToTraining request) {
+        return trainingService.registerWorkers(request);
     }
 
+    @PostMapping("/training/addVisitors")
+    public ResponseEntity<Message> addVisitors(@RequestBody RegWorkersToTraining request) {
+        return trainingService.addVisitors(request);
+    }
+
+    @PostMapping("/training/addPassedWorkers")
+    public Message addPassedWorkers(@RequestBody RegWorkersToTraining request) {
+        return trainingService.addPassedWorkers(request);
+    }
 
     @PostMapping("/training/add")
-    public ResponseEntity add_training(@RequestBody AddTrainingRequest request){
-        Message message = trainingService.saveTraining(request);
-        return ResponseEntity.ok(message);
+    public Message saveTraining(@RequestBody AddTrainingRequest request) {
+        return trainingService.saveTraining(request);
     }
+
 }

@@ -2,90 +2,84 @@ package by.project.first.service;
 
 import by.project.first.controllers.ReqAndRes.AddWorkerRequest;
 import by.project.first.controllers.ReqAndRes.DeleteWorkerRequest;
-import by.project.first.models.*;
+import by.project.first.models.Message;
+import by.project.first.models.OfficeModel;
+import by.project.first.models.TrainingModel;
+import by.project.first.models.WorkerModel;
 import by.project.first.repositories.OfficeRepo;
 import by.project.first.repositories.TrainingRepo;
 import by.project.first.repositories.WorkerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class WorkerService {
 
-    @Autowired
-    private WorkerRepo workerRepo;
+    private final WorkerRepo workerRepo;
+    private final TrainingRepo trainingRepo;
+    private final OfficeRepo officeRepo;
 
     @Autowired
-    private TrainingRepo trainingRepo;
+    public WorkerService(WorkerRepo workerRepo, TrainingRepo trainingRepo, OfficeRepo officeRepo) {
+        this.workerRepo = workerRepo;
+        this.trainingRepo = trainingRepo;
+        this.officeRepo = officeRepo;
+    }
 
-    @Autowired
-    private OfficeRepo officeRepo;
+    public Set<WorkerModel> getWorkersInOffice(String name) {
+        return officeRepo.findByName(name).getWorkerId();
+    }
 
-    public WorkerModel saveWorker(AddWorkerRequest request) {
-        WorkerModel worker = request.getWorker();
-        WorkerModel newWorker = workerRepo.save(worker);
+    public WorkerModel getWorkerById(Long id) {
+        return workerRepo.findById(id).get();
+    }
+
+    public Message addWorker(AddWorkerRequest request) {
+        WorkerModel newWorker = workerRepo.save(request.getWorker());
 
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
         office.getWorkerId().add(newWorker);
 
         officeRepo.save(office);
-        return newWorker;
+        return new Message("ok!");
     }
 
-    public Optional<WorkerModel> findById(Long id) {
-        Optional<WorkerModel> worker = workerRepo.findById(id);
-        return worker;
+    public Iterable<TrainingModel> viewTrainings(Long id) {
+        return trainingRepo.findAllByTrainingPassedID(workerRepo.findById(id).get());
     }
 
-
-    public ResponseEntity view_trainings(Long id) {
-        Iterable<TrainingModel> trainings = trainingRepo.findAll();
-        Optional<WorkerModel> worker = workerRepo.findById(id);
-        if(worker.isEmpty()){
-            return ResponseEntity.status(400).body(new Message("Can not find worker!"));
-        }
-        Set<TrainingModel> workerTrainings = new HashSet<>();
-        trainings.forEach(training->{
-            if(training.getTrainingPassedID().contains(worker.get())){
-                workerTrainings.add(training);
-            }
-        });
-
-        return ResponseEntity.ok(workerTrainings);
-    }
-
-
-    public Iterable<TrainingModel> deleteWorker (DeleteWorkerRequest request) {
-        Set<WorkerModel> workers =  request.getNewWorkers();
-
+    public Message deleteWorker(DeleteWorkerRequest request) {
         OfficeModel office = officeRepo.findByName(request.getOfficeName());
-        office.setWorkerId(workers);
+        office.setWorkerId(request.getNewWorkers());
 
-        Iterable<TrainingModel> trainings = trainingRepo.findAll();
-        trainings.forEach(training->{
-            request.getDeletedWorkers().forEach(deletedWorker->{
-                Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
-                if(training.getWorkerID().contains(w.get())){
-                    Integer newSeats = training.getNumberOfSeats() + +1 ;
-                    training.getWorkerID().remove(w.get());
-                    training.setNumberOfSeats(newSeats);
-                }
-                trainingRepo.save(training);
-            });
-        });
-        Iterable<WorkerModel> deletedWorkers = request.getDeletedWorkers();
-        deletedWorkers.forEach(worker -> workerRepo.delete(worker));
-
+        updateTrainingsAfterDeleteWorkers(request.getDeletedWorkers());
         officeRepo.save(office);
-        return trainings;
+
+        Iterable<WorkerModel> deletedWorkers = request.getDeletedWorkers();
+        workerRepo.deleteAll(deletedWorkers);
+        return new Message("ok!");
     }
 
-    public WorkerModel editWorker (WorkerModel worker) {
-        return workerRepo.save(worker);
+    public void updateTrainingsAfterDeleteWorkers(Set<WorkerModel> deletedWorkers) {
+        trainingRepo.findAll().forEach(training -> deletedWorkers.forEach(deletedWorker -> {
+            Optional<WorkerModel> w = workerRepo.findById(deletedWorker.getId());
+            if (training.getWorkerID().contains(deletedWorker)) {
+                Integer newSeats = training.getNumberOfSeats() + 1;
+                training.getWorkerID().remove(deletedWorker);
+                training.getTrainingPassedID().remove(deletedWorker);
+                training.getTrainingVisitorsID().remove(deletedWorker);
+                training.setNumberOfSeats(newSeats);
+                trainingRepo.save(training);
+            }
+        }));
     }
+
+    public Message editWorker(WorkerModel worker) {
+        workerRepo.save(worker);
+        return new Message("ok!");
+    }
+
 }

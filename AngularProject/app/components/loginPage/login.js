@@ -1,23 +1,21 @@
 angular.module('myApp.login', ['ngRoute'])
-    .controller('LoginCtrl', function($scope, authService, $window) {
-        $scope.login = ""
-        $scope.password = ""
-
-        $scope.auth = function(loginForm)
-        {
-            if(loginForm.$valid){
+    .controller('LoginCtrl', function ($scope, authService) {
+        authService.loginPage()
+        $scope.auth = function (loginForm) {
+            if (loginForm.$valid) {
                 const authBody = {
                     login: $scope.login,
                     password: $scope.password
                 }
-                const response = authService.login(authBody)
-                response.then(function(value){
-                    if(value == 'ok'){
-                        $window.location.href = "/#!/main"
-                        $window.location.reload();
+                authService.login(authBody).then(function (value) {
+                    if (value.title) $scope.errorMessage = value.title
+                    else {
+                        localStorage.setItem('UserRole', value.roles[0])
+                        localStorage.setItem('JwtToken', value.token)
+                        localStorage.setItem('UserLogin', authBody.login)
+                        authService.userNavigation(value.roles[0])
                     }
-                    else $scope.message = value
                 })
             }
         }
-    });
+    })

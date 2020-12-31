@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-center">
+    <div class="small-form-card card" style="width: 60rem;">
+        <h1 class="text-center card-header">Regular review</h1>
+        <div class="form-application ">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button style="color:#28c143" class="btn" ng-click="selectGroups()">Groups section</button>
+                </li>
+                <li class="nav-item">
+                    <button style="color:#28c143" class="btn ml-1" ng-click="selectWorkers()">Workers section</button>
+                </li>
+            </ul>
+            <br>
+            <div ng-if="section.number==1 && !section.groupStatus">
+                <label>Groups information: </label><br>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item ml-5">
+                        <label>{{applicationData.groups[0].name}}</label><br>
+                        <label>Number of classes: {{applicationData.groups[0].numberOfClasses}} </label>
+                        <p>
+                            5 activities: {{applicationData.groups[0].activities}}
+                        </p>
+                        <br>
+                    </li>
+                    <li class="list-group-item ml-5">
+                        <label>{{applicationData.groups[1].name}}</label><br>
+                        <label>Number of classes: {{applicationData.groups[1].numberOfClasses}} </label>
+                        <p>
+                            5 activities: {{applicationData.groups[1].activities}}
+                        </p>
+                        <br>
+                    </li>
+                    <li class="list-group-item ml-5">
+                        <label>{{applicationData.groups[2].name}}</label><br>
+                        <label>Number of classes: {{applicationData.groups[2].numberOfClasses}}</label>
+                        <p>
+                            5 activities: {{applicationData.groups[2].activities}}
+                        </p>
+                        <br>
+                    </li>
+                    <li class="list-group-item ml-5">
+                        <label>{{applicationData.groups[3].name}}</label><br>
+                        <label>Number of classes: {{applicationData.groups[3].numberOfClasses}}</label>
+                        <p>
+                            5 activities: {{applicationData.groups[3].activities}}
+                        </p>
+                        <br>
+                    </li>
+
+                </ul>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
+            </div>
+            <div ng-if="section.number==1 && section.groupStatus">
+                <label class="error-message">You have already answered this section </label><br>
+            </div>
+            <div ng-if="section.number==2 && !section.workersStatus">
+                <label>Workers information: </label><br>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Education</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Reason</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in workers">
+                        <div>
+                            <td> {{item.worker.name}}</td>
+                            <td>{{item.worker.education}}</td>
+                            <td>{{item.worker.email}}</td>
+                            <td>{{item.reason}}</td>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('REJECT')">Reject the section</button>
+                <button class="btn btn-danger" ng-click="rejectAndAccept('ACCEPT')">Accept the section</button>
+            </div>
+            <div ng-if="section.number==2 && section.workersStatus">
+                <label class="error-message">You have already answered this section </label><br>
+            </div>
+
+        </div>
+    </div>
+</div>

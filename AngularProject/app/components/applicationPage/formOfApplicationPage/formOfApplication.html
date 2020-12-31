@@ -1,0 +1,178 @@
+<div ng-if="messageFromBack!=''" class="d-flex justify-content-center">
+    <div>
+        <label>
+            <p class="sign_in_up-error ">{{messageFromBack}}</p>
+            <buton class="btn btn-info ml-5" ng-click="return()">Return to main page</buton>
+        </label>
+    </div>
+
+</div>
+
+<div ng-if="messageFromBack==''" class="d-flex justify-content-center">
+    <div class="small-form-card card" style="width: 60rem;" ng-form="applicationForm">
+        <h1 class="text-center card-header">Step {{navigation + 1}}</h1>
+        <div class="form-application ">
+            <form>
+                <div ng-if="navigation == 0">
+                    <label>Edit office location: </label>
+                    <label for="inputOfficeLocation" class="sr-only">Office location</label>
+                    <input type="text" ng-model="office.location" id="inputOfficeLocation" class="form-control"
+                           placeholder="Office location" required>
+                    <br>
+                </div>
+                <div ng-if="navigation == 1">
+                    <label>
+                        Indicate the reason why the worker did not pass any testing
+                    </label>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Education</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Reason</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in notPassedWorkers">
+                            <div>
+                                <td> {{item.name}}</td>
+                                <td>{{item.education}}</td>
+                                <td>{{item.email}}</td>
+                                <td>
+                                    <select class="custom-select" ng-model="item.reason">
+                                        <option ng-repeat="reason in typesOfReasons">{{reason.value}}</option>
+                                    </select>
+                                </td>
+                            </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-if="navigation == 2">
+                    <div>
+                        <label>Educational program: </label>
+                        <textarea class="form-control" ng-model="application.educationalProgram"></textarea><br>
+                    </div>
+                    <div>
+                        <label>
+                            Specify the number of classes and 5 activities related to education for the following age
+                            groups:
+                        </label><br>
+                    </div>
+                    <div>
+                        <label>0-2 age:</label>
+                        <input ng-model="application.groups[0].numberOfClasses" min=1 class="form-control"
+                               type="number"><br>
+                        <textarea ng-model="application.groups[0].activities" class="form-control"></textarea><br>
+                        <br>
+                    </div>
+
+                    <div>
+                        <label>2-4 age:</label>
+                        <input ng-model="application.groups[1].numberOfClasses" min=1 class="form-control"
+                               type="number"><br>
+                        <textarea ng-model="application.groups[1].activities" class="form-control"></textarea><br>
+                        <br>
+                    </div>
+
+                    <div>
+                        <label>5-6 age:</label>
+                        <input ng-model="application.groups[2].numberOfClasses" min=1 class="form-control"
+                               type="number"><br>
+                        <textarea ng-model="application.groups[2].activities" class="form-control"></textarea><br>
+                        <br>
+                    </div>
+                    <div>
+                        <label>6+ age :</label>
+                        <input ng-model="application.groups[3].numberOfClasses" min=1 class="form-control"
+                               type="number"><br>
+                        <textarea ng-model="application.groups[3].activities" class="form-control"></textarea><br>
+                        <br>
+                    </div>
+                </div>
+                <div ng-if="navigation==3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <lavel>Step 1:</lavel>
+                            <br>
+                        <li class="list-group-item ml-5">
+                            <label>Office location: {{office.location}}</label><br><br>
+                        </li>
+                        </li>
+                        <li class="list-group-item">
+                            <lavel ng-if="step2Status">Step 2: Complete!</lavel>
+                            <br><br>
+                            <lavel ng-if="!step2Status">Step 2:</lavel>
+                            <br><br>
+                        </li>
+                        <li class="list-group-item">
+                            <lavel>Step 3:</lavel>
+                            <br><br>
+                        <li class="list-group-item ml-5">
+                            <label>Educational program: </label><br>
+                            <p>
+                                {{application.educationalProgram}}
+                            </p>
+                        </li>
+                        <li class="list-group-item ml-5">
+                            <label>0-2 age:</label><br>
+                            <label>Number of classes: {{application.groups[0].numberOfClasses}} </label>
+                            <p>
+                                5 activities: {{application.groups[0].activities}}
+                            </p>
+                            <br>
+                        </li>
+                        <li class="list-group-item ml-5">
+                            <label>2-4 age:</label><br>
+                            <label>Number of classes: {{application.groups[1].numberOfClasses}} </label>
+                            <p>
+                                5 activities: {{application.groups[1].activities}}
+                            </p>
+                            <br>
+                        </li>
+                        <li class="list-group-item ml-5">
+                            <label>5-6 age:</label><br>
+                            <label>Number of classes: {{application.groups[2].numberOfClasses}}</label>
+                            <p>
+                                5 activities: {{application.groups[2].activities}}
+                            </p>
+                            <br>
+                        </li>
+                        <li class="list-group-item ml-5">
+                            <label>6+ age:</label><br>
+                            <label>Number of classes: {{application.groups[3].numberOfClasses}}</label>
+                            <p>
+                                5 activities: {{application.groups[3].activities}}
+                            </p>
+                            <br>
+                        </li>
+                        </li>
+
+                    </ul>
+                    <div ng-if="checkData()">
+                        <label for="inputAdditionalInfo" class="sr-only">Phone</label>
+                        <input type="text" ng-model="application.additionalInfo" id="inputAdditionalInfo"
+                               class="form-control" placeholder="Help needed when filling out" required><br>
+                        <label ng-if="navigation == 3 && errorAdditionalInfo !=''"
+                               class="error-message">{{errorAdditionalInfo}}</label><br><br>
+                        <label>Confirm data: </label>
+                        <input ng-click="changeConfirm()" type="checkbox"><br><br>
+                    </div>
+                </div>
+            </form>
+
+            <label ng-if="navigation == 3 && !checkData() " class="error-message">{{errorMessage}}</label><br><br>
+            <label ng-if="navigation == 3 && errorConfirm!=''" class="error-message"> {{errorConfirm}} </label>
+            <button ng-if="navigation < 3" class="btn btn-lg btn-primary btn-block mt-1" ng-click="next()">Next</button>
+            <button ng-if="navigation > 0 " class="btn btn-lg btn-primary btn-block mt-1" ng-click="back()">Back
+            </button>
+            <button ng-if="navigation == 3 && checkData() " class="btn btn-lg btn-primary btn-block mt-1"
+                    ng-click="submit(applicationForm)">Submit
+            </button>
+            <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>
+
+        </div>
+
+    </div>
+</div>

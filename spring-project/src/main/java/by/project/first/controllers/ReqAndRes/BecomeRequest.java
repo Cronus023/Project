@@ -1,29 +1,19 @@
 package by.project.first.controllers.ReqAndRes;
 
 import by.project.first.models.OfficeModel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class BecomeRequest {
+
     private OfficeModel office;
-    private String token;
+    private String login;
 
-    public BecomeRequest(OfficeModel office, String token) {
+    public BecomeRequest(OfficeModel office, String login) {
         this.office = office;
-        this.token = token;
+        this.login = login;
     }
 
-    public OfficeModel getOffice() {
-        return office;
-    }
-
-    public void setOffice(OfficeModel office) {
-        this.office = office;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

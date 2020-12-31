@@ -1,33 +1,31 @@
-'use strict';
-
 angular.module('myApp.main', ['ngRoute'])
-    .controller('MainCtrl', function($scope, officeService, $window, $route) {
-        $scope.flag = false
+    .controller('MainCtrl', function ($scope, officeService, $window, authService) {
 
-        officeService.get_office().then(function(value){
+        officeService.getOffices().then(function (value) {
             $scope.offices = value
         })
 
-        $scope.become = function(office){
-            officeService.become(office)
+        $scope.becomeProvider = function (office) {
+            officeService.becomeProvider(office)
         }
-        $scope.check = function(office){
+
+        $scope.checkProvider = function (office) {
             let flag = false
-            if(office.leaderID.length == 0){
-                return false
-            }
-            if(office.leaderID.length != 0){
-                office.leaderID.map(item =>{
-                    if(item.login == localStorage.getItem('UserLogin')){
+
+            if (office.leaderID.length === 0) return false
+            else office.leaderID.map(function(item) {
+                    if (item.login === localStorage.getItem('UserLogin'))
                         flag = true
-                    }
                 })
-            }
             return flag
         }
-        $scope.view = function(office){
-            const name = office.name
-            $window.location.href = `/#!/workers/${name}`
+
+        $scope.viewWorkers = function (office) {
+            $window.location.href = `/#!/workers/${office.name}`
+        }
+
+        $scope.dateFormat = function (date) {
+            return authService.dateFormat(date)
         }
 
     })

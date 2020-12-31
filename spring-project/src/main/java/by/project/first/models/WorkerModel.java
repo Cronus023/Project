@@ -1,18 +1,31 @@
 package by.project.first.models;
 
-import javax.persistence.*;
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table
+@Data
 public class WorkerModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String education;
     private String email;
     private String name;
 
     public WorkerModel() {
+    }
+
+    public WorkerModel(String name) {
+        this.name = name;
     }
 
     public WorkerModel(String education, String email, String name) {
@@ -21,35 +34,13 @@ public class WorkerModel {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        WorkerModel worker = (WorkerModel) o;
+        return worker.getId().equals(this.getId());
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public void setEducation(String education) {
-        this.education = education;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

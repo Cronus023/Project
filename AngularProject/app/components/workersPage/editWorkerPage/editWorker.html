@@ -1,20 +1,21 @@
-<div class = "d-flex justify-content-center">
-    <div class="signin card" style="width: 40rem;" ng-form="workerForm">
+<div class="d-flex justify-content-center">
+    <div class="small-form-card card" style="width: 40rem;" ng-form="workerForm">
         <h1 class="text-center card-header">Edit worker</h1>
-        <div class="form-signin ">
+        <div class="form-for-data ">
             <form>
                 <label for="inputName" class="sr-only">Name</label>
-                <input type="text" ng-model="worker.name" id="inputName" class="form-control" placeholder="Name" required>
+                <input type="text" ng-model="worker.name" id="inputName" class="form-control" placeholder="Name"
+                       required>
 
                 <label for="inputEducation" class="sr-only">Education</label>
-                <input type="text" ng-model="worker.education" id="inputEducation" class="form-control" placeholder="Education" required>
+                <input type="text" ng-model="worker.education" id="inputEducation" class="form-control"
+                       placeholder="Education" required>
 
                 <label for="inputEmail" class="sr-only">Email</label>
-                <input type="email" ng-model="worker.email" id="inputEmail" class="form-control" placeholder="Email" required><br><br>
+                <input type="email" ng-model="worker.email" id="inputEmail" class="form-control" placeholder="Email"
+                       required><br><br>
 
-                <label ng-if="message!=''"><p class = "add_worker_ok">{{message}}</p></label>
-
-                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click ="edit(workerForm)">Edit</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="edit(workerForm)">Edit</button>
             </form>
             <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>
 

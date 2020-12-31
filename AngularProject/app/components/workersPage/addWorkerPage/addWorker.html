@@ -1,26 +1,26 @@
-<div class = "d-flex justify-content-center">
-    <div class="signin card" style="width: 40rem;" ng-form="workerForm">
+<div class="d-flex justify-content-center">
+    <div class="small-form-card card" style="width: 40rem;" ng-form="workerForm">
         <h1 class="text-center card-header">Add worker</h1>
-        <div class="form-signin ">
+        <div class="form-for-data ">
             <form>
-
                 <label for="inputName" class="sr-only">Name</label>
-                <input type="text" ng-model="nameOfWorker" id="inputName" class="form-control" placeholder="Name" required>
+                <input type="text" ng-model="nameOfWorker" id="inputName" class="form-control" placeholder="Name"
+                       required>
 
                 <label for="inputEducation" class="sr-only">Education</label>
-                <input type="text" ng-model="education" id="inputEducation" class="form-control" placeholder="Education" required>
+                <input type="text" ng-model="education" id="inputEducation" class="form-control" placeholder="Education"
+                       required>
 
                 <label for="inputEmail" class="sr-only">Email</label>
-                <input type="email" ng-model="email" id="inputEmail" class="form-control" placeholder="Email" required><br><br>
+                <input type="email" ng-model="email" id="inputEmail" class="form-control" placeholder="Email"
+                       required><br><br>
 
+                <label ng-if="goodMessage!=''"><p class="good-message">Worker successfully added!</p></label>
 
-                <label ng-if="message!=''"><p class = "add_worker_ok">Worker successfully added!</p></label>
-
-                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click ="add(workerForm)">Add</button>
-
+                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="addWorker(workerForm)">Add</button>
             </form>
 
-            <button class="btn btn-lg btn-primary btn-block mt-1" ng-click ="back()">Back to table</button>
+            <button class="btn btn-lg btn-primary btn-block mt-1" ng-click="back()">Back to table</button>
             <p class="mt-5 mb-3 text-muted">&copy; iTransition 2020</p>
 
         </div>

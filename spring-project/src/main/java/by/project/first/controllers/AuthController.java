@@ -1,66 +1,52 @@
 package by.project.first.controllers;
 
-import by.project.first.config.jwt.JwtProvider;
-import by.project.first.controllers.ReqAndRes.LoginResponse;
 import by.project.first.models.Message;
-import by.project.first.models.Token;
+import by.project.first.models.RoleModel;
 import by.project.first.models.UserModel;
-import by.project.first.repositories.UserRepo;
 import by.project.first.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @RestController
-@CrossOrigin(origins="http://localhost:8000")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
-    private JwtProvider jwtProvider;
-    @Autowired
-    private UserRepo userRepo;
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserModel user){
-        UserModel authUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
-        if(authUser != null){
-            String token = jwtProvider.generateToken(authUser.getLogin());
-            return ResponseEntity.ok(new LoginResponse(token, authUser.getRoles()));
-        }
-        else{
-            return ResponseEntity.status(400).body(new Message("Please, check your date"));
-        }
+    public ResponseEntity login(@RequestBody UserModel user) {
+        return userService.login(user);
     }
 
     @PostMapping("/register")
-    public ResponseEntity register( @RequestBody UserModel user){
-
-        UserModel newUser = userRepo.findByLogin(user.getLogin());
-        if(newUser == null){
-            userService.saveUser(user);
-            return ResponseEntity.ok(new Message(""));
-        }
-        else{
-            return ResponseEntity.status(400).body(new Message("Such user already exist!"));
-        }
+    public ResponseEntity<Message> register(@RequestBody UserModel user) {
+        return userService.register(user);
     }
 
-
     @GetMapping("/authLogout")
-    public ResponseEntity authLogout(@RequestParam String login){
+    public ResponseEntity<Message> authLogout(@RequestParam String login) {
+        return userService.logout(login);
+    }
 
-        UserModel user = userRepo.findByLogin(login);
-        if(user == null){
-            return ResponseEntity.status(400).body(new Message("error"));
-        }
-        else{
-            user.setActive(false);
-            userRepo.save(user);
-            return ResponseEntity.ok(new Message("ok"));
-        }
+    @GetMapping("/getRoles")
+    public Set<RoleModel> getRoles(@RequestParam String login) {
+        return userService.getRoles(login);
+    }
+
+    @GetMapping("/auth/check")
+    public ResponseEntity<Message> checkAuth(@RequestParam String token) {
+        return userService.checkAuth(token);
     }
 
 }

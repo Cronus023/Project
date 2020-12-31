@@ -1,18 +1,19 @@
 angular.module('myApp.office', ['ngRoute'])
-    .controller('OfficeCtrl', function($scope, $http, officeService, $window) {
-        $scope.message = ''
-        $scope.create = function(officeForm){
-            if(officeForm.$valid){
+    .controller('OfficeCtrl', function ($scope, $http, officeService, $window) {
+
+        $scope.errorMessage = ''
+
+        $scope.create = function (officeForm) {
+            if (officeForm.$valid) {
                 const officeBody = {
                     name: $scope.nameOfOffice,
                     location: $scope.location,
                     contact_details: $scope.contact,
                 }
-                officeService.create(officeBody).then(function(value){
-                    console.log(value)
-                    $scope.message = 'Such office already exist!'
+                officeService.createOffice(officeBody).then(function (value) {
+                    $scope.errorMessage = 'Such office already exist!'
                 })
-
             }
         }
+
     });
